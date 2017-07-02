@@ -11,8 +11,6 @@
       </div>
     </div>
   </div>
-  <!-- sidebar - router-view -->
-  <!-- 20% - 80% -->
 </div>
 </template>
 

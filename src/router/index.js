@@ -4,8 +4,11 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import CompanyList from '@/components/CompanyList'
 import Details from '@/components/Details'
+import NewCompany from '@/components/NewCompany'
+import VeeValidate from 'vee-validate'
 
 Vue.use(Router)
+Vue.use(VeeValidate)
 
 export default new Router({
   routes: [
@@ -22,6 +25,11 @@ export default new Router({
           path: '/', // parent's first child has path as root
           name: 'CompanyList',
           component: CompanyList
+        },
+        {
+          path: '/newCompany', // parent's first child has path as root
+          name: 'NewCompany',
+          component: NewCompany
         }
       ]
     },
