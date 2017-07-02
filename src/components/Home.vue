@@ -32,10 +32,10 @@ export default {
 </script>
 <style>
 html {
-    min-height: 100%;
-    background: #fafcfd;
+  min-height: 100%;
+  background: #fafcfd;
 }
 .main-page {
-margin-top: 1rem;
+  margin-top: 1rem;
 }
 </style>
