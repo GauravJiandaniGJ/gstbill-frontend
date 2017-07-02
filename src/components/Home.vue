@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
 <div class="companyList">
   <navbar></navbar>
   <div class="main-page">
@@ -7,7 +7,7 @@
         <sidebar></sidebar>
       </div>
       <div class="column">
-        <!-- <router-view></router-view> -->
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -33,6 +33,10 @@ export default {
 }
 </script>
 <style>
+html {
+    min-height: 100%;
+    background: #fafcfd;
+}
 .main-page {
 margin-top: 1rem;
 }
