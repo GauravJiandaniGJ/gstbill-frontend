@@ -6,7 +6,6 @@
         <li><router-link :to="{ name: 'CompanyList' }"> Company List</router-link></li>
         <li><router-link :to="{ name: 'NewCompany' }"> New Company</router-link></li>
         <li><router-link :to="{ name: 'Users' }"> Users List</router-link></li>
-        <li><a>HOME</a></li>
       </ul>
     </aside>
   </div>
