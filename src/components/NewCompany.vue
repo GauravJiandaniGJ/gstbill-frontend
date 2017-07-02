@@ -102,45 +102,53 @@ export default {
   data () {
     return {
       companys: {
-        cname: null,
-        short_name: null,
-        address: null,
-        gstin: null,
-        username: null,
-        password: null,
-        state: null
+        cname: '',
+        short_name: '',
+        address: '',
+        gstin: '',
+        username: '',
+        password: '',
+        state: ''
       }
     }
   },
   created () {
     this.$bus.$on('state', (state) => {
+      console.log(state)
       this.companys.state = state.state
+      console.log(this.companys.state)
     })
   },
   methods: {
     createCompany () {
       console.log(this.companys.state)
       axios.post(`http://localhost:8000/api/company/createCompany/`, {
-        body: {
-          name: this.companys.cname,
-          short_name: this.companys.short_name,
-          address: this.companys.address,
-          gstin: this.companys.gstin,
-          state: this.companys.state,
-          username: this.companys.username,
-          password: this.companys.password
-        }
+        name: this.companys.cname,
+        short_name: this.companys.short_name,
+        address: this.companys.address,
+        gstin: this.companys.gstin,
+        state: this.companys.state,
+        username: this.companys.username,
+        password: this.companys.password
       })
-        .then(response => {})
-        .catch(e => {
-          this.errors.push(e)
+        .then(response => {
+          this.companys.cname = ''
+          this.companys.short_name = ''
+          this.companys.address = ''
+          this.companys.gstin = ''
+          this.companys.username = ''
+          this.companys.password = ''
+          this.companys.state = ''
+        })
+        .catch((e) => {
+          console.log(e)
         })
     }
   }
 }
 </script>
 <style lang="css">
-.placement-primary {
+.NewCompany {
 
   .title.placement-header {
     border-bottom: solid 1px #ddd;
@@ -151,6 +159,11 @@ export default {
   .placement-body {
     padding: 1rem;
   }
+
 }
+
+  .field.is-grouped{
+    margin-top: 1.2rem;
+  }
 
 </style>

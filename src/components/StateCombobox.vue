@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     stateChange () {
-      console.log(this.state)
       this.$bus.$emit('state', { state: this.state })
     }
   }

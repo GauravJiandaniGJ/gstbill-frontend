@@ -6,6 +6,7 @@ import CompanyList from '@/components/CompanyList'
 import Details from '@/components/Details'
 import NewCompany from '@/components/NewCompany'
 import VeeValidate from 'vee-validate'
+import Users from '@/components/Users'
 
 Vue.use(Router)
 Vue.use(VeeValidate)
@@ -30,6 +31,11 @@ export default new Router({
           path: '/newCompany', // parent's first child has path as root
           name: 'NewCompany',
           component: NewCompany
+        },
+        {
+          path: '/users', // parent's first child has path as root
+          name: 'Users',
+          component: Users
         }
       ]
     },
