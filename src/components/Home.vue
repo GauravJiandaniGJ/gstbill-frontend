@@ -1,0 +1,39 @@
+<template>
+<div class="companyList">
+  <navbar></navbar>
+  <div class="main-page">
+    <div class="columns is-multiline is-mobile">
+      <div class="column is-one-quarter">
+        <sidebar></sidebar>
+      </div>
+      <div class="column">
+        <!-- <router-view></router-view> -->
+      </div>
+    </div>
+  </div>
+  <!-- sidebar - router-view -->
+  <!-- 20% - 80% -->
+</div>
+</template>
+
+<script>
+import navbar from '@/components/navbar'
+import sidebar from '@/components/sidebar'
+export default {
+  name: 'companyList',
+  components: {
+    navbar,
+    sidebar
+  },
+  data () {
+    return {
+
+    }
+  }
+}
+</script>
+<style>
+.main-page {
+margin-top: 1rem;
+}
+</style>
