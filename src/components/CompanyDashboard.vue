@@ -4,7 +4,7 @@
   <div class="CompanyDashboard">
 
     <div class="box placement-page">
-      
+
       <h2 class="title header">Financial Year</h2>
       <div>
         <div class="field has-addons title">
@@ -38,7 +38,7 @@
                 </p>
               </div>
               <footer class="card-footer">
-                <router-link :to="{ name: ''}" class="card-footer-item">View</router-link>
+                <router-link :to="{ name: 'FinancialYearDashboard'}" class="card-footer-item">View</router-link>
               </footer>
             </div>
           </div>

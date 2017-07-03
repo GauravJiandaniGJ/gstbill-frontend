@@ -8,6 +8,7 @@ import NewCompany from '@/components/NewCompany'
 import VeeValidate from 'vee-validate'
 import Users from '@/components/Users'
 import CompanyDashboard from '@/components/CompanyDashboard'
+import FinancialYearDashboard from '@/components/FinancialYearDashboard'
 
 Vue.use(Router)
 Vue.use(VeeValidate)
@@ -44,6 +45,11 @@ export default new Router({
       path: '/company-dashboard',
       name: 'CompanyDashboard',
       component: CompanyDashboard
+    },
+    {
+      path: '/financial-year',
+      name: 'FinancialYearDashboard',
+      component: FinancialYearDashboard
     },
     {
       path: '/details',
