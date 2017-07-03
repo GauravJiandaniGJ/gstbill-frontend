@@ -1,11 +1,10 @@
 <template>
-<div id="ClientNameComboBox">
+<div class="ClientNameComboBox">
   <span class="select is-fullwidth">
           <select v-validate="'required|not_in:null'" v-model="ClientId" name="client_name-select" @change="nameChange()">
             <option value=null>Select Dropdown</option>
             <option >Test</option>
             <option >Test2</option>
-            <option v-for="ClientName in client_names" :value="ClientName.id">{{ ClientName.id }}</option>
           </select>
         </span>
   <div class="help is-danger" v-show="errors.has('client_name-select')">
