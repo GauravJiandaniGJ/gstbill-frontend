@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="eligibility-criteria-box">
-    <a class="" @click="hidden=false" v-if="hidden">Edit</a>&nbsp&nbsp&nbsp
-    <a class="" @click="hidden=true" v-if="!hidden">Hide</a>
+    <a class="button is-success is-outlined a-tag login" @click="hidden=false" v-if="hidden">Edit</a>&nbsp&nbsp&nbsp
+    <a class="button is-success is-outlined a-tag login" @click="hidden=true" v-if="!hidden">Hide</a>
     <div class="box" v-if="!hidden">
 
     <h3 class="title">Hello</h3>
