@@ -15,9 +15,12 @@ import FullListDebitBill from '@/components/FullListDebitBill'
 import PendingDebitBills from '@/components/PendingDebitBills'
 import NewDebitEntry from '@/components/NewDebitEntry'
 import ShortcutList from '@/components/ShortcutList'
+import ShortcutEntry from '@/components/ShortcutEntry'
+// import Datepicker from 'vue-bulma-datepicker'
 
 Vue.use(Router)
 Vue.use(VeeValidate)
+// Vue.use(Datepicker)
 
 export default new Router({
   routes: [
@@ -86,6 +89,11 @@ export default new Router({
               path: '/shortcut-list',
               name: 'ShortcutList',
               component: ShortcutList
+            },
+            {
+              path: '/shortcut-entry',
+              name: 'ShortcutEntry',
+              component: ShortcutEntry
             }
           ]
         }

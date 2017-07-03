@@ -6,10 +6,10 @@
     <div class="tabs is-boxed is-medium">
 				<ul class="menu-list">
 					<li><router-link :to="{ name: 'FullListDebitBill' }">Full List</router-link></li>
-					<li><router-link :to="{ name: 'PendingDebitBills' }">Pending List</router-link></li>
 					<li><router-link :to="{ name: 'NewDebitEntry' }">New Entry</router-link></li>
+					<li><router-link :to="{ name: 'PendingDebitBills' }">Pending List</router-link></li>
+					<li><router-link :to="{ name: 'ShortcutEntry' }">New Shortcut</router-link></li>
 					<li><router-link :to="{ name: 'ShortcutList' }">Shortcuts</router-link></li>
-					<li><router-link :to="{ name: '' }">New Shortcut</router-link></li>
 				</ul>
 			</div>
 

@@ -38,7 +38,7 @@ export default {
 
 	.one-company {
 		width: 100%;
-		padding: 0.5rem;
+		padding: 0.7rem;
 		border-bottom: solid 1px #ddd;
 		.text {
 			padding-left: 7px;
