@@ -1,13 +1,13 @@
 <template>
   <div id="StateCombobox">
     <span class="select is-fullwidth">
-    			<select v-validate="'required|not_in:null'" v-model="state" name="jobType-select" @change="stateChange()">
+    			<select v-validate="'required|not_in:null'" v-model="state" name="state-select" @change="stateChange()">
     				<option value=null>Select Dropdown</option>
     				<option v-for="state in states" :value="state">{{ state }}</option>
     			</select>
     		</span>
-    		<div class="help is-danger" v-show="errors.has('jobType-select')">
-    			{{errors.first('jobType-select')}}
+    		<div class="help is-danger" v-show="errors.has('state-select')">
+    			{{errors.first('state-select')}}
     		</div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: 'StateCombobox',
   data: () => ({
     states: [],
-    state: null
+    state: ''
   }),
   created () {
     axios.get(`http://localhost:8000/api/stateList`)

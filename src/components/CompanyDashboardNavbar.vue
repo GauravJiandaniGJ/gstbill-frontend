@@ -30,6 +30,7 @@
         <select name="navbar-dropdown" class="navbar-dropdown">
           <option class="option" value=null>Select</option>
           <option class="option" value="clients">Clients</option>
+          <option class="option" value="client_address">Client Address</option>
           <option class="option" value="logout">Add new</option>
         </select>
       </a>
@@ -40,6 +41,7 @@
   <BanksListModal v-if="bankListModal" @close="bankListModal = false"></BanksListModal>
   <AddClientModal v-if="addClientModal" @close="addClientModal = false"></AddClientModal>
   <ClientListModal v-if="clientListModal" @close="clientListModal = false"></ClientListModal>
+  <ClientAddressModal v-if="clientAddressModal" @close="clientAddressModal = false"></ClientAddressModal>
 </div>
 </template>
 <script>
@@ -48,6 +50,7 @@ import AddBankModal from '@/components/AddBankModal'
 import BanksListModal from '@/components/BanksListModal'
 import AddClientModal from '@/components/AddClientModal'
 import ClientListModal from '@/components/ClientListModal'
+import ClientAddressModal from '@/components/ClientAddressModal'
 export default {
   name: 'CompanyDashboardNavbar',
   components: {
@@ -55,14 +58,16 @@ export default {
     AddBankModal,
     BanksListModal,
     AddClientModal,
-    ClientListModal
+    ClientListModal,
+    ClientAddressModal
   },
   data: () => ({
     companyProfileModal: false,
     addBankModal: false,
     bankListModal: false,
     addClientModal: false,
-    clientListModal: false
+    clientListModal: false,
+    clientAddressModal: false
   })
 }
 </script>

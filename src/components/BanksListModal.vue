@@ -33,7 +33,7 @@
           </div>
 
         </section>
-        <footer class="modal-card-foot">  
+        <footer class="modal-card-foot">
           <a class="button" v-on:click="$emit('close')">Close</a>
         </footer>
       </div>
