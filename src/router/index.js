@@ -12,6 +12,7 @@ import FinancialYearDashboard from '@/components/FinancialYearDashboard'
 import FinancialMonthDashboard from '@/components/FinancialMonthDashboard'
 import DebitBills from '@/components/DebitBills'
 import FullListDebitBill from '@/components/FullListDebitBill'
+import PendingDebitBills from '@/components/PendingDebitBills'
 
 Vue.use(Router)
 Vue.use(VeeValidate)
@@ -68,6 +69,11 @@ export default new Router({
               path: '/', // parent's first child has path as root
               name: 'FullListDebitBill',
               component: FullListDebitBill
+            },
+            {
+              path: '/pending', // parent's first child has path as root
+              name: 'PendingDebitBills',
+              component: PendingDebitBills
             }
           ]
         }

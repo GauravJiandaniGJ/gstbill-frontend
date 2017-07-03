@@ -5,13 +5,13 @@
     <div class="one-company">
       <!-- v-for="company in companies" -->
       <input type="hidden">
-      <span class="text title is-4">Bill No.</span>&nbsp&nbsp
-      <span class="text title is-4">Bill Date</span>&nbsp&nbsp
-      <span class="text title is-4">Bill Description</span>&nbsp&nbsp
-      <span class="text title is-4">Bill Price</span>&nbsp&nbsp
-			<a class="button is-danger is-outlined a-tag login">Delete</a>
-      <a class="button is-success is-outlined a-tag login">View</a>
-    </div>
+			<span class="text title is-6">123</span>
+			<span class="text title is-6">24/07/2017</span>
+			<span class="text title is-6">Shipment of 1 X 20'from Mundra to Haiphong Pending</span>
+			<span class="text title is-6">200000</span>
+			<a class="button is-danger is-outlined a-tag login">Del</a>
+			<a class="button is-success is-outlined a-tag login">View</a>
+		</div>
   </div>
 
 </div>
@@ -36,7 +36,7 @@ export default {
 	}
 
 	.companywise-body {
-		padding: 1.5rem;
+		padding: 0.2rem;
 	}
 
 	.one-company {
@@ -44,7 +44,7 @@ export default {
 		padding: 0.5rem;
 		border-bottom: solid 1px #ddd;
 		.text {
-			padding-left: 5px;
+			padding-left: 7px;
 		}
 	}
 
