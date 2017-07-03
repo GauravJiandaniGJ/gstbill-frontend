@@ -16,6 +16,11 @@ import PendingDebitBills from '@/components/PendingDebitBills'
 import NewDebitEntry from '@/components/NewDebitEntry'
 import ShortcutList from '@/components/ShortcutList'
 import ShortcutEntry from '@/components/ShortcutEntry'
+import GstBills from '@/components/GstBills'
+import FullListBill from '@/components/FullListBill'
+import NewGstEntry from '@/components/NewGstEntry'
+import PendingGstBills from '@/components/PendingGstBills'
+import Statement from '@/components/Statement'
 // import Datepicker from 'vue-bulma-datepicker'
 
 Vue.use(Router)
@@ -96,6 +101,43 @@ export default new Router({
               component: ShortcutEntry
             }
           ]
+        },
+        {
+          path: '/gst-bills',
+          name: 'GstBills',
+          component: GstBills,
+          children: [
+            {
+              path: '/gst-full-list',
+              name: 'FullListBill',
+              component: FullListBill
+            },
+            {
+              path: '/new-gst-entry',
+              name: 'NewGstEntry',
+              component: NewGstEntry
+            },
+            {
+              path: '/pending-gst-bills',
+              name: 'PendingGstBills',
+              component: PendingGstBills
+            },
+            {
+              path: '/shortcut-list',
+              name: 'ShortcutList',
+              component: ShortcutList
+            },
+            {
+              path: '/shortcut-entry',
+              name: 'ShortcutEntry',
+              component: ShortcutEntry
+            }
+          ]
+        },
+        {
+          path: '/statement',
+          name: 'Statement',
+          component: Statement
         }
       ]
     },

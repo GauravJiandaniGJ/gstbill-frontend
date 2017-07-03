@@ -5,7 +5,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Edit Bank Address</p>
+        <p class="modal-card-title">Edit Client Address</p>
       </header>
       <section class="modal-card-body">
         <div class="">
@@ -18,12 +18,16 @@
               </p>
             </div>
             <a class="button is-success">Fetch Address</a>
+            <a class="button is-success">Add New</a>
             <!-- This will fetch addresses of that party with get request and will run a forloop for below code -->
 
+          <div class="field">
+          </div>
+<div class="field">
             <div class="field">
-              <label class="label">Account Number</label>
+              <label class="label">Address</label>
               <p class="control">
-                <input v-validate="'required|min:8'" name="account_number" v-model="banks.account_number" placeholder="Insert Account Number" type="text" class="input">
+                <input v-validate="'required|min:8'" name="address" placeholder="Insert Address" type="textarea" class="input">
               </p>
               <div v-show="errors.has('account_number')" class="help is-danger">
                 {{ errors.first('account_number') }}
@@ -31,32 +35,32 @@
             </div>
 
             <div class="field">
-              <label class="label">Beneficiary Name</label>
+              <label class="label">GST Number</label>
               <p class="control">
-                <input v-validate="'required|min:6'" name="beneficiary_name" v-model="banks.beneficiary_name" placeholder="Insert Beneficiary Name" type="text" class="input">
+                <input v-validate="'required|min:4'" name="gstin" placeholder="Insert GST number" type="text" class="input">
               </p>
-              <div v-show="errors.has('beneficiary_name')" class="help is-danger">
-                {{ errors.first('beneficiary_name') }}
+              <div v-show="errors.has('gstin')" class="help is-danger">
+                {{ errors.first('gstin') }}
               </div>
             </div>
 
+
             <div class="field">
-              <label class="label">Bank IFSC Code</label>
+              <label class="label">State</label>
               <p class="control">
-                <input v-validate="'required|min:4'" name="ifsc_code" v-model="banks.ifsc_code" placeholder="Insert Banks IFSC Code" type="text" class="input">
+                <StateCombobox></StateCombobox>
               </p>
-              <div v-show="errors.has('ifsc_code')" class="help is-danger">
-                {{ errors.first('ifsc_code') }}
-              </div>
             </div>
+
             <a class="button is-success">Update</a>
+          </div>
           </div>
 
         </div>
 
       </section>
       <footer class="modal-card-foot">
-        <a class="button" v-on:click="$emit('close')">Close</a>
+        <a class="button is-info" v-on:click="$emit('close')">Close</a>
       </footer>
     </div>
   </div>
@@ -65,10 +69,12 @@
 </template>
 <script>
 import ClientNameComboBox from '@/components/ClientNameComboBox'
+import StateCombobox from '@/components/StateCombobox'
 export default {
   name: 'ClientAddressModal',
   components: {
-    ClientNameComboBox
+    ClientNameComboBox,
+    StateCombobox
   },
   data: () => ({
     ClientId: ''

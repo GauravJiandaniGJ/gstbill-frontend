@@ -15,16 +15,14 @@
                   <!-- v-for="company in companies" -->
                   <input type="hidden">
                   <span class="text title is-4">Bank Detail</span>&nbsp&nbsp&nbsp
-                  <a class="button is-success is-outlined a-tag login">Edit</a>&nbsp&nbsp&nbsp
-                  <a class="button is-success is-outlined a-tag login">Remove</a>
+                  <a class="button is-danger is-outlined a-tag login">Remove</a>
                 </div>
                 <hr>
                 <div class="one-company">
                   <!-- v-for="company in companies" -->
                   <input type="hidden">
                   <span class="text title is-4">Bank Detail</span>&nbsp&nbsp&nbsp
-                  <a class="button is-success is-outlined a-tag login">Edit</a>&nbsp&nbsp&nbsp
-                  <a class="button is-success is-outlined a-tag login">Remove</a>
+                  <a class="button is-danger is-outlined a-tag login">Remove</a>
                 </div>
               </div>
 

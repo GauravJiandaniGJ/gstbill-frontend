@@ -7,10 +7,10 @@
           <router-link :to="{ name: 'DebitBills' }"> Debit Bills</router-link>
         </li>
         <li>
-          <router-link :to="{ name: '' }"> GST Bills </router-link>
+          <router-link :to="{ name: 'GstBills' }"> GST Bills </router-link>
         </li>
         <li>
-          <router-link :to="{ name: '' }"> Statement </router-link>
+          <router-link :to="{ name: 'Statement' }"> Statement </router-link>
         </li>
       </ul>
     </aside>

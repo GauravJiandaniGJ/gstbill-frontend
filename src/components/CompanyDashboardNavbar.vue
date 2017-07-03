@@ -3,7 +3,7 @@
   <nav class="nav has-shadow">
     <div class="nav-left">
       <a class="nav-item  is-tab is-hidden-mobile "></a>
-      <a class="nav-item  is-tab is-hidden-mobile ">Home</a>
+      <a class="nav-item  is-tab is-hidden-mobile" href="http://localhost:8080/#/home"> Home</a>
       <a class="nav-item  is-tab is-hidden-mobile "></a>
       <a class="nav-item  is-tab is-hidden-mobile is-active ">Company Heading Name</a>
     </div>
@@ -27,10 +27,10 @@
       </a>
 
       <a class="nav-item is-tab">
-        <select name="navbar-dropdown" class="navbar-dropdown">
+        <select name="navbar-dropdown" v-model="temp" class="navbar-dropdown">
           <option class="option" value=null>Select</option>
-          <option class="option" value="clients" v-if="clientListModal = false">Clients</option>
-          <option class="option" value="client_address">Client Address</option>
+          <option class="option" value="clients">Clients</option>
+          <option class="option" value="client_address" >Client Address</option>
           <option class="option" value="logout">Add new</option>
         </select>
       </a>
@@ -39,9 +39,9 @@
   <CompanyProfileModal v-if="companyProfileModal" @close="companyProfileModal = false"></CompanyProfileModal>
   <AddBankModal v-if="addBankModal" @close="addBankModal = false"></AddBankModal>
   <BanksListModal v-if="bankListModal" @close="bankListModal = false"></BanksListModal>
-  <AddClientModal v-if="addClientModal" @close="addClientModal = false"></AddClientModal>
-  <ClientListModal v-if="clientListModal" @close="clientListModal = false"></ClientListModal>
-  <ClientAddressModal v-if="clientAddressModal" @close="clientAddressModal = false"></ClientAddressModal>
+  <AddClientModal v-if="temp=='logout' && addClientModal" @close="temp=''"></AddClientModal>
+  <ClientListModal v-if="temp=='clients' && clientListModal" @close="temp=''"></ClientListModal>
+  <ClientAddressModal v-if="temp=='client_address' && clientAddressModal" @close="temp=''"></ClientAddressModal>
 </div>
 </template>
 <script>
@@ -65,9 +65,10 @@ export default {
     companyProfileModal: false,
     addBankModal: false,
     bankListModal: false,
-    addClientModal: false,
-    clientListModal: false,
-    clientAddressModal: false
+    addClientModal: true,
+    clientListModal: true,
+    clientAddressModal: true,
+    temp: ''
   })
 }
 </script>
