@@ -16,5 +16,6 @@ export default {
   name: 'sidebar'
 }
 </script>
-<style>
+<style lang="scss">
+
 </style>

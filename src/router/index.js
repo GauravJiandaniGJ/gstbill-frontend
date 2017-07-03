@@ -9,6 +9,9 @@ import VeeValidate from 'vee-validate'
 import Users from '@/components/Users'
 import CompanyDashboard from '@/components/CompanyDashboard'
 import FinancialYearDashboard from '@/components/FinancialYearDashboard'
+import FinancialMonthDashboard from '@/components/FinancialMonthDashboard'
+import DebitBills from '@/components/DebitBills'
+import FullListDebitBill from '@/components/FullListDebitBill'
 
 Vue.use(Router)
 Vue.use(VeeValidate)
@@ -50,6 +53,25 @@ export default new Router({
       path: '/financial-year',
       name: 'FinancialYearDashboard',
       component: FinancialYearDashboard
+    },
+    {
+      path: '/financial-month',
+      name: 'FinancialMonthDashboard',
+      component: FinancialMonthDashboard,
+      children: [
+        {
+          path: '/', // parent's first child has path as root
+          name: 'DebitBills',
+          component: DebitBills,
+          children: [
+            {
+              path: '/', // parent's first child has path as root
+              name: 'FullListDebitBill',
+              component: FullListDebitBill
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/details',

@@ -38,7 +38,7 @@
                   </p>
                 </div>
                 <footer class="card-footer">
-                  <router-link :to="{ name: ''}" class="card-footer-item">View</router-link>
+                  <router-link :to="{ name: 'FinancialMonthDashboard'}" class="card-footer-item">View</router-link>
                 </footer>
               </div>
             </div>
