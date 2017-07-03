@@ -51,7 +51,7 @@ export default new Router({
       ]
     },
     {
-      path: '/company-dashboard',
+      path: '/company-dashboard/:cid',
       name: 'CompanyDashboard',
       component: CompanyDashboard
     },

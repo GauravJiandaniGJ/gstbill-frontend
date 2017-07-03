@@ -7,16 +7,23 @@
         <span class="text title is-5">Shortcut Name -</span>
         <span class="text title is-5">Service Code -</span>
         <span class="text title is-5">Price</span>
-        <a class="button is-danger is-outlined a-tag login">Delete</a>
-        <a class="button is-success is-outlined a-tag login">Edit</a>
+        <!-- <a class="button is-danger is-outlined a-tag login">Delete</a> -->
+        <!-- <a class="button is-success is-outlined a-tag login">Edit</a> -->
+				<ShortcutModal></ShortcutModal>
       </div>
+
+
     </div>
 
   </div>
 </template>
 <script>
+import ShortcutModal from '@/components/ShortcutModal'
 export default {
   name: 'ShortcutList',
+  components: {
+    ShortcutModal
+  },
   data: () => ({
 
   })

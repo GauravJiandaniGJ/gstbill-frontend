@@ -51,9 +51,6 @@
       <p class="control">
         <StateCombobox></StateCombobox>
       </p>
-      <!-- <div v-show="errors.has('jobType-select')" class="help is-danger">
-    			{{ errors.first('jobType-select') }}
-    		</div> -->
     </div>
 
 
@@ -63,7 +60,7 @@
     <div class="field">
       <label class="label">Username</label>
       <p class="control">
-        <input v-validate="'required|min-vale:8'" name="username" v-model="companys.username" placeholder="Company Username" type="text" class="input">
+        <input v-validate="'required|min:8'" name="username" v-model="companys.username" placeholder="Company Username" type="text" class="input">
       </p>
       <div v-show="errors.has('username')" class="help is-danger">
         {{ errors.first('username') }}
@@ -74,7 +71,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control">
-        <input v-validate="'required|min-vale:8'" name="password" v-model="companys.password" placeholder="Company Password" type="password" class="input">
+        <input v-validate="'required|min:8'" name="password" v-model="companys.password" placeholder="Company Password" type="password" class="input">
       </p>
       <div v-show="errors.has('password')" class="help is-danger">
         {{ errors.first('password') }}
@@ -113,15 +110,22 @@ export default {
     }
   },
   created () {
-    this.$bus.$on('state', (state) => {
-      console.log(state)
-      this.companys.state = state.state
-      console.log(this.companys.state)
+    this.$bus.$on('state', (response) => {
+      this.companys.state = response.state
     })
   },
   methods: {
+    validateCompany () {
+      this.$validator.validateAll()
+      .then(console.log('log'))
+      .catch(() => {
+        console.log('error')
+      })
+    },
+    validate () {
+      return
+    },
     createCompany () {
-      console.log(this.companys.state)
       axios.post(`http://localhost:8000/api/company/createCompany/`, {
         name: this.companys.cname,
         short_name: this.companys.short_name,
@@ -132,13 +136,13 @@ export default {
         password: this.companys.password
       })
         .then(response => {
-          this.companys.cname = ''
-          this.companys.short_name = ''
-          this.companys.address = ''
-          this.companys.gstin = ''
-          this.companys.username = ''
-          this.companys.password = ''
-          this.companys.state = ''
+          // this.companys.cname = ''
+          // this.companys.short_name = ''
+          // this.companys.address = ''
+          // this.companys.gstin = ''
+          // this.companys.username = ''
+          // this.companys.password = ''
+          // this.companys.state = ''
         })
         .catch((e) => {
           console.log(e)

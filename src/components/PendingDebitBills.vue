@@ -8,18 +8,26 @@
         <span class="text title is-6">24/07/2017</span>
         <span class="text title is-6">Shipment of 1 X 20'from Mundra to Haiphong </span>
         <span class="text title is-6">200000</span>
-        <a class="button is-danger is-outlined a-tag login">Del</a>
-        <a class="button is-success is-outlined a-tag login">View</a>
+        <!-- <a class="button is-success is-outlined a-tag login">View</a> -->
+				<UniqueModal :key="1" :sendData="sendData"></UniqueModal>
       </div>
     </div>
 
   </div>
 </template>
 <script>
+import UniqueModal from '@/components/UniqueModal'
 export default {
   name: 'PendingDebitBills',
+  components: {
+    UniqueModal
+  },
   data: () => ({
-
+    sendData: {
+      name: 'sasdasd',
+      age: 22,
+      details: 'sadads'
+    }
   })
 }
 </script>

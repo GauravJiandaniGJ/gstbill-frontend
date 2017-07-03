@@ -60,7 +60,10 @@ export default {
   },
   data: () => ({
 
-  })
+  }),
+  created () {
+    // console.log(this.$route.params.cid)
+  }
 }
 </script>
 <style lang="scss">

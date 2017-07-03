@@ -21,7 +21,8 @@
             </div>
           </div>
           <footer class="card-footer">
-            <router-link :to="{ name: 'Details'}" class="card-footer-item">Enter</router-link>
+            <!-- {{single.id}} -->
+            <router-link :to="{ name: 'CompanyDashboard', params: { cid: single.id }}" class="card-footer-item">Enter</router-link>
           </footer>
         </div>
       </div>
@@ -65,6 +66,7 @@ export default {
       .then(response => {
         // JSON responses are automatically parsed.
         this.data = response.data
+        console.log(response.data)
       })
       .catch(e => {
         this.errors.push(e)

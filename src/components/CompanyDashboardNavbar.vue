@@ -29,7 +29,7 @@
       <a class="nav-item is-tab">
         <select name="navbar-dropdown" class="navbar-dropdown">
           <option class="option" value=null>Select</option>
-          <option class="option" value="clients">Clients</option>
+          <option class="option" value="clients" v-if="clientListModal = false">Clients</option>
           <option class="option" value="client_address">Client Address</option>
           <option class="option" value="logout">Add new</option>
         </select>
