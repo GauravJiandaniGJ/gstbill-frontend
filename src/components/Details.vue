@@ -1,6 +1,6 @@
 <template>
 <div class="Details">
-  <div class="details box">
+  <div class="details box" id="mainpage">
 
     <!-- Header -->
     <div class="job-header job-section">
@@ -20,93 +20,96 @@
 
     <!-- Job Description -->
     <div class="columns is-multiline">
+
       <div class="column">
-        <div class="field">
-          <label class="label">Invoice Number</label>
-          <p class="control">
-            <input v-validate="'required'" :disabled="validated == 1 ? true : false" name="invno" placeholder="Invoice Number" type="text" class="input">
-          </p>
-          <div v-show="errors.has('invno')" class="help is-danger">
-            {{ errors.first('invno') }}
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title"> Bill Details </p>
+            <div class="header-action is-pulled-right edit-btn">
+            </div>
+          </header>
+
+          <footer class="stripe-footer">
+            <div class="columns">
+              <div class="column">
+                <br>
+                <label class="label">Invoice Number</label>
+                <p class="control">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="invno" placeholder="Invoice Number" type="text" class="input">
+                </p>
+
+              </div>
+              <div class="column">
+                <br>
+                <label class="label">Invoice Date</label>
+                <p class="control">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="invdate" placeholder="Invoice Number" type="text" class="input">
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="columns">
+              <div class="column">
+                <br>
+                <label class="label">GST Number</label>
+                <p class="control">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="gstin" placeholder="Invoice Number" type="text" class="input">
+                </p>
+
+              </div>
+              <div class="column">
+                <br>
+                <label class="label">State</label>
+                <p class="control">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="state" placeholder="Invoice Number" type="text" class="input">
+                </p>
+
+              </div>
+
+            </div>
+
+          </footer>
+
+          <div>
           </div>
+        </div>
+
+
+        <div class="column" id="editinv">
+          <EditInvoiceDetails></EditInvoiceDetails>
         </div>
       </div>
 
-      <div class="column">
-        <div class="field">
-          <label class="label">Invoice Date</label>
-          <p class="control">
-            <input v-validate="'required'" :disabled="validated == 1 ? true : false" name="inv_date" placeholder="Invoice Date" type="text" class="input">
-          </p>
-          <div v-show="errors.has('inv_date')" class="help is-danger">
-            {{ errors.first('inv_date') }}
-          </div>
-        </div>
-      </div>
+
     </div>
 
-    <div class="columns is-multiline">
-      <div class="column">
-        <div class="field">
-          <label class="label">GST Number</label>
-          <p class="control">
-            <input v-validate="'required'" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
-          </p>
-          <div v-show="errors.has('gstin')" class="help is-danger">
-            {{ errors.first('gstin') }}
-          </div>
-        </div>
-      </div>
 
-      <div class="column">
-        <div class="field">
-          <label class="label">State</label>
-          <p class="control">
-            <StateCombobox></StateCombobox>
-          </p>
-          <div v-show="errors.has('state')" class="help is-danger">
-            {{ errors.first('state') }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="columns is-multiline">
-      <div class="column" id="edit">
-        <div class="field">
-          <a class="button is-info">Edit</a>
-        </div>
-      </div>
-    </div>
     <hr>
     <!-- Eligibility Criteria -->
 
     <div class="hiring-process job-section">
       <b class="section-header">Details of Reciever | Billed to:
       </b>
-
+<div class="box">
       <div class="columns is-multiline">
         <div class="column">
           <div class="field">
             <label class="label">Client Name</label>
-            <ClientNameComboBox></ClientNameComboBox>
-            <div v-show="errors.has('gstin')" class="help is-danger">
-              {{ errors.first('gstin') }}
-            </div>
+            <p class="control">
+              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
+            </p>
           </div>
         </div>
 
         <div class="column">
           <div class="field">
             <label class="label">Client Address</label>
-            <p class="control">
-              <StateCombobox></StateCombobox>
-            </p>
-            <div v-show="errors.has('state')" class="help is-danger">
-              {{ errors.first('state') }}
+              <p class="control">
+                <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="caddress" placeholder="Client Address" type="text" class="input">
+              </p>
             </div>
-          </div>
         </div>
       </div>
 
@@ -115,7 +118,7 @@
           <div class="field">
             <label class="label">GST Number</label>
             <p class="control">
-              <input v-validate="'required'" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
+              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
             </p>
             <div v-show="errors.has('gstin')" class="help is-danger">
               {{ errors.first('gstin') }}
@@ -127,11 +130,8 @@
           <div class="field">
             <label class="label">State</label>
             <p class="control">
-              <StateCombobox></StateCombobox>
+              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
             </p>
-            <div v-show="errors.has('state')" class="help is-danger">
-              {{ errors.first('state') }}
-            </div>
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@
           <div class="field">
             <label class="label">Description</label>
             <p class="control">
-              <input v-validate="'required'" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
+              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
             </p>
             <div v-show="errors.has('description')" class="help is-danger">
               {{ errors.first('description') }}
@@ -150,12 +150,12 @@
         </div>
       </div>
 
+    </div>
+
 
       <div class="columns is-multiline">
         <div class="column">
-          <div class="field">
-            <a class="button is-info">Edit</a>
-          </div>
+          <EditClientDetails></EditClientDetails>
         </div>
       </div>
 
@@ -194,60 +194,28 @@
               <label class="label">Total</label>
             </div>
           </div>
+
+          <div class="column">
+            <div class="field">
+              <label class="label">Action</label>
+            </div>
+          </div>
+
+
         </div>
         <hr>
 
         <DetailsPanel></DetailsPanel>
 
       </div>
+<hr>
+      <div class="tile is-ancestor" id="tile">
+        <div class="tile is-vertical is-8" id="bank">
 
-      <div class="tile is-ancestor">
-        <div class="tile is-vertical is-8">
-          <div class="tile">
-            <div class="tile is-parent is-vertical">
-              <article class="tile is-child ">
-<br>
-                <div class="field">
-                  <label class="label">Bank Account</label>
-                  <p class="control">
-                    <BankAccountsCombobox></BankAccountsCombobox>
-                  </p>
-                  <div v-show="errors.has('baccount')" class="help is-danger">
-                    {{ errors.first('baccount') }}
-                  </div>
-                </div>
-
-                <div class="field">
-                  <label class="label">Beneficiary Name</label>
-                  <p class="control">
-                    <input v-validate="'required'" name="bname" placeholder="Beneficiary Name" type="text" class="input">
-                  </p>
-                  <div v-show="errors.has('bname')" class="help is-danger">
-                    {{ errors.first('bname') }}
-                  </div>
-                </div>
-
-                <div class="field">
-                  <label class="label">Branch IFSC</label>
-                  <p class="control">
-                    <input v-validate="'required'" name="bifsc" placeholder="Branch IFSC" type="text" class="input">
-                  </p>
-                  <div v-show="errors.has('bifsc')" class="help is-danger">
-                    {{ errors.first('bifsc') }}
-                  </div>
-                </div>
-                <br>
-                <div class="field">
-                  <a class="button is-info">Save</a>
-                </div>
-
-              </article>
-            </div>
-
-          </div>
+          <BankAccountTab></BankAccountTab>
 
         </div>
-        <div class="tile is-parent">
+        <div class="tile is-parent box">
           <article class="tile is-child notification">
             <div class="content">
 
@@ -311,6 +279,10 @@ import StateCombobox from '@/components/StateCombobox'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
 import DetailsPanel from '@/components/DetailsPanel'
 import BankAccountsCombobox from '@/components/BankAccountsCombobox'
+import EditInvoiceDetails from '@/components/EditInvoiceDetails'
+import ClientAddressCombobox from '@/components/ClientAddressCombobox'
+import EditClientDetails from '@/components/EditClientDetails'
+import BankAccountTab from '@/components/BankAccountTab'
 export default {
   name: 'placement-detail-page',
   data () {
@@ -326,7 +298,11 @@ export default {
     StateCombobox,
     ClientNameComboBox,
     DetailsPanel,
-    BankAccountsCombobox
+    BankAccountsCombobox,
+    EditInvoiceDetails,
+    ClientAddressCombobox,
+    EditClientDetails,
+    BankAccountTab
   }
 }
 </script>
@@ -334,7 +310,7 @@ export default {
 <style lang="scss">
 html {
     min-height: 100%;
-    background: #fafafa;
+    background: #DCDCDC;
 }
 .main-page {
     margin-top: 1rem;
@@ -357,6 +333,11 @@ html {
         .tag {
             margin-left: 1rem;
         }
+    }
+
+    .control {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
 
     .re-open {
@@ -402,6 +383,7 @@ html {
         }
     }
 
+
     .job-description {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
@@ -427,11 +409,36 @@ html {
 
 }
 
+#editinv{
+  padding-top: 1.5rem;
+  padding-bottom: 0.2rem;
+}
+
 #edit {
+    padding-top: 1rem;
     padding-bottom: 0;
 }
 
 #content {
     padding-bottom: 0;
+}
+
+#disabled {
+  background-color: white;
+}
+
+#mainpage{
+  background-color: #fafafa
+}
+
+#tile {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+#bank {
+  padding-right: 1rem;
 }
 </style>
