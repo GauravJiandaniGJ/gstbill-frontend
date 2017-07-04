@@ -7,12 +7,11 @@
         <p class="modal-card-title">Client Details</p>
       </header>
       <section class="modal-card-body">
-        <div class="columns">
-          <div class="column">
-            <span class="text title is-4">Dhaval Agri Exports</span>&nbsp&nbsp&nbsp
+        <div class="columns" v-for="client in company.client">
+          <div class="column" >
+            <span class="text title is-4">{{client.name}}</span>&nbsp&nbsp
 
-
-            <EditClientName :key="1" :sendData="sendData"></EditClientName>
+            <EditClientName :key="1" :clientData="client"></EditClientName>
 
 
           </div>
@@ -40,7 +39,12 @@ export default {
       name: 'gaurav',
       age: 22
     }
-  })
+  }),
+  props: {
+    company: {
+      required: true
+    }
+  }
   // created () {
   //   axios.get(`http://localhost:8000/api/company/dashboard`)
   //     .then(response => {

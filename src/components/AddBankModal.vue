@@ -39,12 +39,13 @@
                 </div>
               </div>
             </div>
-
+<pre v-model="this.banks.cid=company.id" hidden></pre>
           </div>
 
         </section>
         <footer class="modal-card-foot">
-          <a class="button is-success">Create</a>
+          <a class="button is-success" v-if="!hidden" @click="addBank(banks.cid)">Create</a>
+          <a class="button is-info" v-if="hidden" @click="$emit('close')">Created !</a>
           <a class="button" v-on:click="$emit('close')">Close</a>
         </footer>
       </div>
@@ -53,15 +54,41 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'AddBankModal',
   data () {
     return {
       banks: {
-        account_number: '',
+        account_number: null,
         beneficiary_name: '',
-        ifsc_code: ''
-      }
+        ifsc_code: '',
+        cid: null
+      },
+      hidden: false
+    }
+  },
+  props: {
+    company: {
+      required: true
+    }
+  },
+  methods: {
+    addBank (id) {
+      console.log(id)
+      axios.post(`http://localhost:8000/api/company/addBank/` + id, {
+        account_no: this.banks.account_number,
+        beneficiary_name: this.banks.beneficiary_name,
+        branch_ifsc: this.banks.ifsc_code
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.hidden = true
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     }
   }
 }

@@ -27,7 +27,7 @@
         {{ errors.first('gstin') }}
       </div>
     </div>
-
+<pre>{{ClientId}}</pre>
 
     <div class="field">
       <label class="label">State</label>
@@ -49,6 +49,11 @@ export default {
   }),
   components: {
     StateCombobox
+  },
+  props: {
+    ClientId: {
+      required: true
+    }
   }
 }
 </script>

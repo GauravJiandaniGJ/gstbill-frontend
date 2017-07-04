@@ -32,16 +32,22 @@ export default {
     usermodal: false
   }),
   created () {
-    axios.get(`http://localhost:8000/api/user/index`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.data = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    this.get()
+    this.$bus.$on('user-added', () => {
+      this.usermodal = false
+      this.get()
+    })
   },
   methods: {
+    get () {
+      axios.get(`http://localhost:8000/api/user/index`)
+        .then(response => {
+          this.data = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
     openModal () {
       this.usermodal = true
     },
@@ -51,6 +57,7 @@ export default {
       axios.delete(url)
         .then(response => {
         })
+      this.get()
     }}
 }
 </script>

@@ -14,13 +14,13 @@
             <div class="field">
               <label class="label">Client Name</label>
               <p class="control">
-                <ClientNameComboBox></ClientNameComboBox>
+                <ClientNameComboBox :company="company"></ClientNameComboBox>
               </p>
             </div>
 
           </div>
 
-<ClientAddressTab id="caddress"></ClientAddressTab>
+<ClientAddressTab :clientId="ClientId"></ClientAddressTab>
         </div>
 
       </section>
@@ -44,13 +44,17 @@ export default {
     ClientAddressTab
   },
   data: () => ({
-    ClientId: ''
+    ClientId: Object
   }),
   created () {
     this.$bus.$on('ClientName', (ClientName) => {
-      this.ClientId = ClientName.id
-      console.log(this.ClientId)
+      console.log(ClientName)
     })
+  },
+  props: {
+    company: {
+      required: true
+    }
   }
 }
 </script>

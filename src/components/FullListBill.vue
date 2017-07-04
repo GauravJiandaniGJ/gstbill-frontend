@@ -1,14 +1,20 @@
 <template>
 <div class="box FullListFill">
 
-  <div class="companywise-body">
-    <div class="one-company">
+	<div class="companywise-body">
+    <div class="one-company" v-if="!nodbtbill" v-for="gbill in gbills">
       <!-- v-for="company in companies" -->
       <input type="hidden">
-			<span class="text title is-6">123</span>
-			<span class="text title is-6">24/07/2017</span>
-			<span class="text title is-6">Shipment of 1 X 20' GST Bill from Mundra to Haiphong Pending</span>
-			<span class="text title is-6">200000</span>
+			<span class="text title is-6">{{gbill.bill_no}}</span>&nbsp
+			<span class="text title is-6">{{gbill.bill_date}}</span>&nbsp
+			<span class="text title is-6">{{gbill.client_address.client.name}}</span>
+			<span class="text title is-6">{{gbill.description}}</span>
+			<span class="text title is-6">{{gbill.final_amount}}</span>
+			<a class="button is-danger is-outlined a-tag login">Del</a>
+			<a class="button is-success is-outlined a-tag login">View</a>
+		</div>
+		<div class="box" v-if="nodbtbill">
+			<p class="title">No Bill</p>
 		</div>
   </div>
 
@@ -16,11 +22,31 @@
 </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'FullListBill',
   data: () => ({
-
-  })
+    cid: null,
+    yid: null,
+    mid: null,
+    gbills: [],
+    nodbtbill: false
+  }),
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billList`)
+      .then(response => {
+        this.gbills = response.data
+        if (this.gbills === 'No Bill') {
+          this.nodbtbill = true
+        }
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  }
 }
 </script>
 <style lang="scss">

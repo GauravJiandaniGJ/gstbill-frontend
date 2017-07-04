@@ -17,8 +17,10 @@
     <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
     <a class="button" data-clear><i class="fa fa-close"></i></a>
   </datepicker> -->
+      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }"
+             name="start_date"></datepicker> -->
 
-  <!-- v-model="billDate" -->
+      <!-- v-model="billDate" -->
 
     </p>
     <div v-show="errors.has('date')" class="help is-danger">
@@ -68,11 +70,13 @@
 </div>
 </template>
 <script>
+// import Datepicker from 'vue-bulma-datepicker'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
 import axios from 'axios'
 export default {
   name: 'NewDebitEntry',
   components: {
+    // Datepicker,
     ClientNameComboBox
   },
   data () {
@@ -90,7 +94,6 @@ export default {
     this.$bus.$on('ClientName', (clientName) => {
       this.debit.client_id = clientName
     })
-    console.log(this.debit.client_id)
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid

@@ -64,9 +64,7 @@ export default {
   created () {
     axios.get(`http://localhost:8000/api/company/dashboard`)
       .then(response => {
-        // JSON responses are automatically parsed.
         this.data = response.data
-        console.log(response.data)
       })
       .catch(e => {
         this.errors.push(e)

@@ -8,8 +8,6 @@
             <li><router-link :to="{ name: 'FullListBill' }">Full List</router-link></li>
             <li><router-link :to="{ name: 'NewGstEntry' }">New Entry</router-link></li>
             <li><router-link :to="{ name: 'PendingGstBills' }">Pending List</router-link></li>
-            <li><router-link :to="{ name: 'ShortcutEntry' }">New Shortcut</router-link></li>
-            <li><router-link :to="{ name: 'ShortcutList' }">Shortcuts</router-link></li>
           </ul>
         </div>
 

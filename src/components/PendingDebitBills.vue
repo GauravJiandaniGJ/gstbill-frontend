@@ -30,11 +30,6 @@ export default {
     UniqueModal
   },
   data: () => ({
-    sendData: {
-      name: 'sasdasd',
-      age: 22,
-      details: 'sadads'
-    },
     cid: null,
     yid: null,
     mid: null,

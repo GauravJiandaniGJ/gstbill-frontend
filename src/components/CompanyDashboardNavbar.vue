@@ -5,7 +5,7 @@
       <a class="nav-item  is-tab is-hidden-mobile "></a>
       <a class="nav-item  is-tab is-hidden-mobile" href="http://localhost:8080/#/home"> Home</a>
       <a class="nav-item  is-tab is-hidden-mobile "></a>
-      <a class="nav-item  is-tab is-hidden-mobile is-active ">Company Heading Name</a>
+      <a class="nav-item  is-tab is-hidden-mobile is-active ">{{this.company_name}}</a>
     </div>
     <span class="nav-toggle">
             <span></span>
@@ -36,12 +36,12 @@
       </a>
     </div>
   </nav>
-  <CompanyProfileModal v-if="companyProfileModal" @close="companyProfileModal = false"></CompanyProfileModal>
-  <AddBankModal v-if="addBankModal" @close="addBankModal = false"></AddBankModal>
-  <BanksListModal v-if="bankListModal" @close="bankListModal = false"></BanksListModal>
-  <AddClientModal v-if="temp=='logout' && addClientModal" @close="temp=''"></AddClientModal>
-  <ClientListModal v-if="temp=='clients' && clientListModal" @close="temp=''"></ClientListModal>
-  <ClientAddressModal v-if="temp=='client_address' && clientAddressModal" @close="temp=''"></ClientAddressModal>
+  <CompanyProfileModal v-if="companyProfileModal" :company="company" @close="companyProfileModal = false"></CompanyProfileModal>
+  <AddBankModal v-if="addBankModal" :company="company" @close="addBankModal = false"></AddBankModal>
+  <BanksListModal v-if="bankListModal" :company="company" @close="bankListModal = false"></BanksListModal>
+  <AddClientModal v-if="temp=='logout' && addClientModal" :company="company" @close="temp=''"></AddClientModal>
+  <ClientListModal v-if="temp=='clients' && clientListModal" :company="company" @close="temp=''"></ClientListModal>
+  <ClientAddressModal v-if="temp=='client_address' && clientAddressModal" :company="company" @close="temp=''"></ClientAddressModal>
 </div>
 </template>
 <script>
@@ -51,6 +51,7 @@ import BanksListModal from '@/components/BanksListModal'
 import AddClientModal from '@/components/AddClientModal'
 import ClientListModal from '@/components/ClientListModal'
 import ClientAddressModal from '@/components/ClientAddressModal'
+import axios from 'axios'
 export default {
   name: 'CompanyDashboardNavbar',
   components: {
@@ -68,8 +69,33 @@ export default {
     addClientModal: true,
     clientListModal: true,
     clientAddressModal: true,
-    temp: ''
-  })
+    temp: '',
+    company_name: '',
+    company: Object
+  }),
+  methods: {
+    getDetailsAboutCompany (id) {
+      axios.get(`http://localhost:8000/api/company/show/` + id)
+        .then(response => {
+          this.company_name = response.data.name
+          this.company = response.data
+          console.log(this.company)
+        })
+        .catch(e => {
+
+        })
+    },
+    localStorage () {
+      if (window.localStorage.getItem('cid') === null) {
+        window.localStorage.setItem('cid', this.cid)
+      }
+    }
+  },
+  created () {
+    this.cid = this.$route.params.cid
+    this.getDetailsAboutCompany(this.cid)
+    this.localStorage()
+  }
 }
 </script>
 <style lang="scss">

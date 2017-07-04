@@ -9,9 +9,9 @@
       <div class="columns is-multiline">
         <div class="column">
           <div class="field">
-            <label class="label">Client Name</label>
+            <label class="label" >Client Name</label>
             <p class="control">
-              <input v-validate="'required'" name="cname" placeholder="Name" type="text" class="input">
+              <input v-validate="'required'" name="cname" v-model="cname=clientData.name" placeholder="Name" type="text" class="input">
             </p>
             <div v-show="errors.has('description')" class="help is-danger">
               {{ errors.first('description') }}
@@ -19,9 +19,8 @@
           </div>
         </div>
       </div>
-
-    <a class="button is-success is-outlined a-tag login">Edit</a>&nbsp&nbsp&nbsp
-    <a class="button is-danger is-outlined a-tag login">Remove</a>
+    <a class="button is-success is-outlined a-tag login" @click="editClientName(clientData.id)">Update</a>&nbsp&nbsp&nbsp
+    <a class="button is-danger is-outlined a-tag login" @click="removeClient(clientData.id)">Remove</a>
 
 
     </div>
@@ -29,20 +28,44 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'EditClientName',
   data () {
     return {
-      hidden: true
+      hidden: true,
+      cname: '',
+      client_id: null
     }
   },
   props: {
-    sendData: {
+    clientData: {
       required: true
     }
   },
   created () {
-    console.log(this.sendData)
+  },
+  methods: {
+    editClientName (id) {
+      axios.patch(`http://localhost:8000/api/client/updateName/` + id, {
+        name: this.cname
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.hidden = true
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    removeClient (id) {
+      let url = `http://localhost:8000/api/client/destroy/` + id
+      axios.delete(url)
+        .then(response => {
+        })
+      this.hidden = true
+    }
   }
 }
 </script>

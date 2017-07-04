@@ -1,34 +1,51 @@
 <template>
   <div class="box PendingGstBills">
+
     <div class="companywise-body">
-      <div class="one-company">
+      <div class="one-company" v-if="!nodbtbill" v-for="gbill in gbills">
         <!-- v-for="company in companies" -->
         <input type="hidden">
-        <span class="text title is-6">123</span>
-        <span class="text title is-6">24/07/2017</span>
-        <span class="text title is-6">GST Billing </span>
-        <span class="text title is-6">200000</span>
-        <!-- <a class="button is-success is-outlined a-tag login">View</a> -->
-				<!-- <UniqueModal :key="1" :sendData="sendData"></UniqueModal> -->
-      </div>
+  			<span class="text title is-6">{{gbill.debit_no}}</span>
+  			<span class="text title is-6">{{gbill.debit_date}}</span>
+  			<span class="text title is-6">{{gbill.client_address.client.name}}</span>
+  			<span class="text title is-6">{{gbill.description}}</span>
+  			<span class="text title is-6">{{gbill.final_amount}}</span>
+  			<a class="button is-danger is-outlined a-tag login">Del</a>
+  			<a class="button is-success is-outlined a-tag login">View</a>
+  		</div>
+  		<div class="box" v-if="nodbtbill">
+  			<p class="title">No GST Bill Pending! You are up to date!</p>
+  		</div>
     </div>
 
   </div>
 </template>
 <script>
-// import UniqueModal from '@/components/UniqueModal'
+import axios from 'axios'
 export default {
   name: 'PendingDebitBills',
-  // components: {
-  //   UniqueModal
-  // },
   data: () => ({
-    // sendData: {
-    //   name: 'sasdasd',
-    //   age: 22,
-    //   details: 'sadads'
-    // }
-  })
+    cid: null,
+    yid: null,
+    mid: null,
+    nodbtbill: false,
+    gbills: []
+  }),
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billListPending`)
+      .then(response => {
+        this.gbills = response.data
+        if (this.gbills === 'No Bill') {
+          this.nodbtbill = true
+        }
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  }
 }
 </script>
 <style lang="scss">

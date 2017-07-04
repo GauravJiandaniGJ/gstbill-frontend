@@ -1,13 +1,14 @@
 <template>
 <div class="box NewGstEntry">
 
-    <div class="field">
-      <label class="label">Bill No.</label>
-      <p class="control">
-        <GstBillNoTextBox></GstBillNoTextBox>
-      </p>
+  <div class="field">
+    <label class="label">Bill No.</label>
+    <p class="control">
+      <input v-validate="'required|max:6'" name="billNo" v-model="billNo" placeholder="Bill No" type="text" class="input">
+      <div v-if="hid">{{this.billNo}}</div>
+    </p>
+  </div>
 
-    </div>
 
   <div class="field">
     <label class="label">Bill Date</label>
@@ -23,26 +24,26 @@
   </div>
 
 
-    <div class="field">
-        <label class="label">Client Name</label>
-        <p class="control">
-          <ClientNameComboBox></ClientNameComboBox>
-        </p>
-        <div v-show="errors.has('ClientName-select')" class="help is-danger">
-            {{ errors.first('ClientName-select') }}
-        </div>
+  <div class="field">
+    <label class="label">Client Name</label>
+    <p class="control">
+      <ClientNameComboBox></ClientNameComboBox>
+    </p>
+    <div v-show="errors.has('ClientName-select')" class="help is-danger">
+      {{ errors.first('ClientName-select') }}
     </div>
+  </div>
 
 
-          <div class="field">
-              <label class="label">Client GSTIN</label>
-              <!-- <p class="control">
+  <div class="field">
+    <label class="label">Client GSTIN</label>
+    <!-- <p class="control">
                 <ClientAddressComboBox></ClientAddressComboBox>
               </p>
               <div v-show="errors.has('ClientAddress-select')" class="help is-danger">
                   {{ errors.first('ClientAddress-select') }}
                 </div> -->
-            </div>
+  </div>
 
 
   <div class="field">
@@ -64,29 +65,47 @@
 </div>
 </template>
 <script>
-import GstBillNoTextBox from '@/components/GstBillNoTextBox'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
+import axios from 'axios'
 export default {
   name: 'NewGstEntry',
   components: {
-    GstBillNoTextBox,
     ClientNameComboBox
   },
   data () {
     return {
       gst: {
-        cname: ''
+        billNo: null,
+        billDate: null,
+        description: null,
+        hid: false,
+        client_id: null
       }
     }
+  },
+  created () {
+    this.$bus.$on('ClientName', (clientName) => {
+      this.gst.client_id = clientName.id
+    })
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/latestBillNo`)
+      .then(response => {
+        this.billNo = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
   }
 }
 </script>
 <style lang="scss">
 .NewGstEntry {
 
-  .placement-body {
-      padding: 1rem;
-  }
+    .placement-body {
+        padding: 1rem;
+    }
 }
 
 .field.is-grouped {
@@ -97,5 +116,4 @@ export default {
     margin-left: 45.5%;
     margin-right: 50%;
 }
-
 </style>

@@ -85,10 +85,11 @@ export default {
         role: this.users.role
       })
         .then(response => {
-          this.users.uname = ''
-          this.users.email = ''
-          this.users.password = ''
-          this.users.role = ''
+          // this.users.uname = ''
+          // this.users.email = ''
+          // this.users.password = ''
+          // this.users.role = ''
+          this.$bus.$emit('user-added')
         })
         .catch((e) => {
           console.log(e)

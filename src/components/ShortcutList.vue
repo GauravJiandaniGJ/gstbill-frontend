@@ -1,17 +1,18 @@
 <template>
   <div class="ShortcutList box">
     <div class="companywise-body">
-      <div class="one-company">
+
+      <div class="one-company columns" v-for="shortcut in shortcuts">
         <!-- v-for="company in companies" -->
+
         <input type="hidden">
-        <span class="text title is-5">Shortcut Name -</span>
-        <span class="text title is-5">Service Code -</span>
-        <span class="text title is-5">Price</span>
+        <div class="column"><span class="text title is-5" >{{shortcut.description}}</span></div>
+        <div class="column"><span class="text title is-5" >{{shortcut.service_code}}</span></div>
+        <div class="column"><span class="text title is-5" >{{shortcut.price}}</span></div>
         <!-- <a class="button is-danger is-outlined a-tag login">Delete</a> -->
         <!-- <a class="button is-success is-outlined a-tag login">Edit</a> -->
-				<ShortcutModal></ShortcutModal>
+        <ShortcutModal :key="shortcut.id" :sendData="shortcut"></ShortcutModal>
       </div>
-
 
     </div>
 
@@ -19,14 +20,33 @@
 </template>
 <script>
 import ShortcutModal from '@/components/ShortcutModal'
+import axios from 'axios'
 export default {
   name: 'ShortcutList',
   components: {
     ShortcutModal
   },
   data: () => ({
-
-  })
+    shortcuts: [],
+    sendData: {
+      id: null,
+      description: '',
+      service_code: null,
+      price: null
+    }
+  }),
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    axios.get(`http://localhost:8000/api/shortcut/index`)
+      .then(response => {
+        this.shortcuts = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  }
 }
 </script>
 <style lang="scss">

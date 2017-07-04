@@ -103,34 +103,24 @@ export default new Router({
           ]
         },
         {
-          path: '/gst-bills',
+          path: '/gst-bills/:cid/year/:yid/month/:mid',
           name: 'GstBills',
           component: GstBills,
           children: [
             {
-              path: '/gst-full-list',
+              path: '/gst-full-list/:cid/year/:yid/month/:mid',
               name: 'FullListBill',
               component: FullListBill
             },
             {
-              path: '/new-gst-entry',
+              path: '/new-gst-entry/:cid/year/:yid/month/:mid',
               name: 'NewGstEntry',
               component: NewGstEntry
             },
             {
-              path: '/pending-gst-bills',
+              path: '/pending-gst-bills/:cid/year/:yid/month/:mid',
               name: 'PendingGstBills',
               component: PendingGstBills
-            },
-            {
-              path: '/shortcut-list',
-              name: 'ShortcutList',
-              component: ShortcutList
-            },
-            {
-              path: '/shortcut-entry',
-              name: 'ShortcutEntry',
-              component: ShortcutEntry
             }
           ]
         },

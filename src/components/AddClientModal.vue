@@ -43,15 +43,18 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <StateCombobox></StateCombobox>
+                <StateCombobox @change="stateChange()"></StateCombobox>
               </p>
             </div>
           </div>
         </div>
 
+        <pre v-model="this.cid=company.id" hidden></pre>
+
       </section>
       <footer class="modal-card-foot">
-        <a class="button is-success">Save</a>
+        <a class="button is-success" v-if="!hidden" @click="addClient()">Save</a>
+        <a class="button is-info" v-if="hidden" @click="$emit('close')">Saved !</a>
         <a class="button" v-on:click="$emit('close')">Close</a>
       </footer>
     </div>
@@ -60,6 +63,7 @@
 </template>
 <script>
 import StateCombobox from '@/components/StateCombobox'
+import axios from 'axios'
 export default {
   name: 'AddClientModal',
   components: {
@@ -72,7 +76,40 @@ export default {
         address: '',
         gstin: '',
         state: ''
-      }
+      },
+      cid: null,
+      hidden: false
+    }
+  },
+  props: {
+    company: {
+      required: true
+    }
+  },
+  created () {
+    this.$bus.$on('state', (response) => {
+      this.clients.state = response.state
+    })
+  },
+  methods: {
+    addClient () {
+      console.log(this.clients.state)
+      console.log('hi')
+      axios.post(`http://localhost:8000/api/client/createClient/` + this.cid, {
+        name: this.clients.cname,
+        address: this.clients.address,
+        state: this.clients.state,
+        gstin: this.clients.gstin
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.hidden = true
+          }
+          // this.$bus.$emit('user-added')
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     }
   }
 }

@@ -6,8 +6,8 @@
     <div class="box placement-page">
 
       <h2 class="title header">Financial Year</h2>
-      <div>
-        <div class="field has-addons title">
+      <div class="main-textbox">
+        <div class="field has-addons">
           <p class="control is-fullwidth">
             <input v-validate="'required'" name="financialYear" v-model="financialYear" class="input input-box" type="text" placeholder="Create New Financial Year" @keyup.enter="createSeason">
           </p>
@@ -126,6 +126,17 @@ export default {
         padding-left: 40px;
         padding-right: 40px;
 
+    }
+
+    .main-textbox {
+      display: flex;
+      justify-content: flex-start;
+
+    }
+
+    #email {
+      margin: auto;
+      max-width: 50rem;
     }
 
 }

@@ -10,24 +10,19 @@
           <div class="">
             <div>
 
-              <div class="companywise-body">
+              <div class="companywise-body" v-for="bank in banks">
                 <div class="one-company">
                   <!-- v-for="company in companies" -->
                   <input type="hidden">
-                  <span class="text title is-4">Bank Detail</span>&nbsp&nbsp&nbsp
-                  <a class="button is-danger is-outlined a-tag login">Remove</a>
+                  <span class="text title is-4">{{bank.account_no}}</span>&nbsp&nbsp&nbsp
+                  <span class="text title is-4">{{bank.branch_ifsc}}</span>&nbsp&nbsp&nbsp
+                  <span class="text title is-4">{{bank.beneficiary_name}}</span>&nbsp&nbsp&nbsp
+                  <a class="button is-danger is-outlined a-tag login" @click="removeBank(bank.id)">Remove</a>
                 </div>
-                <hr>
-                <div class="one-company">
-                  <!-- v-for="company in companies" -->
-                  <input type="hidden">
-                  <span class="text title is-4">Bank Detail</span>&nbsp&nbsp&nbsp
-                  <a class="button is-danger is-outlined a-tag login">Remove</a>
-                </div>
+<hr>
               </div>
 
             </div>
-            <hr>
           </div>
 
         </section>
@@ -41,12 +36,45 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'BanksListModal',
   data: () => ({
-
-  })
+    banks: [],
+    cid: null
+  }),
+  props: {
+    company: {
+      required: true
+    }
+  },
+  created () {
+    this.cid = window.localStorage.getItem('cid')
+    this.getBankList(this.cid)
+  },
+  methods: {
+    getBankList (cid) {
+      let url = `http://localhost:8000/api/company/listOfBanks/` + cid
+      axios.get(url)
+        .then(response => {
+          this.banks = response.data
+          console.log(this.banks)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    removeBank (id) {
+      let url = `http://localhost:8000/api/company/bank/destroy/` + id
+      axios.delete(url)
+        .then(response => {
+          if (response.status === 204 || response.status === 200) {
+            this.getBankList(this.cid)
+          }
+        })
+    }
+  }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 </style>
