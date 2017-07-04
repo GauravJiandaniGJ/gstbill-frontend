@@ -2,12 +2,13 @@
 <div class="box NewDebitEntry">
 
   <div class="field">
-      <label class="label">Bill No.</label>
-      <p class="control">
-        <BillNoTextBox></BillNoTextBox>
-      </p>
+    <label class="label">Bill No.</label>
+    <p class="control">
+      <input v-validate="'required|max:6'" name="BillNo" v-model="billNo" placeholder="Bill No" type="text" class="input">
+      <div v-if="hid">{{this.billNo}}</div>
+    </p>
 
-    </div>
+  </div>
 
   <div class="field">
     <label class="label">Bill Date</label>
@@ -16,6 +17,9 @@
     <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
     <a class="button" data-clear><i class="fa fa-close"></i></a>
   </datepicker> -->
+
+  <!-- v-model="billDate" -->
+
     </p>
     <div v-show="errors.has('date')" class="help is-danger">
       The Bill Date is a required field.
@@ -23,26 +27,26 @@
   </div>
 
 
-    <div class="field">
-        <label class="label">Client Name</label>
-        <p class="control">
-          <ClientNameComboBox></ClientNameComboBox>
-        </p>
-        <div v-show="errors.has('ClientName-select')" class="help is-danger">
-            {{ errors.first('ClientName-select') }}
-        </div>
+  <div class="field">
+    <label class="label">Client Name</label>
+    <p class="control">
+      <ClientNameComboBox></ClientNameComboBox>
+    </p>
+    <div v-show="errors.has('ClientName-select')" class="help is-danger">
+      {{ errors.first('ClientName-select') }}
     </div>
+  </div>
 
 
-          <div class="field">
-              <label class="label">Client GSTIN</label>
-              <!-- <p class="control">
+  <div class="field">
+    <label class="label">Client GSTIN</label>
+    <!-- <p class="control">
                 <ClientAddressComboBox></ClientAddressComboBox>
               </p>
               <div v-show="errors.has('ClientAddress-select')" class="help is-danger">
                   {{ errors.first('ClientAddress-select') }}
                 </div> -->
-            </div>
+  </div>
 
 
   <div class="field">
@@ -64,20 +68,40 @@
 </div>
 </template>
 <script>
-import BillNoTextBox from '@/components/BillNoTextBox'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
+import axios from 'axios'
 export default {
   name: 'NewDebitEntry',
   components: {
-    BillNoTextBox,
     ClientNameComboBox
   },
   data () {
     return {
       debit: {
-        cname: ''
+        billNo: null,
+        billDate: null,
+        description: null,
+        hid: false,
+        client_id: null
       }
     }
+  },
+  created () {
+    this.$bus.$on('ClientName', (clientName) => {
+      this.debit.client_id = clientName
+    })
+    console.log(this.debit.client_id)
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/latestDebitNo`)
+      .then(response => {
+        this.billNo = response.data
+        console.log(this.billNo)
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
   }
 }
 </script>
@@ -98,5 +122,4 @@ export default {
     margin-left: 45.5%;
     margin-right: 50%;
 }
-
 </style>

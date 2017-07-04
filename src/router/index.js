@@ -61,12 +61,12 @@ export default new Router({
       component: CompanyDashboard
     },
     {
-      path: '/financial-year',
+      path: '/financial-year/:cid/year/:yid',
       name: 'FinancialYearDashboard',
       component: FinancialYearDashboard
     },
     {
-      path: '/financial-month',
+      path: '/financial-month/:cid/year/:yid/month/:mid',
       name: 'FinancialMonthDashboard',
       component: FinancialMonthDashboard,
       children: [
@@ -81,22 +81,22 @@ export default new Router({
               component: FullListDebitBill
             },
             {
-              path: '/pending',
+              path: '/:cid/year/:yid/month/:mid/pending',
               name: 'PendingDebitBills',
               component: PendingDebitBills
             },
             {
-              path: '/new-debit-entry',
+              path: '/:cid/year/:yid/month/:mid/new-debit-entry',
               name: 'NewDebitEntry',
               component: NewDebitEntry
             },
             {
-              path: '/shortcut-list',
+              path: '/:cid/year/:yid/month/:mid/shortcut-list',
               name: 'ShortcutList',
               component: ShortcutList
             },
             {
-              path: '/shortcut-entry',
+              path: '/:cid/year/:yid/month/:mid/shortcut-entry',
               name: 'ShortcutEntry',
               component: ShortcutEntry
             }

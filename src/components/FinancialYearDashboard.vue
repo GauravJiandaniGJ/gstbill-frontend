@@ -9,10 +9,10 @@
         <div>
           <div class="field has-addons title">
             <p class="control is-fullwidth">
-              <input v-validate="'required'" name="financialYear" class="input input-box" type="text" placeholder="Create New Financial Month" @keyup.enter="createSeason">
+              <input v-validate="'required'" name="financialYear" v-model="title" class="input input-box" type="text" placeholder="Create New Financial Month" @keyup.enter="createSeason">
             </p>
             <p class="control">
-              <a class="button is-success"> Create </a>
+              <a class="button is-success" @click="addFinancialMonth()"> Create </a>
             </p>
           </div>
           <!-- <div class="help is-danger" v-show="errors.has('season')">
@@ -30,15 +30,15 @@
         <!-- tabs ends -->
           <div class="columns is-multiline">
 
-            <div class="column is-one-third">
+            <div class="column is-one-third" v-for="month in months">
               <div class="card">
                 <div class="card-header">
                   <p class="card-header-title">
-                    Financial Month 01
+                    {{month.title}}
                   </p>
                 </div>
                 <footer class="card-footer">
-                  <router-link :to="{ name: 'FinancialMonthDashboard'}" class="card-footer-item">View</router-link>
+                  <router-link :to="{ name: 'FinancialMonthDashboard', params: {cid: cid, yid: yid, mid: month.id}}" class="card-footer-item">View</router-link>
                 </footer>
               </div>
             </div>
@@ -53,14 +53,43 @@
 </template>
 <script>
 import CompanyDashboardNavbar from '@/components/CompanyDashboardNavbar'
+import axios from 'axios'
 export default {
   name: 'FinancialYearDashboard',
   components: {
     CompanyDashboardNavbar
   },
   data: () => ({
-
-  })
+    cid: null,
+    yid: null,
+    months: [],
+    title: ''
+  }),
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    axios.get(`http://localhost:8000/api/year/` + this.yid + `/dashboard`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.months = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  },
+  methods: {
+    addFinancialMonth () {
+      axios.post(`http://localhost:8000/api/year/` + this.yid + `/createFinancialMonth/`, {
+        title: this.title
+      })
+        .then(response => {
+          this.title = ''
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }
 }
 </script>
 <style lang="scss">

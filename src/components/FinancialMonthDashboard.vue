@@ -23,8 +23,15 @@ export default {
     BillSidebar
   },
   data: () => ({
-
-  })
+    cid: null,
+    yid: null,
+    mid: null
+  }),
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+  }
 }
 </script>
 <style lang="scss">

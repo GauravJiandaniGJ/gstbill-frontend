@@ -12,10 +12,10 @@
             <div class="field">
               <label class="label">Name</label>
               <p class="control">
-                <input v-validate="'required'" name="uname" v-model="users.email" placeholder="Full Name" type="text" class="input">
+                <input v-validate="'required'" name="uname" v-model="users.uname" placeholder="Full Name" type="text" class="input">
               </p>
               <div v-show="errors.has('uname')" class="help is-danger">
-                {{ errors.first('uname') }}
+                Name is field is required
               </div>
             </div>
 
@@ -25,17 +25,17 @@
                 <input v-validate="'required'" name="email" v-model="users.email" placeholder="Email" type="text" class="input">
               </p>
               <div v-show="errors.has('email')" class="help is-danger">
-                {{ errors.first('email') }}
+                Email field is required
               </div>
             </div>
 
             <div class="field">
               <label class="label">password</label>
               <p class="control">
-                <input v-validate="'required'" name="password" v-model="users.password" placeholder="Password" type="password" class="input">
+                <input v-validate="'required|min:8'" name="password" v-model="users.password" placeholder="Password" type="password" class="input">
               </p>
               <div v-show="errors.has('password')" class="help is-danger">
-                {{ errors.first('password') }}
+                The Password Field is required and should be minimum 8 characters.
               </div>
             </div>
 
@@ -46,7 +46,7 @@
                 <input v-validate="'required'" name="role" v-model="users.role" placeholder="Role" type="role" class="input">
               </p>
               <div v-show="errors.has('role')" class="help is-danger">
-                {{ errors.first('role') }}
+                Role field is required.
               </div>
             </div>
             <!-- <div class="help is-danger" v-show="errors.has('reason')">
@@ -57,7 +57,7 @@
 
       </section>
       <footer class="modal-card-foot">
-        <a class="button is-success">Save</a>
+        <a class="button is-success" @click="addUser()">Save</a>
         <a class="button" v-on:click="$emit('close')">Close</a>
       </footer>
     </div>
@@ -65,6 +65,7 @@
 </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: 'AddUser',
   data: () => ({
@@ -74,7 +75,26 @@ export default {
       password: '',
       role: ''
     }
-  })
+  }),
+  methods: {
+    addUser () {
+      axios.post(`http://localhost:8000/api/user/createUser/`, {
+        name: this.users.uname,
+        email: this.users.email,
+        password: this.users.password,
+        role: this.users.role
+      })
+        .then(response => {
+          this.users.uname = ''
+          this.users.email = ''
+          this.users.password = ''
+          this.users.role = ''
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }
 }
 </script>
 <style lang="css">

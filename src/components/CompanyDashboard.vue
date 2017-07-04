@@ -9,16 +9,17 @@
       <div>
         <div class="field has-addons title">
           <p class="control is-fullwidth">
-            <input v-validate="'required'" name="financialYear" class="input input-box" type="text" placeholder="Create New Financial Year" @keyup.enter="createSeason">
+            <input v-validate="'required'" name="financialYear" v-model="financialYear" class="input input-box" type="text" placeholder="Create New Financial Year" @keyup.enter="createSeason">
           </p>
           <p class="control">
-            <a class="button is-success"> Create </a>
+            <a class="button is-success" @click="createFinancialYear()"> Create </a>
           </p>
         </div>
         <!-- <div class="help is-danger" v-show="errors.has('season')">
           {{errors.first('season')}}
         </div> -->
       </div>
+
 
       <!-- tabs starts -->
       <div class="tabs">
@@ -30,15 +31,15 @@
       <!-- tabs ends -->
         <div class="columns is-multiline">
 
-          <div class="column is-one-third">
+          <div class="column is-one-third" v-for="year in years">
             <div class="card">
               <div class="card-header">
                 <p class="card-header-title">
-                  Financial Year 2017-18
+                  {{year.title}}
                 </p>
               </div>
               <footer class="card-footer">
-                <router-link :to="{ name: 'FinancialYearDashboard'}" class="card-footer-item">View</router-link>
+                <router-link :to="{ name: 'FinancialYearDashboard', params: { cid: cid, yid: year.id}}" class="card-footer-item">View</router-link>
               </footer>
             </div>
           </div>
@@ -53,16 +54,41 @@
 </template>
 <script>
 import CompanyDashboardNavbar from '@/components/CompanyDashboardNavbar'
+import axios from 'axios'
 export default {
   name: 'CompanyDashboard',
   components: {
     CompanyDashboardNavbar
   },
   data: () => ({
-
+    years: [],
+    financialYear: '',
+    cid: null
   }),
   created () {
-    // console.log(this.$route.params.cid)
+    this.cid = this.$route.params.cid
+    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/dashboard`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.years = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  },
+  methods: {
+    createFinancialYear () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/createFinancialYear`, {
+        title: this.financialYear
+      })
+       .then(response => {
+          // JSON responses are automatically parsed.
+         this.financialYear = ''
+       })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    }
   }
 }
 </script>

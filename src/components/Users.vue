@@ -7,31 +7,50 @@
 				<h2 class="title">Users List</h2>
 			</div>
 		<div class="companywise-body">
-			<div class="one-company">
+			<div class="one-company" v-for="user in data">
 				<!-- v-for="company in companies" -->
 				<input type="hidden">
-				<span class="text title is-4">User Name</span>
-				<a class="button is-success is-outlined a-tag login">Remove</a>
+				<span class="text title is-4">{{user.name}}</span>
+				<!-- <span class="text title is-4">{{user}}</span> -->
+				<a class="button is-danger is-outlined a-tag login" @click="deleteUser(user.id)">Remove</a>
 			</div>
 		</div>
-
 		<AddUser v-if="usermodal" @close="usermodal = false"></AddUser>
 </div>
   </div>
 </template>
 <script>
 import AddUser from '@/components/AddUser'
+import axios from 'axios'
 export default {
   name: 'Users',
   components: {
     AddUser
   },
   data: () => ({
+    data: [],
     usermodal: false
   }),
+  created () {
+    axios.get(`http://localhost:8000/api/user/index`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.data = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+  },
   methods: {
     openModal () {
       this.usermodal = true
+    },
+    deleteUser (id) {
+      let url = `http://localhost:8000/api/user/destroy/` + id
+      console.log(url)
+      axios.delete(url)
+        .then(response => {
+        })
     }}
 }
 </script>

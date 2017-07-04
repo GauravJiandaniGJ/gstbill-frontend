@@ -7,6 +7,59 @@
     </div>
   </div>
 <hr>
+
+
+<div class="columns is-multiline" id="content">
+
+<div class="column is-5 only">
+  <div class="field">
+    <p class="control">
+    </p>
+  </div>
+</div>
+
+<div class="column only">
+  <div class="field">
+    <p class="control">
+
+    </p>
+  </div>
+</div>
+
+<div class="column only">
+  <div class="field">
+    <p class="control">
+      <input v-validate="'required'" name="qty" placeholder="Qty" type="text" class="input">
+    </p>
+  </div>
+</div>
+
+<div class="column only">
+  <div class="field">
+    <p class="control">
+      
+    </p>
+  </div>
+</div>
+
+<div class="column only">
+  <div class="field">
+    <p class="control">
+      <input v-validate="'required'" name="rate" placeholder="total" type="text" class="input">
+    </p>
+  </div>
+</div>
+
+<div class="column" id="only">
+  <div class="field">
+    <p class="control">
+
+    </p>
+  </div>
+</div>
+</div>
+
+
   <div class="columns is-multiline">
     <div class="column">
       <a class="button is-info is-outline" v-if="hidden" @click="addNew()" id="save">Add New</a>
