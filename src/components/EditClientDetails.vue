@@ -14,49 +14,9 @@
         <div class="field">
           <label class="label">Client Name</label>
           <ClientNameComboBox></ClientNameComboBox>
-          <div v-show="errors.has('gstin')" class="help is-danger">
-            {{ errors.first('gstin') }}
-          </div>
         </div>
       </div>
 
-      <div class="column">
-        <div class="field">
-          <label class="label">Client Address</label>
-          <p class="control">
-            <ClientAddressCombobox></ClientAddressCombobox>
-          </p>
-          <div v-show="errors.has('state')" class="help is-danger">
-            {{ errors.first('state') }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="columns is-multiline">
-      <div class="column">
-        <div class="field">
-          <label class="label">GST Number</label>
-          <p class="control">
-            <input v-validate="'required'" name="gstin" placeholder="GST Number" type="text" class="input">
-          </p>
-          <div v-show="errors.has('gstin')" class="help is-danger">
-            {{ errors.first('gstin') }}
-          </div>
-        </div>
-      </div>
-
-      <div class="column">
-        <div class="field">
-          <label class="label">State</label>
-          <p class="control">
-            <StateCombobox></StateCombobox>
-          </p>
-          <div v-show="errors.has('state')" class="help is-danger">
-            {{ errors.first('state') }}
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="columns is-multiline" id="description">
@@ -64,7 +24,7 @@
         <div class="field">
           <label class="label">Description</label>
           <p class="control">
-            <input v-validate="'required'" name="description" placeholder="Description" type="text" class="input">
+            <input v-validate="'required'" v-model="client.description" name="description" placeholder="Description" type="text" class="input">
           </p>
           <div v-show="errors.has('description')" class="help is-danger">
             {{ errors.first('description') }}
@@ -84,13 +44,36 @@ export default {
   name: 'EditClientDetails',
   data () {
     return {
-      hidden: false
+      hidden: false,
+      cname: '',
+      caddress: '',
+      cgstin: '',
+      cstate: '',
+      cdescription: '',
+      cid: null,
+      address_id: null,
+      client: {
+        cid: null,
+        gstin: '',
+        description: ''
+      }
     }
   },
   components: {
     StateCombobox,
     ClientNameComboBox,
     ClientAddressCombobox
+  },
+  props: {
+    client: {
+      required: true
+    }
+  },
+  created () {
+    this.$bus.$on('clientDetails', (response) => {
+      this.client.cid = response.clientId
+      this.client.gstin = response.gstin
+    })
   }
 }
 </script>

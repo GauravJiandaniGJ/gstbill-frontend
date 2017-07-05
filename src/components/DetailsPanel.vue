@@ -1,9 +1,11 @@
 <template>
 <div class="DetailsPanel">
 
-  <div class="columns is-multiline" v-for="panel in panels" v-if="hidden" id="content">
+<pre v-model="this.panels=billDetails"></pre>
+
+  <div class="columns is-multiline" v-for="panel in panels" id="content">
     <div class="column">
-      <PanelsDetails></PanelsDetails>
+      <PanelsDetails :panel="panel"></PanelsDetails>
     </div>
   </div>
 <hr>
@@ -37,7 +39,7 @@
 <div class="column only">
   <div class="field">
     <p class="control">
-      
+
     </p>
   </div>
 </div>
@@ -75,18 +77,24 @@ export default {
   name: 'DetailsPanel',
   data: () => ({
     hidden: false,
-    panels: [
-
-    ],
-    addoredit: false
+    panels: [],
+    addoredit: false,
+    bid: null
   }),
   components: {
     PanelsDetails
+  },
+  created () {
   },
   methods: {
     addNew () {
       this.hidden = true
       this.panels.push(1)
+    }
+  },
+  props: {
+    billDetails: {
+      required: true
     }
   }
 }

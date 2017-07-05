@@ -12,15 +12,15 @@
 
   <div class="field">
     <label class="label">Bill Date</label>
-    <p class="control is-fullwidth">
+    <p class="control is-fullwidth"></p>
       <!-- <datepicker :config="{ wrap: true }" readonly>
     <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
     <a class="button" data-clear><i class="fa fa-close"></i></a>
   </datepicker> -->
-      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }" -->
-             <!-- name="start_date"></datepicker> -->
+      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }" --> -->
+             <!-- name="start_date"></datepicker>
 
-      <!-- v-model="billDate" -->
+      v-model="billDate"
 
     </p>
     <div v-show="errors.has('date')" class="help is-danger">
@@ -42,7 +42,7 @@
 
   <div class="field">
     <label class="label">Client GSTIN</label>
-    <!-- <p class="control">
+    <! <p class="control">
                 <ClientAddressComboBox></ClientAddressComboBox>
               </p>
               <div v-show="errors.has('ClientAddress-select')" class="help is-danger">

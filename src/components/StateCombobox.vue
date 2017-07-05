@@ -33,6 +33,11 @@ export default {
     stateChange () {
       this.$bus.$emit('state', { state: this.state })
     }
+  },
+  props: {
+    state: {
+      required: true
+    }
   }
 }
 </script>
