@@ -21,6 +21,7 @@ import FullListBill from '@/components/FullListBill'
 import NewGstEntry from '@/components/NewGstEntry'
 import PendingGstBills from '@/components/PendingGstBills'
 import Statement from '@/components/Statement'
+import GSTDetails from '@/components/GSTDetails'
 // import Datepicker from 'vue-bulma-datepicker'
 
 Vue.use(Router)
@@ -128,13 +129,18 @@ export default new Router({
           path: '/statement',
           name: 'Statement',
           component: Statement
+        },
+        {
+          path: '/financial-month/:cid/year/:yid/month/:mid/details/:bid',
+          name: 'Details',
+          component: Details
+        },
+        {
+          path: '/financial-month/:cid/year/:yid/month/:mid/details/gst/:bid',
+          name: 'GSTDetails',
+          component: GSTDetails
         }
       ]
-    },
-    {
-      path: '/details',
-      name: 'Details',
-      component: Details
     }
   ]
 })

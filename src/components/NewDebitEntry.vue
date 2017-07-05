@@ -17,8 +17,8 @@
     <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
     <a class="button" data-clear><i class="fa fa-close"></i></a>
   </datepicker> -->
-      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }"
-             name="start_date"></datepicker> -->
+      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }" -->
+             <!-- name="start_date"></datepicker> -->
 
       <!-- v-model="billDate" -->
 

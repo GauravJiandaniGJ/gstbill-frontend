@@ -10,11 +10,11 @@
   			<span class="text title is-6">{{dbill.client_address.client.name}}</span>
   			<span class="text title is-6">{{dbill.description}}</span>
   			<span class="text title is-6">{{dbill.final_amount}}</span>
-  			<a class="button is-danger is-outlined a-tag login">Del</a>
-  			<a class="button is-success is-outlined a-tag login">View</a>
+  			<a class="button is-danger is-outlined a-tag login" @click="deleteDebit(dbill.debit_no)">Del</a>
+  			<a class="button is-success is-outlined a-tag login" @click="diffPage(gbill.bill_no)">View</a>
   		</div>
   		<div class="box" v-if="nodbtbill">
-  			<p class="title">No Debit Bill</p>
+  			<p class="title">No Debit Bills Pending! You are Awesome!</p>
   		</div>
     </div>
 
@@ -40,17 +40,33 @@ export default {
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/debitListPending`)
+    this.getDebitList()
+  },
+  methods: {
+    deleteDebit (id) {
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitDetail/` + id
+      axios.delete(url)
       .then(response => {
-        this.dbills = response.data
-        console.log(this.dbills)
-        if (this.dbills === 'No Debit Bill') {
-          this.nodbtbill = true
-        }
+        this.getDebitList()
       })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    },
+    getDebitList () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/debitListPending`)
+        .then(response => {
+          this.dbills = response.data
+          console.log(this.dbills)
+          if (this.dbills === 'No Debit Bill') {
+            this.nodbtbill = true
+          }
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    diffPage (id) {
+      let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/' + id
+      this.$router.push(url)
+    }
   }
 }
 </script>

@@ -14,18 +14,19 @@
             <div class="field">
               <label class="label">Client Name</label>
               <p class="control">
-                <ClientNameComboBox :company="company"></ClientNameComboBox>
+                <ClientNameComboBoxNavbar :company="company"></ClientNameComboBoxNavbar>
               </p>
             </div>
 
           </div>
 
-<ClientAddressTab :clientId="ClientId"></ClientAddressTab>
+          <ClientAddressTab :clientAddress="ClientAddress"></ClientAddressTab>
+
         </div>
 
       </section>
       <footer class="modal-card-foot">
-        <a class="button is-info" v-on:click="$emit('close')">Close</a>
+        <a class="button is-info" v-on:click="$emit('close')" @close="$emit('close')">Close</a>
       </footer>
     </div>
   </div>
@@ -33,22 +34,23 @@
 </div>
 </template>
 <script>
-import ClientNameComboBox from '@/components/ClientNameComboBox'
+import ClientNameComboBoxNavbar from '@/components/ClientNameComboBoxNavbar'
 import StateCombobox from '@/components/StateCombobox'
 import ClientAddressTab from '@/components/ClientAddressTab'
 export default {
   name: 'ClientAddressModal',
   components: {
-    ClientNameComboBox,
+    ClientNameComboBoxNavbar,
     StateCombobox,
     ClientAddressTab
   },
   data: () => ({
-    ClientId: Object
+    ClientAddress: Object,
+    address: Object
   }),
   created () {
-    this.$bus.$on('ClientName', (ClientName) => {
-      console.log(ClientName)
+    this.$bus.$on('ClientNameNavbar', (ClientName) => {
+      this.ClientAddress = ClientName.obj
     })
   },
   props: {

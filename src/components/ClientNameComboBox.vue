@@ -36,11 +36,6 @@ export default {
     nameChange () {
       this.$bus.$emit('ClientName', { id: this.ClientId })
     }
-  },
-  props: {
-    company: {
-      required: true
-    }
   }
 }
 </script>

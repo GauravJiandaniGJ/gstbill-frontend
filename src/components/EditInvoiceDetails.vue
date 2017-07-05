@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div v-if="hidden">
+    <div v-if="hidden" class="box" >
     <div class="columns is-multiline">
 
       <div class="column">
@@ -91,5 +91,10 @@ export default {
   .is-multiline {
     padding-top: 1.5rem;
   }
+}
+
+#editinv {
+  padding-top: 0.8em;
+  padding-bottom: 0.8rem;
 }
 </style>

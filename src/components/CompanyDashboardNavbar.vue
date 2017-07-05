@@ -3,7 +3,7 @@
   <nav class="nav has-shadow">
     <div class="nav-left">
       <a class="nav-item  is-tab is-hidden-mobile "></a>
-      <a class="nav-item  is-tab is-hidden-mobile" href="http://localhost:8080/#/home"> Home</a>
+      <a class="nav-item  is-tab is-hidden-mobile" @click="takeHome()"> Home</a>
       <a class="nav-item  is-tab is-hidden-mobile "></a>
       <a class="nav-item  is-tab is-hidden-mobile is-active ">{{this.company_name}}</a>
     </div>
@@ -89,6 +89,9 @@ export default {
       if (window.localStorage.getItem('cid') === null) {
         window.localStorage.setItem('cid', this.cid)
       }
+    },
+    takeHome () {
+      this.$router.push('/Home')
     }
   },
   created () {

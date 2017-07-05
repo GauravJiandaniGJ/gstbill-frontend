@@ -2,16 +2,16 @@
 <div class="box FullListFill">
 
 	<div class="companywise-body">
-    <div class="one-company" v-if="!nodbtbill" v-for="gbill in gbills">
+    <div class="one-company" v-if="!nodbtbill" v-for="gbill in gbills" id="onecompany">
       <!-- v-for="company in companies" -->
       <input type="hidden">
 			<span class="text title is-6">{{gbill.bill_no}}</span>&nbsp
 			<span class="text title is-6">{{gbill.bill_date}}</span>&nbsp
 			<span class="text title is-6">{{gbill.client_address.client.name}}</span>
 			<span class="text title is-6">{{gbill.description}}</span>
-			<span class="text title is-6">{{gbill.final_amount}}</span>
-			<a class="button is-danger is-outlined a-tag login">Del</a>
-			<a class="button is-success is-outlined a-tag login">View</a>
+			<span class="text title is-6">{{gbill.final_amount}}</span>&nbsp
+      <a class="button is-success is-outlined a-tag login" @click="diffPage(gbill.bill_no)">View</a>
+      <a class="button is-danger is-outlined a-tag login" @click="deleteBill(gbill.bill_no)">Del</a>
 		</div>
 		<div class="box" v-if="nodbtbill">
 			<p class="title">No Bill</p>
@@ -36,16 +36,33 @@ export default {
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billList`)
-      .then(response => {
-        this.gbills = response.data
-        if (this.gbills === 'No Bill') {
-          this.nodbtbill = true
-        }
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    this.getFullList()
+  },
+  methods: {
+    getFullList () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billList`)
+        .then(response => {
+          this.gbills = response.data
+          if (this.gbills === 'No Bill') {
+            this.nodbtbill = true
+          }
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    deleteBill (id) {
+      console.log(id)
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
+      axios.delete(url)
+        .then(response => {
+          this.getFullList()
+        })
+    },
+    diffPage (id) {
+      let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/gst/' + id
+      this.$router.push(url)
+    }
   }
 }
 </script>
@@ -85,6 +102,12 @@ export default {
 		padding-right: 1rem;
 	}
 
+}
+
+#onecompany {
+    width: 100%;
+    padding: 0.7rem;
+    border-bottom: solid 1px #ddd
 }
 
 </style>

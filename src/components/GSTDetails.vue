@@ -1,5 +1,5 @@
 <template>
-<div class="Details">
+<div class="GSTDetails">
   <div class="details box" id="mainpage">
 
     <!-- Header -->
@@ -82,12 +82,9 @@
         </div>
       </div>
 
-
     </div>
 
-
-    <hr>
-    <!-- Eligibility Criteria -->
+ <!-- Eligibility Criteria -->
 
     <div class="hiring-process job-section">
       <b class="section-header">Details of Reciever | Billed to:
@@ -284,7 +281,7 @@ import ClientAddressCombobox from '@/components/ClientAddressCombobox'
 import EditClientDetails from '@/components/EditClientDetails'
 import BankAccountTab from '@/components/BankAccountTab'
 export default {
-  name: 'Details',
+  name: 'GSTDetails',
   data () {
     return {
       inv_no: '',
@@ -316,7 +313,7 @@ export default {
     text-align: center;
 }
 
-.Details {
+.GSTDetails {
 
     .details-box {
         border-radius: 4px;
@@ -419,7 +416,7 @@ export default {
 }
 
 #mainpage{
-  background-color: #fafafa
+  background-color: #fbf9f9
 }
 
 #tile {
@@ -431,5 +428,9 @@ export default {
 
 #bank {
   padding-right: 1rem;
+}
+
+#first {
+  margin-top: 2px;
 }
 </style>

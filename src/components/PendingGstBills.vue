@@ -10,8 +10,8 @@
   			<span class="text title is-6">{{gbill.client_address.client.name}}</span>
   			<span class="text title is-6">{{gbill.description}}</span>
   			<span class="text title is-6">{{gbill.final_amount}}</span>
-  			<a class="button is-danger is-outlined a-tag login">Del</a>
-  			<a class="button is-success is-outlined a-tag login">View</a>
+  			<a class="button is-danger is-outlined a-tag login" @click="deleteBill(gbill.bill_no)">Del</a>
+  			<a class="button is-success is-outlined a-tag login" @click="diffPage(gbill.bill_no)">View</a>
   		</div>
   		<div class="box" v-if="nodbtbill">
   			<p class="title">No GST Bill Pending! You are up to date!</p>
@@ -35,9 +35,14 @@ export default {
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billListPending`)
+    this.getFullList()
+  },
+  methods: {
+    getFullList () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/billListPending`)
       .then(response => {
         this.gbills = response.data
+        console.log(response.data)
         if (this.gbills === 'No Bill') {
           this.nodbtbill = true
         }
@@ -45,6 +50,19 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+    },
+    deleteBill (id) {
+      console.log(id)
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
+      axios.delete(url)
+        .then(response => {
+          this.getFullList()
+        })
+    },
+    diffPage (id) {
+      let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/gst/' + id
+      this.$router.push(url)
+    }
   }
 }
 </script>
