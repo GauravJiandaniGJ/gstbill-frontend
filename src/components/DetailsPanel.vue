@@ -1,7 +1,8 @@
-<template>
-<div class="DetailsPanel">
+  <template>
+    <div class="DetailsPanel">
 
-<pre v-model="this.panels=billDetails"></pre>
+<pre v-model="this.panels=billDetails" hidden></pre>
+<pre v-model="this.bid=bid" hidden></pre>
 
   <div class="columns is-multiline" v-for="panel in panels" id="content">
     <div class="column">
@@ -72,6 +73,7 @@
 </div>
 </template>
 <script>
+import axios from 'axios'
 import PanelsDetails from '@/components/PanelsDetails'
 export default {
   name: 'DetailsPanel',
@@ -79,7 +81,14 @@ export default {
     hidden: false,
     panels: [],
     addoredit: false,
-    bid: null
+    bid: null,
+    panel_details: {
+      name_of_product: '',
+      service_code: '',
+      qty: null,
+      rate: null,
+      total_amount: null
+    }
   }),
   components: {
     PanelsDetails
@@ -89,11 +98,34 @@ export default {
   methods: {
     addNew () {
       this.hidden = true
+      axios.post(`http://localhost:8000/api/addBillDetails/` + this.bid, {
+        name_of_product: this.panel_details.name_of_product,
+        service_code: this.panel_details.service_code,
+        rate: this.panel_details.rate,
+        qty: this.panel_details.qty,
+        total_amount: this.panel_details.total_amount,
+        bill_no: this.bid
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.panel_details.name_of_product = response.data.name_of_product
+            this.panel_details.service_code = response.data.service_code
+            this.panel_details.rate = response.data.rate
+            this.panel_details.qty = response.data.qty
+            this.panel_details.total_amount = response.data.total_amount
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
       this.panels.push(1)
     }
   },
   props: {
     billDetails: {
+      required: true
+    },
+    bid: {
       required: true
     }
   }

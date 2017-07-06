@@ -14,7 +14,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto','Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -22,8 +22,8 @@ export default {
 }
 
 .container {
-  margin-left: 5rem;
-  margin-right: 5rem;
+  margin-left: 2.5rem;
+  margin-right: 0rem;
   max-width: auto;
 }
 </style>

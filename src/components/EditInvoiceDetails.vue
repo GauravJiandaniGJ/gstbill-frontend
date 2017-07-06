@@ -4,8 +4,8 @@
     <div class="column" id="editinv">
       <div class="field">
         <a class="button is-info" @click="hidden=true" v-if="!hidden">Edit</a>
-        <!-- <a class="button is-info" @click="hidden=false" v-if="hidden">Hide</a> -->
-        <a class="button is-success" @click="hidden=false" v-if="hidden">Update</a>
+        <a class="button is-info" @click="hidden=false" v-if="hidden">Hide</a>
+        <a class="button is-success" v-if="hidden" @click="updateGstBill()">Update</a>
       </div>
     </div>
 
@@ -37,34 +37,6 @@
       </div>
     </div>
 
-    <div class="columns is-multiline">
-      <div class="column">
-        <div class="field">
-          <label class="label">GST Number</label>
-          <p class="control">
-            <input v-validate="'required'" name="gstin" placeholder="GST Number" v-model="this.gstin=invoice.gstin" type="text" class="input">
-          </p>
-          <div v-show="errors.has('gstin')" class="help is-danger">
-            {{ errors.first('gstin') }}
-          </div>
-        </div>
-      </div>
-
-      <div class="column">
-        <div class="field">
-          <label class="label">State</label>
-          <p class="control">
-            <input v-validate="'required'" name="state" placeholder="State" v-model="this.state=invoice.state" type="text" class="input">
-          </p>
-          <div v-show="errors.has('state')" class="help is-danger">
-            {{ errors.first('state') }}
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-
   </div>
 
   </div>
@@ -88,6 +60,11 @@ export default {
   props: {
     invoice: {
       required: true
+    }
+  },
+  methods: {
+    updateGstBill () {
+      this.hidden = false
     }
   }
 }

@@ -8,7 +8,6 @@
         <a class="button is-info" @click="hidden=false" v-if="hidden">Hide</a>
       </div>
     </div>
-<pre v-model="this.client_detail=client" hidden></pre>
 <pre v-model="this.bid=bill" hidden></pre>
 <div v-if="hidden" class="box" id="editclient">
     <div class="columns is-multiline">
@@ -84,10 +83,10 @@ export default {
   },
   methods: {
     updateClient () {
-      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bid, {
-        bill_date: null,
-        bank_id: null,
+      axios.patch(`http://localhost:8000/api/updatePrimary/` + this.bid, {
+        debit_date: null,
         description: this.client.description,
+        bank_id: null,
         client_id: this.client.cid,
         gstin: this.client.gstin
       })

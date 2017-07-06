@@ -12,8 +12,8 @@
       </div>
       <div class="header-action is-pulled-right">
         <div class="apply-box">
-          <!-- re-open and externally allowed -->
-          <a class="button is-success">Confirm</a>
+          <a class="button is-success" @click="calculate_confirm()" v-if="!print">Confirm</a>
+          <a class="button is-success" v-if="print">Print</a>
         </div>
       </div>
     </div>
@@ -31,19 +31,19 @@
 
           <footer class="stripe-footer">
             <div class="columns">
-              <div class="column">
+              <div class="column is-left">
                 <br>
                 <label class="label">Invoice Number</label>
                 <p class="control">
-                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="invno" placeholder="Invoice Number" type="text" class="input">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" v-model="invoice.inv_no" name="invno" placeholder="Invoice Number" type="text" class="input">
                 </p>
 
               </div>
-              <div class="column">
+              <div class="column is-right">
                 <br>
                 <label class="label">Invoice Date</label>
                 <p class="control">
-                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="invdate" placeholder="Invoice Number" type="text" class="input">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="invdate" v-model="invoice.inv_date" placeholder="Invoice Number" type="text" class="input">
                 </p>
 
               </div>
@@ -51,19 +51,19 @@
             </div>
 
             <div class="columns">
-              <div class="column">
+              <div class="column is-left" id="left">
                 <br>
                 <label class="label">GST Number</label>
                 <p class="control">
-                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="gstin" placeholder="Invoice Number" type="text" class="input">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="gstin" v-model="invoice.gstin" placeholder="Invoice Number" type="text" class="input">
                 </p>
 
               </div>
-              <div class="column">
+              <div class="column is-right">
                 <br>
                 <label class="label">State</label>
                 <p class="control">
-                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="state" placeholder="Invoice Number" type="text" class="input">
+                  <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="state" v-model="invoice.state" placeholder="Invoice Number" type="text" class="input">
                 </p>
 
               </div>
@@ -74,20 +74,14 @@
 
           <div>
           </div>
+          <hr>
         </div>
 
-
-        <div class="column" id="editinv">
-          <EditInvoiceDetails></EditInvoiceDetails>
-        </div>
       </div>
-
 
     </div>
 
-
-    <hr>
-    <!-- Eligibility Criteria -->
+ <!-- Eligibility Criteria -->
 
     <div class="hiring-process job-section">
       <b class="section-header">Details of Reciever | Billed to:
@@ -98,7 +92,7 @@
           <div class="field">
             <label class="label">Client Name</label>
             <p class="control">
-              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
+              <input v-validate="'required'" id="disabled" v-model="client.cname" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
             </p>
           </div>
         </div>
@@ -107,7 +101,7 @@
           <div class="field">
             <label class="label">Client Address</label>
               <p class="control">
-                <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="caddress" placeholder="Client Address" type="text" class="input">
+                <input v-validate="'required'" id="disabled" v-model="client.caddress" :disabled="validated == 1 ? true : false" name="caddress" placeholder="Client Address" type="text" class="input">
               </p>
             </div>
         </div>
@@ -118,7 +112,7 @@
           <div class="field">
             <label class="label">GST Number</label>
             <p class="control">
-              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
+              <input v-validate="'required'" id="disabled" v-model="client.cgst" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
             </p>
             <div v-show="errors.has('gstin')" class="help is-danger">
               {{ errors.first('gstin') }}
@@ -130,7 +124,7 @@
           <div class="field">
             <label class="label">State</label>
             <p class="control">
-              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
+              <input v-validate="'required'" id="disabled" v-model="client.cstate" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
             </p>
           </div>
         </div>
@@ -141,7 +135,7 @@
           <div class="field">
             <label class="label">Description</label>
             <p class="control">
-              <input v-validate="'required'" id="disabled" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
+              <input v-validate="'required'" id="disabled" v-model="client.cdescription" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
             </p>
             <div v-show="errors.has('description')" class="help is-danger">
               {{ errors.first('description') }}
@@ -155,7 +149,7 @@
 
       <div class="columns is-multiline">
         <div class="column">
-          <EditClientDetails></EditClientDetails>
+          <EditClientDetailsDebit :client="client" :bill="this.bill_id"></EditClientDetailsDebit>
         </div>
       </div>
 
@@ -205,14 +199,65 @@
         </div>
         <hr>
 
-        <DetailsPanel></DetailsPanel>
+        <DetailsPanel :billDetails="this.billDetails"></DetailsPanel>
 
       </div>
 <hr>
       <div class="tile is-ancestor" id="tile">
         <div class="tile is-vertical is-8" id="bank">
 
-          <BankAccountTab></BankAccountTab>
+          <div class="tile box">
+            <div class="tile is-parent is-vertical">
+              <article class="tile is-child notification">
+                <br>
+                <div class="field">
+                  <label class="label">Bank Account</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="account_no" :disabled="validated == 1 ? true : false" v-model="this.banks.account_no=this.bankDetails.account_no" placeholder="Account Number" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('baccount')" class="help is-danger">
+                    {{ errors.first('baccount') }}
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Beneficiary Name</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="bname" :disabled="validated == 1 ? true : false" v-model="this.banks.beneficiary_name=this.bankDetails.beneficiary_name" placeholder="Beneficiary Name" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('bname')" class="help is-danger">
+                    {{ errors.first('bname') }}
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Branch IFSC</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="bifsc" :disabled="validated == 1 ? true : false" v-model="this.banks.branch_ifsc=this.bankDetails.branch_ifsc" placeholder="Branch IFSC" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('bifsc')" class="help is-danger">
+                    {{ errors.first('bifsc') }}
+                  </div>
+                </div>
+                <br>
+
+<BankAccountTabDebit :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTabDebit>
+
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+
+              </article>
+            </div>
+
+          </div>
+
 
         </div>
         <div class="tile is-parent box">
@@ -220,43 +265,13 @@
             <div class="content">
 
               <div class="field">
-                <label class="label">CGST</label>
+                <label class="label">Total Amount</label>
                 <p class="control">
-                  <input v-validate="'required'" name="cgst" placeholder="CGST." type="text" class="input">
+                  <input v-validate="'required'" name="total" placeholder="Total" type="text" class="input">
                 </p>
-                <div v-show="errors.has('cgst')" class="help is-danger">
-                  {{ errors.first('cgst') }}
+                <div v-show="errors.has('total')" class="help is-danger">
+                  {{ errors.first('total') }}
                 </div>
-              </div>
-
-              <div class="field">
-                <label class="label">SGST</label>
-                <p class="control">
-                  <input v-validate="'required'" name="sgst" placeholder="SGST" type="text" class="input">
-                </p>
-                <div v-show="errors.has('sgst')" class="help is-danger">
-                  {{ errors.first('sgst') }}
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="label">IGST</label>
-                <p class="control">
-                  <input v-validate="'required'" name="igst" placeholder="IGST" type="text" class="input">
-                </p>
-                <div v-show="errors.has('igst')" class="help is-danger">
-                  {{ errors.first('igst') }}
-                </div>
-              </div>
-              <hr>
-              <div class="field">
-                <!-- <label class="label">Total GST</label> -->
-                <p class="control">
-                  <input v-validate="'required'" name="total_gst" placeholder="Total GST" type="text" class="input">
-                </p>
-
-                <a class="button is-info">Save</a>
-
               </div>
 
               <div class="content">
@@ -281,17 +296,41 @@ import DetailsPanel from '@/components/DetailsPanel'
 import BankAccountsCombobox from '@/components/BankAccountsCombobox'
 import EditInvoiceDetails from '@/components/EditInvoiceDetails'
 import ClientAddressCombobox from '@/components/ClientAddressCombobox'
-import EditClientDetails from '@/components/EditClientDetails'
-import BankAccountTab from '@/components/BankAccountTab'
+import EditClientDetailsDebit from '@/components/EditClientDetailsDebit'
+import BankAccountTabDebit from '@/components/BankAccountTabDebit'
+import axios from 'axios'
 export default {
   name: 'Details',
   data () {
     return {
-      inv_no: '',
-      inv_date: '',
-      gstin: '',
-      state: '',
-      validated: 1
+      invoice: {
+        inv_no: '',
+        inv_date: '',
+        gstin: '',
+        state: ''
+      },
+      client: {
+        cname: '',
+        caddress: '',
+        cgst: '',
+        cstate: '',
+        cdescription: ''
+      },
+      validated: 1,
+      cid: null,
+      yid: null,
+      mid: null,
+      bill_id: null,
+      mainBill: Object,
+      billDetails: [],
+      banks: {
+        account_no: '',
+        beneficiary_name: '',
+        branch_ifsc: ''
+      },
+      bankDetails: Object,
+      bankDetailsArray: [],
+      print: false
     }
   },
   components: {
@@ -301,8 +340,66 @@ export default {
     BankAccountsCombobox,
     EditInvoiceDetails,
     ClientAddressCombobox,
-    EditClientDetails,
-    BankAccountTab
+    EditClientDetailsDebit,
+    BankAccountTabDebit
+  },
+  created () {
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    this.bill_id = this.$route.params.bid
+    this.getBillDetails(this.bill_id)
+    this.$bus.$on('refreshNow', () => {
+      this.getBillDetails(this.bill_id)
+    })
+  },
+  methods: {
+    getBillDetails (id) {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/displayAllData/` + id)
+        .then(response => {
+          this.mainBill = response.data
+          this.invoice.inv_no = response.data.debit_no
+          this.invoice.inv_date = response.data.debit_date
+          this.invoice.gstin = response.data.company.gstin
+          this.invoice.state = response.data.company.state
+          this.client.cname = response.data.client_address.client.name
+          this.client.caddress = response.data.client_address.address
+          this.client.cgst = response.data.client_address.gstin
+          this.client.cstate = response.data.client_address.state
+          this.client.cdescription = response.data.description
+          this.billDetails = response.data.bill_details
+          this.bankDetails = response.data.bank
+          this.bankDetailsArray = response.data.company.bank
+          console.log(this.mainBill)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    calculate_confirm () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.confirm()
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    confirm () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.print = true
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
   }
 }
 </script>
@@ -338,6 +435,17 @@ export default {
 
     .apply-box {
         padding: 0.4rem 0.4rem 0.4rem 0;
+    }
+
+    .column.is-left{
+      padding-left: 2rem;
+      padding-bottom: 0rem;
+      padding-top: 0rem;
+    }
+
+    .column.is-right{
+      padding-right: 2rem;
+      padding-top: 0rem;
     }
 
     .job-section {
@@ -419,7 +527,7 @@ export default {
 }
 
 #mainpage{
-  background-color: #fafafa
+  background-color: #fbf9f9
 }
 
 #tile {
@@ -431,5 +539,13 @@ export default {
 
 #bank {
   padding-right: 1rem;
+}
+
+#first {
+  margin-top: 2px;
+}
+
+#left {
+  margin-bottom: 1.5rem;
 }
 </style>

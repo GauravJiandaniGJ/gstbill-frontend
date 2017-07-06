@@ -13,7 +13,8 @@
       <div class="header-action is-pulled-right">
         <div class="apply-box">
           <!-- re-open and externally allowed -->
-          <a class="button is-success">Confirm</a>
+          <a class="button is-success" @click="calculate_confirm()" v-if="!print">Confirm</a>
+          <a class="button is-success" @click="calculate_confirm()" v-if="print">Print</a>
         </div>
       </div>
     </div>
@@ -51,7 +52,7 @@
             </div>
 
             <div class="columns">
-              <div class="column is-left">
+              <div class="column is-left" id="left">
                 <br>
                 <label class="label">GST Number</label>
                 <p class="control">
@@ -74,12 +75,9 @@
 
           <div>
           </div>
+          <hr>
         </div>
 
-
-        <div class="column" id="editinv">
-          <EditInvoiceDetails :invoice="invoice"></EditInvoiceDetails>
-        </div>
       </div>
 
     </div>
@@ -152,7 +150,7 @@
 
       <div class="columns is-multiline">
         <div class="column">
-          <EditClientDetails :client="client"></EditClientDetails>
+          <EditClientDetails :client="client" :bill="this.bill_id"></EditClientDetails>
         </div>
       </div>
 
@@ -202,14 +200,65 @@
         </div>
         <hr>
 
-        <DetailsPanel :billDetails="this.billDetails"></DetailsPanel>
+        <DetailsPanel :billDetails="this.billDetails" :bid="this.bill_id"></DetailsPanel>
 
       </div>
 <hr>
       <div class="tile is-ancestor" id="tile">
         <div class="tile is-vertical is-8" id="bank">
 
-          <BankAccountTab :bank="this.bankDetail"></BankAccountTab>
+          <div class="tile box">
+            <div class="tile is-parent is-vertical">
+              <article class="tile is-child notification">
+                <br>
+                <div class="field">
+                  <label class="label">Bank Account</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="account_no" :disabled="validated == 1 ? true : false" v-model="this.banks.account_no=this.bankDetails.account_no" placeholder="Account Number" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('baccount')" class="help is-danger">
+                    {{ errors.first('baccount') }}
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Beneficiary Name</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="bname" :disabled="validated == 1 ? true : false" v-model="this.banks.beneficiary_name=this.bankDetails.beneficiary_name" placeholder="Beneficiary Name" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('bname')" class="help is-danger">
+                    {{ errors.first('bname') }}
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Branch IFSC</label>
+                  <p class="control">
+                    <input v-validate="'required'" name="bifsc" :disabled="validated == 1 ? true : false" v-model="this.banks.branch_ifsc=this.bankDetails.branch_ifsc" placeholder="Branch IFSC" type="text" class="input">
+                  </p>
+                  <div v-show="errors.has('bifsc')" class="help is-danger">
+                    {{ errors.first('bifsc') }}
+                  </div>
+                </div>
+                <br>
+
+<BankAccountTab :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTab>
+
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+                <div class="field">
+                </div>
+
+              </article>
+            </div>
+
+          </div>
+
 
         </div>
         <div class="tile is-parent box">
@@ -305,7 +354,15 @@ export default {
       bill_id: null,
       mainBill: Object,
       billDetails: [],
-      bankDetail: Object
+      banks: {
+        account_no: '',
+        beneficiary_name: '',
+        branch_ifsc: ''
+      },
+      bankDetails: Object,
+      bankDetailsArray: [],
+      client_id: null,
+      print: false
     }
   },
   components: {
@@ -324,6 +381,9 @@ export default {
     this.mid = this.$route.params.mid
     this.bill_id = this.$route.params.bid
     this.getBillDetails(this.bill_id)
+    this.$bus.$on('refreshNow', () => {
+      this.getBillDetails(this.bill_id)
+    })
   },
   methods: {
     getBillDetails (id) {
@@ -340,11 +400,37 @@ export default {
           this.client.cstate = response.data.client_address.state
           this.client.cdescription = response.data.description
           this.billDetails = response.data.bill_details
-          this.bankDetail = response.data.bank
+          this.bankDetails = response.data.bank
+          this.bankDetailsArray = response.data.company.bank
+          this.client_id = response.data.client_address.client_id
           console.log(this.mainBill)
         })
         .catch(e => {
           this.errors.push(e)
+        })
+    },
+    calculate_confirm () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/calculateTotalAmount/` + this.bill_id, {
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.confirm()
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    confirm () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/confirmBill/` + this.bill_id, {
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.print = true
+          }
+        })
+        .catch((e) => {
+          console.log(e)
         })
     }
   }
@@ -386,10 +472,13 @@ export default {
 
     .column.is-left{
       padding-left: 2rem;
+      padding-bottom: 0rem;
+      padding-top: 0rem;
     }
 
     .column.is-right{
       padding-right: 2rem;
+      padding-top: 0rem;
     }
 
     .job-section {
@@ -487,5 +576,9 @@ export default {
 
 #first {
   margin-top: 2px;
+}
+
+#left {
+  margin-bottom: 1.5rem;
 }
 </style>

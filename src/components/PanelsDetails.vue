@@ -1,11 +1,14 @@
 <template>
   <div class="PanelsDetails">
     <div class="columns is-multiline" id="content">
-<pre v-model="this.content=panel" hidden>{{panel}}</pre>
+
+<pre v-model="this.content=panel" hidden></pre>
+
+
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <ShortcutCombobox>{{panel}}</ShortcutCombobox>
+          <ShortcutCombobox :shortcut="this.content.name_of_product"></ShortcutCombobox>
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -17,6 +20,7 @@
       <div class="field">
         <p class="control">
           <input v-validate="'required'" name="service_code" v-model="this.scode=this.content.service_code" placeholder="Service Code" type="text" class="input">
+          <pre v-model="this.scode">{{this.scode}}</pre>
         </p>
         <div v-show="errors.has('service_code')" class="help is-danger">
           {{ errors.first('service_code') }}
@@ -27,18 +31,16 @@
     <div class="column only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="qty" v-model="this.qty=this.content.qty" v-on:keyup="calculate()" placeholder="Qty" type="text" class="input">
+          <input v-validate="" name="qty" v-model="this.qty=this.content.qty" v-on:keyup="calculate()" placeholder="Qty" type="text" class="input">
         </p>
-        <div v-show="errors.has('qty')" class="help is-danger">
-          {{ errors.first('qty') }}
-        </div>
       </div>
     </div>
 
+<!-- <pre v-model="this.rate=this.content.rate" v-if="this.content" hidden></pre> -->
     <div class="column only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="rate" v-model="this.rate=this.content.rate" placeholder="Rate" type="text" class="input">
+          <input v-validate="'required'" name="rate" v-on:keyup="calculate()" v-model="this.rate=this.content.rate" placeholder="Rate" type="text" class="input">
         </p>
         <div v-show="errors.has('rate')" class="help is-danger">
           {{ errors.first('rate') }}
@@ -49,14 +51,14 @@
     <div class="column only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="total" v-model="this.total" placeholder="Total" type="text" class="input">
+          <input v-validate="'required'" name="total" v-on:keyup="calculate()" v-model="this.total" placeholder="Total" type="text" class="input">
         </p>
         <div v-show="errors.has('total')" class="help is-danger">
           {{ errors.first('total') }}
         </div>
       </div>
     </div>
-
+<pre>{{this.total}}</pre>
     <div class="column" id="only">
       <div class="field">
         <p class="control">
@@ -90,6 +92,16 @@ export default {
   props: {
     panel: {
       required: true
+    },
+    shortcut: {
+      required: true
+    }
+  },
+  watch: {
+    total: function () {
+      console.log('call')
+      this.total = this.qty * this.rate
+      console.log(this.total)
     }
   },
   methods: {

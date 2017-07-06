@@ -126,7 +126,7 @@ export default new Router({
           ]
         },
         {
-          path: '/statement',
+          path: '/statement/:cid',
           name: 'Statement',
           component: Statement
         },

@@ -1,5 +1,5 @@
 <template>
-  <div class="BankAccountTab">
+  <div class="BankAccountTabDebit">
 
     <div class="field">
       <a class="button is-info" v-if="!hidden" @click="hidden=true">Edit</a>
@@ -27,7 +27,7 @@
 import BankAccountsCombobox from '@/components/BankAccountsCombobox'
 import axios from 'axios'
 export default {
-  name: 'BankAccountTab',
+  name: 'BankAccountTabDebit',
   data: () => ({
     hidden: false,
     bank_detail_id: null,
@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     bankChange () {
-      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bank_detail_id, {
-        bill_date: null,
+      axios.patch(`http://localhost:8000/api/updatePrimary/` + this.bank_detail_id, {
+        debit_date: null,
         description: null,
         bank_id: this.bank_detail_id,
         client_id: null,
@@ -63,8 +63,6 @@ export default {
         .catch((e) => {
           console.log(e)
         })
-      this.$bus.$emit('refreshNow', {})
-      this.hidden = false
     }
   }
 }
