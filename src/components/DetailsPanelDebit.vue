@@ -1,84 +1,82 @@
-  <template>
-    <div class="DetailsPanel">
+<template>
+  <div class="DetailsPanelDebit">
 
 <pre v-model="this.bid=bid" hidden></pre>
 <pre v-model="this.cid=cid" hidden></pre>
-<pre v-model="this.client_state=client_state" hidden></pre>
-<pre v-model="this.company_state=company_state" hidden></pre>
 
-  <div class="columns is-multiline" v-for="panel in panels" id="content">
-    <div class="column">
-      <PanelsDetails :panel="panel"></PanelsDetails>
-    </div>
+<div class="columns is-multiline" v-for="panel in panels" id="content">
+  <div class="column">
+    <PanelsDetailsDebit :panel="panel"></PanelsDetailsDebit>
   </div>
+</div>
 <hr>
 
 
 <div class="columns is-multiline" id="content">
 
 <div class="column is-5 only">
-  <div class="field">
-    <p class="control">
-    </p>
-  </div>
+<div class="field">
+  <p class="control">
+  </p>
+</div>
 </div>
 
 <div class="column only">
-  <div class="field">
-    <p class="control">
+<div class="field">
+  <p class="control">
 
-    </p>
-  </div>
+  </p>
+</div>
 </div>
 
 <div class="column only">
-  <div class="field">
-    <p class="control">
-      <input v-validate="'required'" name="qty" v-model="this.total_qty" placeholder="Qty" type="text" class="input">
-    </p>
-  </div>
+<div class="field">
+  <p class="control">
+    <input v-validate="'required'" name="qty" v-model="this.total_qty" placeholder="Qty" type="text" class="input">
+  </p>
+</div>
 </div>
 
 <div class="column only">
-  <div class="field">
-    <p class="control">
+<div class="field">
+  <p class="control">
 
-    </p>
-  </div>
+  </p>
+</div>
 </div>
 
 <div class="column only">
-  <div class="field">
-    <p class="control">
-      <input v-validate="'required'" name="total" v-model="this.total_amt" placeholder="total" type="text" class="input">
-    </p>
-  </div>
+<div class="field">
+  <p class="control">
+    <input v-validate="'required'" name="total" v-model="this.total_amt" placeholder="total" type="text" class="input">
+  </p>
+</div>
 </div>
 
 <div class="column" id="only">
-  <div class="field">
-    <p class="control">
+<div class="field">
+  <p class="control">
 
-    </p>
-  </div>
+  </p>
 </div>
 </div>
+</div>
 
 
-  <div class="columns is-multiline">
-    <div class="column">
-      <a class="button is-info is-outline" v-if="hidden" @click="addNew()" id="save">Add New</a>
-      <a class="button is-info is-outline" v-if="!hidden" @click="addNew()" >Add</a>
-    </div>
+<div class="columns is-multiline">
+  <div class="column">
+    <a class="button is-info is-outline" v-if="hidden" @click="addNew()" id="save">Add New</a>
+    <a class="button is-info is-outline" v-if="!hidden" @click="addNew()" >Add</a>
   </div>
+</div>
 
 </div>
 </template>
 <script>
 import axios from 'axios'
-import PanelsDetails from '@/components/PanelsDetails'
+import PanelsDetailsDebit from '@/components/PanelsDetailsDebit'
 export default {
-  name: 'DetailsPanel',
+  name: 'DetailsPanelDebit',
   data: () => ({
     hidden: false,
     panels: [],
@@ -96,40 +94,36 @@ export default {
     total_qty: 0,
     total_amt: 0,
     client_state: '',
-    company_state: '',
-    cgst: 0,
-    sgst: 0,
-    igst: 0,
-    total_gst: 0
+    company_state: ''
   }),
   components: {
-    PanelsDetails
+    PanelsDetailsDebit
   },
   created () {
     this.bid = this.$route.params.bid
     this.getTotalQuantity(this.bid)
     this.getTotalAmount(this.bid)
-    this.getEntireBillDetails()
+    this.getEntireDebitDetails()
     this.$bus.$on('refreshForQuantity', () => {
       this.getTotalQuantity(this.bid)
     })
     this.$bus.$on('refreshForTotal', () => {
       this.getTotalAmount(this.bid)
     })
-    this.$bus.$on('refreshForBillDetails', () => {
-      this.getEntireBillDetails()
+    this.$bus.$on('refreshForDebitDetails', () => {
+      this.getEntireDebitDetails()
     })
   },
   methods: {
     addNew () {
       this.hidden = true
-      axios.post(`http://localhost:8000/api/addBillDetails/` + this.bid, {
+      axios.post(`http://localhost:8000/api/addDebitDetails/` + this.bid, {
         name_of_product: this.panel_details.name_of_product,
         service_code: this.panel_details.service_code,
         rate: this.panel_details.rate,
         qty: this.panel_details.qty,
         total_amount: this.panel_details.total_amount,
-        bill_no: this.bid
+        debit_no: this.bid
       })
         .then(response => {
           if (response.status === 200) {
@@ -147,7 +141,7 @@ export default {
         })
     },
     getTotalQuantity (id) {
-      let url = `http://localhost:8000/api/bill/quantityTotal/` + id
+      let url = `http://localhost:8000/api/quantityTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_qty = response.data
@@ -157,18 +151,18 @@ export default {
         })
     },
     getTotalAmount (id) {
-      let url = `http://localhost:8000/api/bill/amountTotal/` + id
+      let url = `http://localhost:8000/api/amountTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_amt = response.data
-          this.calculateTax()
+          this.$bus.$emit('totalTax', {total_amt: this.total_amt})
         })
         .catch(e => {
           this.errors.push(e)
         })
     },
-    getEntireBillDetails () {
-      let url = `http://localhost:8000/api/getBillDetails/bill/` + this.bid
+    getEntireDebitDetails () {
+      let url = `http://localhost:8000/api/getDebitDetails/` + this.bid
       axios.get(url)
         .then(response => {
           this.panels = response.data
@@ -176,36 +170,13 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
-    },
-    calculateTax () {
-      if (this.client_state === this.company_state) {
-        this.cgst = this.total_amt * 0.09
-        this.sgst = this.total_amt * 0.09
-        this.igst = 0
-      }
-      if (this.client_state !== this.company_state) {
-        this.cgst = 0
-        this.sgst = 0
-        this.igst = this.total_amt * 0.18
-      }
-      this.total_gst = this.cgst + this.sgst + this.igst
-      this.$bus.$emit('totalTax', {cgst: this.cgst, sgst: this.sgst, igst: this.igst, total_gst: this.total_gst})
     }
   },
   props: {
-    billDetails: {
-      required: true
-    },
     bid: {
       required: true
     },
     cid: {
-      required: true
-    },
-    client_state: {
-      required: true
-    },
-    company_state: {
       required: true
     }
   }
@@ -213,9 +184,9 @@ export default {
 </script>
 <style lang="scss">
 #save {
-    padding-right: 1rem;
+  padding-right: 1rem;
 }
 #addnew {
-    padding-left: 1rem;
+  padding-left: 1rem;
 }
 </style>

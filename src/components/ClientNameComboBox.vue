@@ -18,7 +18,7 @@
 </div>
 <div class="columns is-multiline">
     <div class="column">
-      <label class="label">Client Address</label>
+      <label class="label" id="label">Client Address</label>
       <span class="select is-fullwidth">
               <select v-validate="'required|not_in:null'" v-model="gstin" name="client_address-select" @change="addressChange()">
                 <option value=null disabled>Select Dropdown</option>
@@ -58,7 +58,6 @@ export default {
     axios.get(`http://localhost:8000/api/client/clientList/` + this.cid)
       .then(response => {
         this.client_names = response.data
-        console.log(this.client_names)
       })
       .catch(e => {
         this.errors.push(e)
@@ -84,4 +83,7 @@ export default {
 }
 </script>
 <style lang="scss">
+#label {
+  text-align: center;
+}
 </style>

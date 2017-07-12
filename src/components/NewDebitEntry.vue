@@ -4,8 +4,7 @@
   <div class="field">
     <label class="label">Bill No.</label>
     <p class="control">
-      <input v-validate="'required|max:6'" name="BillNo" v-model="billNo" placeholder="Bill No" type="text" class="input">
-      <div v-if="hid">{{this.billNo}}</div>
+      <input id="input" v-validate="'required|max:6'" name="BillNo" v-model="debit.billNo" placeholder="Bill No" type="text" class="input">
     </p>
 
   </div>
@@ -13,14 +12,9 @@
   <div class="field">
     <label class="label">Bill Date</label>
     <p class="control is-fullwidth"></p>
-      <!-- <datepicker :config="{ wrap: true }" readonly>
-    <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
-    <a class="button" data-clear><i class="fa fa-close"></i></a>
-  </datepicker> -->
-      <!-- <datepicker v-validate="'required'" placeholder="Date" :config="{ dateFormat: 'Y-m-d', static: true }" --> -->
-             <!-- name="start_date"></datepicker>
-
-      v-model="billDate"
+    <datepicker :config="{ wrap: true }" readonly v-model="debit.billDate">
+      <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
+    </datepicker>
 
     </p>
     <div v-show="errors.has('date')" class="help is-danger">
@@ -39,54 +33,42 @@
     </div>
   </div>
 
+    <div class="field">
+      <label class="label">Description</label>
+      <p class="control">
+        <input id="input" v-validate="'required'" name="description" v-model="debit.description" type="text" class="input">
+      </p>
+      <div v-show="errors.has('description')" class="help is-danger">
+        {{ errors.first('description') }}
+      </div>
+    </div>
 
-  <div class="field">
-    <label class="label">Client GSTIN</label>
-    <! <p class="control">
-                <ClientAddressComboBox></ClientAddressComboBox>
-              </p>
-              <div v-show="errors.has('ClientAddress-select')" class="help is-danger">
-                  {{ errors.first('ClientAddress-select') }}
-                </div> -->
-  </div>
 
-
-  <div class="field">
-    <label class="label">Description</label>
-    <p class="control">
-      <input v-validate="'required'" name="description" v-model="debit.description" placeholder="Bill description" type="text" class="input">
-    </p>
-    <div v-show="errors.has('description')" class="help is-danger">
-      {{ errors.first('description') }}
+    <div class="field is-grouped but">
+      <p class="control buttons">
+        <button class="button is-primary" @click="createPrimary()">Proceed</button>
+      </p>
     </div>
   </div>
-
-
-  <div class="field is-grouped but">
-    <p class="control buttons">
-      <button class="button is-primary" @click="">Create</button>
-    </p>
-  </div>
-</div>
 </template>
 <script>
-// import Datepicker from 'vue-bulma-datepicker'
+import Datepicker from 'vue-bulma-datepicker'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
 import axios from 'axios'
 export default {
   name: 'NewDebitEntry',
   components: {
-    // Datepicker,
+    Datepicker,
     ClientNameComboBox
   },
   data () {
     return {
       debit: {
         billNo: null,
-        billDate: null,
-        description: null,
-        hid: false,
-        client_id: null
+        billDate: '',
+        description: '',
+        client_id: 0,
+        client_gstin: 0
       }
     }
   },
@@ -94,17 +76,43 @@ export default {
     this.$bus.$on('ClientName', (clientName) => {
       this.debit.client_id = clientName
     })
+    this.$bus.$on('clientDetails', (clientAddressId) => {
+      this.debit.client_id = clientAddressId.clientId
+      this.debit.client_gstin = clientAddressId.gstin
+    })
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/latestDebitNo`)
-      .then(response => {
-        this.billNo = response.data
-        console.log(this.billNo)
+    this.getDebitNo()
+  },
+  methods: {
+    getDebitNo () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/latestDebitNo`)
+        .then(response => {
+          this.debit.billNo = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    createPrimary () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/createNew`, {
+        debit_no: this.debit.billNo,
+        debit_date: this.debit.billDate,
+        description: this.debit.description,
+        client_id: this.debit.client_id,
+        gstin: this.debit.client_gstin
       })
-      .catch(e => {
-        this.errors.push(e)
-      })
+        .then(response => {
+          if (response.status === 200) {
+            let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/' + this.debit.billNo
+            this.$router.push(url)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
   }
 }
 </script>
@@ -124,5 +132,9 @@ export default {
 .field.is-grouped.but {
     margin-left: 45.5%;
     margin-right: 50%;
+}
+
+#input {
+  text-align: center;
 }
 </style>

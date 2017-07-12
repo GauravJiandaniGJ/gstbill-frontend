@@ -79,7 +79,6 @@ export default {
         .then(response => {
           this.company_name = response.data.name
           this.company = response.data
-          console.log(this.company)
         })
         .catch(e => {
 
@@ -91,6 +90,7 @@ export default {
       }
     },
     takeHome () {
+      window.localStorage.removeItem('cid')
       this.$router.push('/Home')
     }
   },

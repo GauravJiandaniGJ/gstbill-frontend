@@ -1,5 +1,5 @@
 <template>
-<div class="PanelsDetails">
+<div class="PanelsDetailsDebit">
 
   <div class="columns is-multiline" id="content" v-if="panel.name_of_product!=null">
 
@@ -73,7 +73,7 @@
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="product_name" @keyup.113="f2()" v-model="description" placeholder="Product Name" type="text" class="input">
+          <input v-validate="'required'" name="product_name" @keyup.114="f3()" @keyup.115="f4()" @keyup.116="f5()" @keyup.117="f6()" @keyup.118="f7()" @keyup.119="f8()" @keyup.120="f9()" @keyup.121="f10()" v-model="description" placeholder="Product Name" type="text" class="input">
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -139,13 +139,12 @@
 import ShortcutCombobox from '@/components/ShortcutCombobox'
 import axios from 'axios'
 export default {
-  name: 'PanelDetails',
+  name: 'PanelDetailsDebit',
   created () {
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
     this.bid = this.$route.params.bid
-    this.fetchOptionsFromDB()
     this.fetchSelectedOptionFromDB()
   },
   data: () => ({
@@ -172,30 +171,61 @@ export default {
     }
   },
   methods: {
-    fetchOptionsFromDB () {
-      axios.get(`http://localhost:8000/api/shortcut/index`)
-        .then(response => {
-          this.options = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-    },
-    fetchSelectedOptionFromDB () {
-    },
-    f2 () {
-      this.description = 'Cargo Handling Charges'
-      this.scode = 23
+    f3 () {
+      this.description = 'Phyto Certificate Charges'
+      this.scode = 24
       if (parseInt(this.cid) === 1) {
-        this.rate = 1350
+        this.rate = 500
       }
       if (parseInt(this.cid) === 2) {
-        this.rate = 2250
+        this.rate = 550
       }
       this.qty = 1
     },
+    f4 () {
+      this.description = 'Shipping Bill Noting Charges'
+      this.scode = 25
+      this.rate = 100
+      this.qty = 1
+    },
+    f5 () {
+      this.description = 'Port and Customs Documentation'
+      this.scode = 26
+      this.rate = 1000
+      this.qty = 1
+    },
+    f6 () {
+      this.description = 'Transportation Charges'
+      this.scode = 27
+      this.rate = 22500
+      this.qty = 1
+    },
+    f7 () {
+      this.description = 'Lift On/Lift Off Charges'
+      this.scode = 28
+      this.rate = 1400
+      this.qty = 1
+    },
+    f8 () {
+      this.description = 'Misc. Expenses for obtaining FSSAI'
+      this.scode = 29
+      this.rate = 1000
+      this.qty = 1
+    },
+    f9 () {
+      this.description = 'FSSAI Fees'
+      this.scode = 30
+      this.rate = 1000
+      this.qty = 1
+    },
+    f10 () {
+      this.description = 'Misc. Expenses for clearance at Customs/Phyto'
+      this.scode = 31
+      this.rate = 1000
+      this.qty = 1
+    },
     saveDetail (id) {
-      axios.patch(`http://localhost:8000/api/editBillDetails/bill/` + this.bid + `/` + id, {
+      axios.patch(`http://localhost:8000/api/editDebitDetails/` + this.bid + `/` + id, {
         name_of_product: this.description,
         service_code: this.scode,
         rate: this.rate,
@@ -206,7 +236,7 @@ export default {
           if (response.status === 200) {
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshForBillDetails')
+            this.$bus.$emit('refreshForDebitDetails')
           }
         })
         .catch((e) => {
@@ -214,13 +244,13 @@ export default {
         })
     },
     deleteDetail (id) {
-      let url = `http://localhost:8000/api/deleteBillDetail/bill/` + id
+      let url = `http://localhost:8000/api/deleteDebitDetail/` + id
       axios.delete(url)
         .then(response => {
           if (response.status === 204 || response.status === 200) {
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshForBillDetails')
+            this.$bus.$emit('refreshForDebitDetails')
           }
         })
     }

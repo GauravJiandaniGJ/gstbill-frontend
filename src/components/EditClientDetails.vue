@@ -92,12 +92,14 @@ export default {
         gstin: this.client.gstin
       })
         .then(response => {
+          if (response.status === 200) {
+            this.$bus.$emit('refreshNow', {})
+            this.hidden = false
+          }
         })
         .catch((e) => {
           console.log(e)
         })
-      this.$bus.$emit('refreshNow', {})
-      this.hidden = false
     }
   }
 }

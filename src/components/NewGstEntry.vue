@@ -4,19 +4,18 @@
   <div class="field">
     <label class="label">Bill No.</label>
     <p class="control">
-      <input v-validate="'required|max:6'" name="billNo" v-model="billNo" placeholder="Bill No" type="text" class="input">
-      <div v-if="hid">{{this.billNo}}</div>
+      <input v-validate="'required|max:6'" name="BillNo" v-model="gst.billNo" placeholder="Bill No" type="text" class="input">
     </p>
-  </div>
 
+  </div>
 
   <div class="field">
     <label class="label">Bill Date</label>
-    <p class="control is-fullwidth">
-      <!-- <datepicker :config="{ wrap: true }" readonly>
-    <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
-    <a class="button" data-clear><i class="fa fa-close"></i></a>
-  </datepicker> -->
+    <p class="control is-fullwidth"></p>
+    <datepicker :config="{ wrap: true }" readonly v-model="gst.billDate">
+      <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
+    </datepicker>
+
     </p>
     <div v-show="errors.has('date')" class="help is-danger">
       The Bill Date is a required field.
@@ -34,69 +33,86 @@
     </div>
   </div>
 
+    <div class="field">
+      <label class="label">Description</label>
+      <p class="control">
+        <input v-validate="'required'" name="description" v-model="gst.description" placeholder="Bill description" type="text" class="input">
+      </p>
+      <div v-show="errors.has('description')" class="help is-danger">
+        {{ errors.first('description') }}
+      </div>
+    </div>
 
-  <div class="field">
-    <label class="label">Client GSTIN</label>
-    <!-- <p class="control">
-                <ClientAddressComboBox></ClientAddressComboBox>
-              </p>
-              <div v-show="errors.has('ClientAddress-select')" class="help is-danger">
-                  {{ errors.first('ClientAddress-select') }}
-                </div> -->
-  </div>
 
-
-  <div class="field">
-    <label class="label">Description</label>
-    <p class="control">
-      <input v-validate="'required'" name="description" placeholder="Bill description" type="text" class="input">
-    </p>
-    <div v-show="errors.has('description')" class="help is-danger">
-      {{ errors.first('description') }}
+    <div class="field is-grouped but">
+      <p class="control buttons">
+        <button class="button is-primary" @click="createPrimary()">Proceed</button>
+      </p>
     </div>
   </div>
-
-
-  <div class="field is-grouped but">
-    <p class="control buttons">
-      <button class="button is-primary" @click="">Create</button>
-    </p>
-  </div>
-</div>
 </template>
 <script>
+import Datepicker from 'vue-bulma-datepicker'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
 import axios from 'axios'
 export default {
   name: 'NewGstEntry',
   components: {
+    Datepicker,
     ClientNameComboBox
   },
   data () {
     return {
       gst: {
         billNo: null,
-        billDate: null,
-        description: null,
-        hid: false,
-        client_id: null
+        billDate: '',
+        description: '',
+        client_id: 0,
+        client_gstin: 0
       }
     }
   },
   created () {
     this.$bus.$on('ClientName', (clientName) => {
-      this.gst.client_id = clientName.id
+      this.gst.client_id = clientName
+    })
+    this.$bus.$on('clientDetails', (clientAddressId) => {
+      this.gst.client_id = clientAddressId.clientId
+      this.gst.client_gstin = clientAddressId.gstin
     })
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/latestBillNo`)
-      .then(response => {
-        this.billNo = response.data
+    this.getgstNo()
+  },
+  methods: {
+    getgstNo () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/latestBillNo`)
+        .then(response => {
+          this.gst.billNo = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    createPrimary () {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/createNew`, {
+        bill_no: this.gst.billNo,
+        bill_date: this.gst.billDate,
+        description: this.gst.description,
+        client_id: this.gst.client_id,
+        gstin: this.gst.client_gstin
       })
-      .catch(e => {
-        this.errors.push(e)
-      })
+        .then(response => {
+          if (response.status === 200) {
+            let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/gst/' + this.gst.billNo
+            this.$router.push(url)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
   }
 }
 </script>
@@ -106,6 +122,7 @@ export default {
     .placement-body {
         padding: 1rem;
     }
+
 }
 
 .field.is-grouped {

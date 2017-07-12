@@ -1,5 +1,5 @@
 <template>
-  <div class="EditClientDetails">
+  <div class="EditClientDetailsDebit">
 
     <div class="column">
       <div class="field">
@@ -43,7 +43,7 @@ import ClientNameComboBox from '@/components/ClientNameComboBox'
 import ClientAddressCombobox from '@/components/ClientAddressCombobox'
 import axios from 'axios'
 export default {
-  name: 'EditClientDetails',
+  name: 'EditClientDetailsDebit',
   data () {
     return {
       hidden: false,
@@ -91,18 +91,20 @@ export default {
         gstin: this.client.gstin
       })
         .then(response => {
+          if (response.status === 200) {
+            this.$bus.$emit('refreshNow', {})
+            this.hidden = false
+          }
         })
         .catch((e) => {
           console.log(e)
         })
-      this.$bus.$emit('refreshNow', {})
-      this.hidden = false
     }
   }
 }
 </script>
 <style lang="scss">
-.EditClientDetails{
+.EditClientDetailsDebit{
   .select.is-fullwidth{
     padding-left: 1rem;
   }

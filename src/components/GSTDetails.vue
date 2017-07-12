@@ -5,7 +5,7 @@
     <!-- Header -->
     <div class="job-header job-section">
       <div class="heading-main">
-        <p class="title is-3 job-title">BGR Shipping Services</p>
+        <p class="title is-3 job-title">{{company_name}}</p>
         <p class="subtitle is-6 company-details">CARGO HANDLING & SHIPPING AGENT
 
         </p>
@@ -13,8 +13,8 @@
       <div class="header-action is-pulled-right">
         <div class="apply-box">
           <!-- re-open and externally allowed -->
-          <a class="button is-success" @click="calculate_confirm()" v-if="!print">Confirm</a>
-          <a class="button is-success" @click="calculate_confirm()" v-if="print">Print</a>
+          <a class="button is-success" @click="calculate_confirm()" v-if="this.mainBill.status!='final'">Confirm</a>
+          <a class="button is-success" @click="printBill()" v-if="this.mainBill.status=='final'">Print</a>
         </div>
       </div>
     </div>
@@ -82,70 +82,70 @@
 
     </div>
 
- <!-- Eligibility Criteria -->
+    <!-- Eligibility Criteria -->
 
     <div class="hiring-process job-section">
       <b class="section-header">Details of Reciever | Billed to:
       </b>
-<div class="box">
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">Client Name</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cname" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
-            </p>
+      <div class="box">
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">Client Name</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cname" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div class="column">
-          <div class="field">
-            <label class="label">Client Address</label>
+          <div class="column">
+            <div class="field">
+              <label class="label">Client Address</label>
               <p class="control">
                 <input v-validate="'required'" id="disabled" v-model="client.caddress" :disabled="validated == 1 ? true : false" name="caddress" placeholder="Client Address" type="text" class="input">
               </p>
             </div>
+          </div>
         </div>
-      </div>
 
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">GST Number</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cgst" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
-            </p>
-            <div v-show="errors.has('gstin')" class="help is-danger">
-              {{ errors.first('gstin') }}
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">GST Number</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cgst" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
+              </p>
+              <div v-show="errors.has('gstin')" class="help is-danger">
+                {{ errors.first('gstin') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="field">
+              <label class="label">State</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cstate" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
+              </p>
             </div>
           </div>
         </div>
 
-        <div class="column">
-          <div class="field">
-            <label class="label">State</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cstate" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">Description</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cdescription" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
-            </p>
-            <div v-show="errors.has('description')" class="help is-danger">
-              {{ errors.first('description') }}
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">Description</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cdescription" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
+              </p>
+              <div v-show="errors.has('description')" class="help is-danger">
+                {{ errors.first('description') }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div>
 
 
       <div class="columns is-multiline">
@@ -200,10 +200,10 @@
         </div>
         <hr>
 
-        <DetailsPanel :billDetails="this.billDetails" :bid="this.bill_id"></DetailsPanel>
+        <DetailsPanel :billDetails="this.billDetails" :bid="this.bill_id" :cid="this.cid" :client_state="this.client.cstate" :company_state="this.company_state"></DetailsPanel>
 
       </div>
-<hr>
+      <hr>
       <div class="tile is-ancestor" id="tile">
         <div class="tile is-vertical is-8" id="bank">
 
@@ -241,7 +241,7 @@
                 </div>
                 <br>
 
-<BankAccountTab :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTab>
+                <BankAccountTab :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTab>
 
                 <div class="field">
                 </div>
@@ -268,7 +268,7 @@
               <div class="field">
                 <label class="label">CGST</label>
                 <p class="control">
-                  <input v-validate="'required'" name="cgst" placeholder="CGST." type="text" class="input">
+                  <input id="input" v-validate="'required'" v-model="cgst" name="cgst" placeholder="CGST." type="text" class="input">
                 </p>
                 <div v-show="errors.has('cgst')" class="help is-danger">
                   {{ errors.first('cgst') }}
@@ -278,7 +278,7 @@
               <div class="field">
                 <label class="label">SGST</label>
                 <p class="control">
-                  <input v-validate="'required'" name="sgst" placeholder="SGST" type="text" class="input">
+                  <input id="input" v-validate="'required'" v-model="sgst" name="sgst" placeholder="SGST" type="text" class="input">
                 </p>
                 <div v-show="errors.has('sgst')" class="help is-danger">
                   {{ errors.first('sgst') }}
@@ -288,7 +288,7 @@
               <div class="field">
                 <label class="label">IGST</label>
                 <p class="control">
-                  <input v-validate="'required'" name="igst" placeholder="IGST" type="text" class="input">
+                  <input id="input" v-validate="'required'" v-model="igst" name="igst" placeholder="IGST" type="text" class="input">
                 </p>
                 <div v-show="errors.has('igst')" class="help is-danger">
                   {{ errors.first('igst') }}
@@ -298,11 +298,9 @@
               <div class="field">
                 <!-- <label class="label">Total GST</label> -->
                 <p class="control">
-                  <input v-validate="'required'" name="total_gst" placeholder="Total GST" type="text" class="input">
+                  <input id="input" v-validate="'required'" v-model="total_gst" name="total_gst" placeholder="Total GST" type="text" class="input">
                 </p>
-
-                <a class="button is-info">Save</a>
-
+                <a class="button is-info" v-if="this.mainBill.status=='final'" @click="calculate_confirm()">Re-Confirm</a>
               </div>
 
               <div class="content">
@@ -362,7 +360,14 @@ export default {
       bankDetails: Object,
       bankDetailsArray: [],
       client_id: null,
-      print: false
+      print: false,
+      company_state: '',
+      cgst: 0,
+      sgst: 0,
+      igst: 0,
+      total_gst: 0,
+      company_name: '',
+      re_confirm: false
     }
   },
   components: {
@@ -384,6 +389,12 @@ export default {
     this.$bus.$on('refreshNow', () => {
       this.getBillDetails(this.bill_id)
     })
+    this.$bus.$on('totalTax', (response) => {
+      this.cgst = response.cgst
+      this.sgst = response.sgst
+      this.igst = response.igst
+      this.total_gst = response.total_gst
+    })
   },
   methods: {
     getBillDetails (id) {
@@ -403,15 +414,15 @@ export default {
           this.bankDetails = response.data.bank
           this.bankDetailsArray = response.data.company.bank
           this.client_id = response.data.client_address.client_id
-          console.log(this.mainBill)
+          this.company_state = response.data.company.state
+          this.company_name = response.data.company.name
         })
         .catch(e => {
           this.errors.push(e)
         })
     },
     calculate_confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/calculateTotalAmount/` + this.bill_id, {
-      })
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/calculateTotalAmount/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.confirm()
@@ -422,8 +433,7 @@ export default {
         })
     },
     confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/confirmBill/` + this.bill_id, {
-      })
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/confirmBill/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.print = true
@@ -431,6 +441,17 @@ export default {
         })
         .catch((e) => {
           console.log(e)
+        })
+    },
+    printBill () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/printGSTBill/` + this.invoice.inv_no)
+        .then(response => {
+          if (response.status === 200) {
+            window.location.href = 'http://localhost:8000/api/company/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/bill/printGSTBill/' + this.invoice.inv_no
+          }
+        })
+        .catch(e => {
+          this.errors.push(e)
         })
     }
   }
@@ -470,15 +491,15 @@ export default {
         padding: 0.4rem 0.4rem 0.4rem 0;
     }
 
-    .column.is-left{
-      padding-left: 2rem;
-      padding-bottom: 0rem;
-      padding-top: 0rem;
+    .column.is-left {
+        padding-left: 2rem;
+        padding-bottom: 0;
+        padding-top: 0;
     }
 
-    .column.is-right{
-      padding-right: 2rem;
-      padding-top: 0rem;
+    .column.is-right {
+        padding-right: 2rem;
+        padding-top: 0;
     }
 
     .job-section {
@@ -515,7 +536,6 @@ export default {
         }
     }
 
-
     .job-description {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
@@ -541,9 +561,9 @@ export default {
 
 }
 
-#editinv{
-  padding-top: 1.5rem;
-  padding-bottom: 0.2rem;
+#editinv {
+    padding-top: 1.5rem;
+    padding-bottom: 0.2rem;
 }
 
 #edit {
@@ -556,29 +576,30 @@ export default {
 }
 
 #disabled {
-  background-color: white;
+    background-color: white;
 }
 
-#mainpage{
-  background-color: #fbf9f9
+#mainpage {
+    background-color: #fbf9f9;
 }
 
 #tile {
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
+    padding: 0.8rem;
 }
 
 #bank {
-  padding-right: 1rem;
+    padding-right: 1rem;
 }
 
 #first {
-  margin-top: 2px;
+    margin-top: 2px;
 }
 
 #left {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#input {
+  text-align: center;
 }
 </style>

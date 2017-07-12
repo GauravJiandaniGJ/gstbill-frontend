@@ -130,7 +130,7 @@ export default {
 
     .main-textbox {
       display: flex;
-      justify-content: flex-start;
+      justify-content: center;
 
     }
 

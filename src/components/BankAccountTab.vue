@@ -46,9 +46,12 @@ export default {
       required: true
     }
   },
+  created () {
+    this.bill_id = this.$route.params.bid
+  },
   methods: {
     bankChange () {
-      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bank_detail_id, {
+      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bill_id, {
         bill_date: null,
         description: null,
         bank_id: this.bank_detail_id,
@@ -58,13 +61,12 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.hidden = false
+            this.$bus.$emit('refreshNow', {})
           }
         })
         .catch((e) => {
           console.log(e)
         })
-      this.$bus.$emit('refreshNow', {})
-      this.hidden = false
     }
   }
 }

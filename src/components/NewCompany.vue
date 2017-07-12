@@ -8,7 +8,7 @@
     <div class="field">
       <label class="label">Name</label>
       <p class="control">
-        <input v-validate="'required'" name="cname" v-model="companys.cname" placeholder="Company Name" type="text" class="input">
+        <input id="input" v-validate="'required'" name="cname" v-model="companys.cname" placeholder="Company Name" type="text" class="input">
       </p>
       <div v-show="errors.has('cname')" class="help is-danger">
         {{ errors.first('cname') }}
@@ -19,7 +19,7 @@
     <div class="field">
       <label class="label">Short Name</label>
       <p class="control">
-        <input v-validate="'required|max:6'" name="short_name" v-model="companys.short_name" placeholder="Company Short Name" type="text" class="input">
+        <input id="input" v-validate="'required|max:6'" name="short_name" v-model="companys.short_name" placeholder="Company Short Name" type="text" class="input">
       </p>
       <div v-show="errors.has('short_name')" class="help is-danger">
         {{ errors.first('short_name') }}
@@ -29,7 +29,7 @@
     <div class="field">
       <label class="label">Address</label>
       <p class="control">
-        <textarea v-validate="'required'" name="address" v-model="companys.address" class="textarea" placeholder="Company Address"></textarea>
+        <textarea id="input" v-validate="'required'" name="address" v-model="companys.address" class="textarea" placeholder="Company Address"></textarea>
       </p>
       <div v-show="errors.has('address')" class="help is-danger">
         {{ errors.first('address') }}
@@ -39,7 +39,7 @@
     <div class="field">
       <label class="label">GST Number</label>
       <p class="control">
-        <input v-validate="'required'" name="gstin" v-model="companys.gstin" placeholder="Company GST Number" type="text" class="input">
+        <input id="input" v-validate="'required'" name="gstin" v-model="companys.gstin" placeholder="Company GST Number" type="text" class="input">
       </p>
       <div v-show="errors.has('gstin')" class="help is-danger">
         {{ errors.first('gstin') }}
@@ -58,7 +58,7 @@
 
 
     <div class="field">
-      <label class="label">Username</label>
+      <label id="input" class="label">Username</label>
       <p class="control">
         <input v-validate="'required|min:8'" name="username" v-model="companys.username" placeholder="Company Username" type="text" class="input">
       </p>
@@ -71,7 +71,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control">
-        <input v-validate="'required|min:8'" name="password" v-model="companys.password" placeholder="Company Password" type="password" class="input">
+        <input id="input" v-validate="'required|min:8'" name="password" v-model="companys.password" placeholder="Company Password" type="password" class="input">
       </p>
       <div v-show="errors.has('password')" class="help is-danger">
         {{ errors.first('password') }}
@@ -162,12 +162,15 @@ export default {
 
   .placement-body {
     padding: 1rem;
+    text-align: center;
   }
 
 }
 
   .field.is-grouped{
     margin-top: 1.2rem;
+
   }
+
 
 </style>

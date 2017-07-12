@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     addBank (id) {
-      console.log(id)
       axios.post(`http://localhost:8000/api/company/addBank/` + id, {
         account_no: this.banks.account_number,
         beneficiary_name: this.banks.beneficiary_name,

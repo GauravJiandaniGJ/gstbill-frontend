@@ -1,19 +1,20 @@
 <template>
 <div class="Details">
-  <div class="details box" id="mainpage">
+  <div class="details box" id="mainpage" @keyup.112="alertNow()">
 
     <!-- Header -->
     <div class="job-header job-section">
       <div class="heading-main">
-        <p class="title is-3 job-title">BGR Shipping Services</p>
+        <p class="title is-3 job-title">{{company_name}}</p>
         <p class="subtitle is-6 company-details">CARGO HANDLING & SHIPPING AGENT
 
         </p>
       </div>
       <div class="header-action is-pulled-right">
         <div class="apply-box">
-          <a class="button is-success" @click="calculate_confirm()" v-if="!print">Confirm</a>
-          <a class="button is-success" v-if="print">Print</a>
+          <!-- re-open and externally allowed -->
+          <a class="button is-success" @click="calculate_confirm()" v-if="this.mainBill.status!='final'">Confirm</a>
+          <a class="button is-success" @click="printDebit()" v-if="this.mainBill.status=='final'">Print</a>
         </div>
       </div>
     </div>
@@ -81,70 +82,70 @@
 
     </div>
 
- <!-- Eligibility Criteria -->
+    <!-- Eligibility Criteria -->
 
     <div class="hiring-process job-section">
       <b class="section-header">Details of Reciever | Billed to:
       </b>
-<div class="box">
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">Client Name</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cname" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
-            </p>
+      <div class="box">
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">Client Name</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cname" :disabled="validated == 1 ? true : false" name="cname" placeholder="Client Name" type="text" class="input">
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div class="column">
-          <div class="field">
-            <label class="label">Client Address</label>
+          <div class="column">
+            <div class="field">
+              <label class="label">Client Address</label>
               <p class="control">
                 <input v-validate="'required'" id="disabled" v-model="client.caddress" :disabled="validated == 1 ? true : false" name="caddress" placeholder="Client Address" type="text" class="input">
               </p>
             </div>
+          </div>
         </div>
-      </div>
 
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">GST Number</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cgst" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
-            </p>
-            <div v-show="errors.has('gstin')" class="help is-danger">
-              {{ errors.first('gstin') }}
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">GST Number</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cgst" :disabled="validated == 1 ? true : false" name="gstin" placeholder="GST Number" type="text" class="input">
+              </p>
+              <div v-show="errors.has('gstin')" class="help is-danger">
+                {{ errors.first('gstin') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="field">
+              <label class="label">State</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cstate" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
+              </p>
             </div>
           </div>
         </div>
 
-        <div class="column">
-          <div class="field">
-            <label class="label">State</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cstate" :disabled="validated == 1 ? true : false" name="State" placeholder="State" type="text" class="input">
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="columns is-multiline">
-        <div class="column">
-          <div class="field">
-            <label class="label">Description</label>
-            <p class="control">
-              <input v-validate="'required'" id="disabled" v-model="client.cdescription" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
-            </p>
-            <div v-show="errors.has('description')" class="help is-danger">
-              {{ errors.first('description') }}
+        <div class="columns is-multiline">
+          <div class="column">
+            <div class="field">
+              <label class="label">Description</label>
+              <p class="control">
+                <input v-validate="'required'" id="disabled" v-model="client.cdescription" :disabled="validated == 1 ? true : false" name="description" placeholder="Description" type="text" class="input">
+              </p>
+              <div v-show="errors.has('description')" class="help is-danger">
+                {{ errors.first('description') }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div>
 
 
       <div class="columns is-multiline">
@@ -199,10 +200,10 @@
         </div>
         <hr>
 
-        <DetailsPanel :billDetails="this.billDetails"></DetailsPanel>
+        <DetailsPanelDebit :bid="this.bill_id" :cid="this.cid"></DetailsPanelDebit>
 
       </div>
-<hr>
+      <hr>
       <div class="tile is-ancestor" id="tile">
         <div class="tile is-vertical is-8" id="bank">
 
@@ -240,7 +241,7 @@
                 </div>
                 <br>
 
-<BankAccountTabDebit :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTabDebit>
+                <BankAccountTabDebit :bankDetailArray="this.bankDetailsArray" :bill="this.bill_id"></BankAccountTabDebit>
 
                 <div class="field">
                 </div>
@@ -267,16 +268,14 @@
               <div class="field">
                 <label class="label">Total Amount</label>
                 <p class="control">
-                  <input v-validate="'required'" name="total" placeholder="Total" type="text" class="input">
+                  <input id="input" v-validate="'required'" v-model="total_amt" name="total_amt" placeholder="Total GST" type="text" class="input">
                 </p>
-                <div v-show="errors.has('total')" class="help is-danger">
-                  {{ errors.first('total') }}
+                <div v-show="errors.has('total_amt')" class="help is-danger">
+                  {{ errors.first('total_amt') }}
                 </div>
               </div>
+              <a class="button is-info" v-if="this.mainBill.status=='final'" @click="calculate_confirm()">Re-Confirm</a>
 
-              <div class="content">
-                <!-- Content -->
-              </div>
             </div>
           </article>
         </div>
@@ -292,7 +291,7 @@
 <script>
 import StateCombobox from '@/components/StateCombobox'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
-import DetailsPanel from '@/components/DetailsPanel'
+import DetailsPanelDebit from '@/components/DetailsPanelDebit'
 import BankAccountsCombobox from '@/components/BankAccountsCombobox'
 import EditInvoiceDetails from '@/components/EditInvoiceDetails'
 import ClientAddressCombobox from '@/components/ClientAddressCombobox'
@@ -330,13 +329,20 @@ export default {
       },
       bankDetails: Object,
       bankDetailsArray: [],
-      print: false
+      client_id: null,
+      print: false,
+      company_state: '',
+      cgst: 0,
+      sgst: 0,
+      igst: 0,
+      total_amt: 0,
+      company_name: ''
     }
   },
   components: {
     StateCombobox,
     ClientNameComboBox,
-    DetailsPanel,
+    DetailsPanelDebit,
     BankAccountsCombobox,
     EditInvoiceDetails,
     ClientAddressCombobox,
@@ -352,6 +358,13 @@ export default {
     this.$bus.$on('refreshNow', () => {
       this.getBillDetails(this.bill_id)
     })
+    this.$bus.$on('totalTax', (response) => {
+      this.total_amt = response.total_amt
+    })
+    this.$bus.$on('refreshForDebitDetails', () => {
+      this.getBillDetails(this.bill_id)
+    })
+    // window.addEventListener('keyup', this.alertNow())
   },
   methods: {
     getBillDetails (id) {
@@ -370,15 +383,16 @@ export default {
           this.billDetails = response.data.bill_details
           this.bankDetails = response.data.bank
           this.bankDetailsArray = response.data.company.bank
-          console.log(this.mainBill)
+          this.client_id = response.data.client_address.client_id
+          this.company_state = response.data.company.state
+          this.company_name = response.data.company.name
         })
         .catch(e => {
           this.errors.push(e)
         })
     },
     calculate_confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {
-      })
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.confirm()
@@ -389,8 +403,7 @@ export default {
         })
     },
     confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {
-      })
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.print = true
@@ -399,6 +412,20 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+    },
+    printDebit () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/printDebit/` + this.invoice.inv_no)
+        .then(response => {
+          if (response.status === 200) {
+            window.location.href = 'http://localhost:8000/api/company/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/printDebit/' + this.invoice.inv_no
+          }
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    alertNow () {
+      alert('hi')
     }
   }
 }
@@ -437,15 +464,15 @@ export default {
         padding: 0.4rem 0.4rem 0.4rem 0;
     }
 
-    .column.is-left{
-      padding-left: 2rem;
-      padding-bottom: 0rem;
-      padding-top: 0rem;
+    .column.is-left {
+        padding-left: 2rem;
+        padding-bottom: 0;
+        padding-top: 0;
     }
 
-    .column.is-right{
-      padding-right: 2rem;
-      padding-top: 0rem;
+    .column.is-right {
+        padding-right: 2rem;
+        padding-top: 0;
     }
 
     .job-section {
@@ -482,7 +509,6 @@ export default {
         }
     }
 
-
     .job-description {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
@@ -508,9 +534,9 @@ export default {
 
 }
 
-#editinv{
-  padding-top: 1.5rem;
-  padding-bottom: 0.2rem;
+#editinv {
+    padding-top: 1.5rem;
+    padding-bottom: 0.2rem;
 }
 
 #edit {
@@ -523,29 +549,30 @@ export default {
 }
 
 #disabled {
-  background-color: white;
+    background-color: white;
 }
 
-#mainpage{
-  background-color: #fbf9f9
+#mainpage {
+    background-color: #fbf9f9;
 }
 
 #tile {
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
+    padding: 0.8rem;
 }
 
 #bank {
-  padding-right: 1rem;
+    padding-right: 1rem;
 }
 
 #first {
-  margin-top: 2px;
+    margin-top: 2px;
 }
 
 #left {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#input {
+  text-align: center
 }
 </style>
