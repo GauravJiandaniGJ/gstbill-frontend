@@ -24,14 +24,6 @@
 <div class="column only">
 <div class="field">
   <p class="control">
-
-  </p>
-</div>
-</div>
-
-<div class="column only">
-<div class="field">
-  <p class="control">
     <input v-validate="'required'" name="qty" v-model="this.total_qty" placeholder="Qty" type="text" class="input">
   </p>
 </div>
@@ -86,7 +78,6 @@ export default {
     panel_details: {
       id: null,
       name_of_product: '',
-      service_code: '',
       qty: null,
       rate: null,
       total_amount: null
@@ -119,7 +110,6 @@ export default {
       this.hidden = true
       axios.post(`http://localhost:8000/api/addDebitDetails/` + this.bid, {
         name_of_product: this.panel_details.name_of_product,
-        service_code: this.panel_details.service_code,
         rate: this.panel_details.rate,
         qty: this.panel_details.qty,
         total_amount: this.panel_details.total_amount,
@@ -129,7 +119,6 @@ export default {
           if (response.status === 200) {
             this.panel_details.id = response.data.id
             this.panel_details.name_of_product = response.data.name_of_product
-            this.panel_details.service_code = response.data.service_code
             this.panel_details.rate = response.data.rate
             this.panel_details.qty = response.data.qty
             this.panel_details.total_amount = response.data.total_amount

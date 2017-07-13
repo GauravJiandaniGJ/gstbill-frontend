@@ -437,6 +437,7 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.print = true
+            this.getBillDetails(this.bill_id)
           }
         })
         .catch((e) => {

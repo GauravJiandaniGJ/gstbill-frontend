@@ -14,18 +14,6 @@
       </div>
     </div>
 
-
-    <div class="column only">
-      <div class="field">
-        <p class="control">
-          <input v-validate="'required'" name="service_code" v-model="scode=panel.service_code" placeholder="Service Code" type="text" class="input">
-        </p>
-        <div v-show="errors.has('service_code')" class="help is-danger">
-          {{ errors.first('service_code') }}
-        </div>
-      </div>
-    </div>
-
     <div class="column only">
       <div class="field">
         <p class="control">
@@ -35,7 +23,7 @@
     </div>
 
     <!-- <pre v-model="this.rate=this.content.rate" v-if="this.content" hidden></pre> -->
-    <div class="column only">
+    <div class="column only" id="control">
       <div class="field">
         <p class="control">
           <input v-validate="'required'" name="rate" v-model="rate=panel.rate" placeholder="Rate" type="text" class="input">
@@ -46,9 +34,9 @@
       </div>
     </div>
 
-    <div class="column only">
+    <div class="column only" id="control">
       <div class="field">
-        <p class="control">
+        <p class="control" id="control">
           <input readonly="true" v-validate="'required'" name="total" v-model="this.total" placeholder="Total" type="text" class="input">
         </p>
         <div v-show="errors.has('total')" class="help is-danger">
@@ -58,7 +46,7 @@
     </div>
     <div class="column" id="only">
       <div class="field">
-        <p class="control">
+        <p class="control" id="control">
           <a class="button is-danger is-outlined" v-if="panel.name_of_product!=null" @click="deleteDetail(panel.id)">Remove</a>
         </p>
       </div>
@@ -73,7 +61,7 @@
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="product_name" @keyup.114="f3()" @keyup.115="f4()" @keyup.116="f5()" @keyup.117="f6()" @keyup.118="f7()" @keyup.119="f8()" @keyup.120="f9()" @keyup.121="f10()" v-model="description" placeholder="Product Name" type="text" class="input">
+          <input v-validate="'required'" name="product_name" @keyup.alt.114="f3()" @keyup.alt.115="f4()" @keyup.alt.116="f5()" @keyup.alt.117="f6()" @keyup.alt.118="f7()" @keyup.alt.119="f8()" @keyup.alt.120="f9()" @keyup.alt.121="f10()" @keyup.esc="shortcuts" v-model="description" placeholder="Product Name" type="text" class="input">
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -81,18 +69,7 @@
       </div>
     </div>
 
-    <div class="column only">
-      <div class="field">
-        <p class="control">
-          <input v-validate="'required'" name="service_code" v-model="scode" placeholder="Service Code" type="text" class="input">
-        </p>
-        <div v-show="errors.has('service_code')" class="help is-danger">
-          {{ errors.first('service_code') }}
-        </div>
-      </div>
-    </div>
-
-    <div class="column only">
+    <div class="column only" id="control">
       <div class="field">
         <p class="control">
           <input v-validate="" name="qty" v-model="qty" placeholder="Qty" type="text" class="input">
@@ -101,7 +78,7 @@
     </div>
 
     <!-- <pre v-model="this.rate=this.content.rate" v-if="this.content" hidden></pre> -->
-    <div class="column only">
+    <div class="column only" id="control">
       <div class="field">
         <p class="control">
           <input v-validate="'required'" name="rate" v-model="rate" placeholder="Rate" type="text" class="input">
@@ -112,7 +89,7 @@
       </div>
     </div>
 
-    <div class="column only">
+    <div class="column only" id="control">
       <div class="field">
         <p class="control">
           <input readonly="true" v-validate="'required'" name="total" v-model="this.total" placeholder="Total" type="text" class="input">
@@ -132,11 +109,14 @@
     </div>
   </div>
 
+  <ShortcutShowModal @close="shortcut=false" v-if="shortcut"></ShortcutShowModal>
+
 
 </div>
 </template>
 <script>
 import ShortcutCombobox from '@/components/ShortcutCombobox'
+import ShortcutShowModal from '@/components/ShortcutShowModal'
 import axios from 'axios'
 export default {
   name: 'PanelDetailsDebit',
@@ -150,7 +130,6 @@ export default {
   data: () => ({
     addoredit: false,
     description: '',
-    scode: null,
     qty: 0,
     rate: 0,
     content: {},
@@ -160,10 +139,12 @@ export default {
     cid: null,
     yid: null,
     mid: null,
-    bid: null
+    bid: null,
+    shortcut: false
   }),
   components: {
-    ShortcutCombobox
+    ShortcutCombobox,
+    ShortcutShowModal
   },
   props: {
     panel: {
@@ -173,7 +154,6 @@ export default {
   methods: {
     f3 () {
       this.description = 'Phyto Certificate Charges'
-      this.scode = 24
       if (parseInt(this.cid) === 1) {
         this.rate = 500
       }
@@ -184,50 +164,45 @@ export default {
     },
     f4 () {
       this.description = 'Shipping Bill Noting Charges'
-      this.scode = 25
       this.rate = 100
       this.qty = 1
     },
     f5 () {
       this.description = 'Port and Customs Documentation'
-      this.scode = 26
       this.rate = 1000
       this.qty = 1
     },
     f6 () {
       this.description = 'Transportation Charges'
-      this.scode = 27
       this.rate = 22500
       this.qty = 1
     },
     f7 () {
       this.description = 'Lift On/Lift Off Charges'
-      this.scode = 28
       this.rate = 1400
       this.qty = 1
     },
     f8 () {
       this.description = 'Misc. Expenses for obtaining FSSAI'
-      this.scode = 29
       this.rate = 1000
       this.qty = 1
     },
     f9 () {
       this.description = 'FSSAI Fees'
-      this.scode = 30
       this.rate = 1000
       this.qty = 1
     },
     f10 () {
       this.description = 'Misc. Expenses for clearance at Customs/Phyto'
-      this.scode = 31
       this.rate = 1000
       this.qty = 1
+    },
+    shortcuts () {
+      this.shortcut = true
     },
     saveDetail (id) {
       axios.patch(`http://localhost:8000/api/editDebitDetails/` + this.bid + `/` + id, {
         name_of_product: this.description,
-        service_code: this.scode,
         rate: this.rate,
         qty: this.qty,
         total_amount: this.total
@@ -268,6 +243,10 @@ export default {
 }
 #save {
   padding-left: 1.1rem;
-  padding-right: 1.1rem;
+  padding-right: 0.6rem;
+}
+
+#control {
+  padding-right: 0rem;
 }
 </style>

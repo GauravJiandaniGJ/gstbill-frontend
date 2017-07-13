@@ -56,29 +56,6 @@
 
     <!-- state combobox-->
 
-
-    <div class="field">
-      <label id="input" class="label">Username</label>
-      <p class="control">
-        <input v-validate="'required|min:8'" name="username" v-model="companys.username" placeholder="Company Username" type="text" class="input">
-      </p>
-      <div v-show="errors.has('username')" class="help is-danger">
-        {{ errors.first('username') }}
-      </div>
-    </div>
-
-
-    <div class="field">
-      <label class="label">Password</label>
-      <p class="control">
-        <input id="input" v-validate="'required|min:8'" name="password" v-model="companys.password" placeholder="Company Password" type="password" class="input">
-      </p>
-      <div v-show="errors.has('password')" class="help is-danger">
-        {{ errors.first('password') }}
-      </div>
-    </div>
-
-
     <div class="field is-grouped">
       <p class="control buttons">
         <button class="button is-primary" @click="createCompany">Save</button>
@@ -103,8 +80,8 @@ export default {
         short_name: '',
         address: '',
         gstin: '',
-        username: '',
-        password: '',
+        username: 'helloworld',
+        password: 'helloworld',
         state: ''
       }
     }

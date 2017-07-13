@@ -73,7 +73,7 @@
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="product_name" @keyup.113="f2()" v-model="description" placeholder="Product Name" type="text" class="input">
+          <input v-validate="'required'" name="product_name" @keyup.alt.113="f2()" v-model="description" placeholder="Product Name" type="text" class="input">
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -184,8 +184,8 @@ export default {
     fetchSelectedOptionFromDB () {
     },
     f2 () {
-      this.description = 'Cargo Handling Charges'
-      this.scode = 23
+      this.description = 'Container Handling Charges'
+      this.scode = 996711
       if (parseInt(this.cid) === 1) {
         this.rate = 1350
       }
@@ -206,7 +206,7 @@ export default {
           if (response.status === 200) {
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshForBillDetails')
+            this.$bus.$emit('refreshNow')
           }
         })
         .catch((e) => {
@@ -220,7 +220,7 @@ export default {
           if (response.status === 204 || response.status === 200) {
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshForBillDetails')
+            this.$bus.$emit('refreshNow')
           }
         })
     }

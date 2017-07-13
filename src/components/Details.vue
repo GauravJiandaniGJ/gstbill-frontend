@@ -161,14 +161,8 @@
         <br>
         <div class="columns is-multiline" id="content">
           <div class="column is-5">
-            <div class="fieG;ld">
-              <label class="label">Name of Product / Service</label>
-            </div>
-          </div>
-
-          <div class="column">
             <div class="field">
-              <label class="label">Service code</label>
+              <label class="label">Name of Product / Service</label>
             </div>
           </div>
 
@@ -395,6 +389,7 @@ export default {
       axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
+            this.print = true
             this.confirm()
           }
         })
@@ -406,7 +401,7 @@ export default {
       axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
-            this.print = true
+            this.getBillDetails(this.bill_id)
           }
         })
         .catch((e) => {

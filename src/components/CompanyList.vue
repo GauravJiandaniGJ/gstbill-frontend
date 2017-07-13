@@ -27,29 +27,6 @@
         </div>
       </div>
 
-      <div class="column is-one-third">
-        <div class="card">
-          <div class="card-header">
-            <p class="card-header-title">
-              Temporary
-            </p>
-            <span>
-                <span class="tag is-success">Tem</span>
-            </span>
-          </div>
-          <div class="card-content">
-            <div class="content">
-              State:Temporary&nbsp;<b></b><br> GST:Temporary&nbsp;
-              <b></b>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <router-link :to="{ name: 'CompanyDashboard'}" class="card-footer-item">Enter</router-link>
-          </footer>
-        </div>
-      </div>
-
-
     </div>
   </div>
 </div>

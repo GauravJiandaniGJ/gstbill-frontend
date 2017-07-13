@@ -11,7 +11,7 @@
   			<span class="text title is-6">{{dbill.description}}</span>
   			<span class="text title is-6">{{dbill.final_amount}}</span>
   			<a class="button is-danger is-outlined a-tag login" @click="deleteDebit(dbill.debit_no)">Del</a>
-  			<a class="button is-success is-outlined a-tag login" @click="diffPage(dbill.bill_no)">View</a>
+  			<a class="button is-success is-outlined a-tag login" @click="diffPage(dbill.debit_no)">View</a>
   		</div>
   		<div class="box" v-if="nodbtbill">
   			<p class="title">No Debit Bills Pending! You are Awesome!</p>
