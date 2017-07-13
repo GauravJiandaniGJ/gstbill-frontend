@@ -13,30 +13,30 @@
             <div class="companywise-body">
               <div class="one-company">
                 <input type="hidden">
-                <span class="text title is-5">Alt + F2</span>&nbsp&nbsp&nbsp
-                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
-                <span class="text title is-5">Cargo Handling Charges</span>&nbsp&nbsp&nbsp
-              </div>
-              <hr>
-              <div class="one-company">
-                <input type="hidden">
-                <span class="text title is-5">Alt + F3</span>&nbsp&nbsp&nbsp
-                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
-                <span class="text title is-5">Phyto Certificate Charges</span>&nbsp&nbsp&nbsp
-              </div>
-              <hr>
-              <div class="one-company">
-                <input type="hidden">
-                <span class="text title is-5">Alt + F4</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Alt + F1</span>&nbsp&nbsp&nbsp
                 <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
                 <span class="text title is-5">Shipping Bill Noting Charges</span>&nbsp&nbsp&nbsp
               </div>
               <hr>
               <div class="one-company">
                 <input type="hidden">
-                <span class="text title is-5">Alt + F5</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Alt + F2</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Container Handling Charges</span>&nbsp&nbsp&nbsp
+              </div>
+              <hr>
+              <div class="one-company">
+                <input type="hidden">
+                <span class="text title is-5">Alt + F3</span>&nbsp&nbsp&nbsp
                 <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
                 <span class="text title is-5">Port and Customs Documentation</span>&nbsp&nbsp&nbsp
+              </div>
+              <hr>
+              <div class="one-company">
+                <input type="hidden">
+                <span class="text title is-5">Alt + F5</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Phyto Certificate Charges</span>&nbsp&nbsp&nbsp
               </div>
               <hr>
               <div class="one-company">
@@ -74,8 +74,20 @@
                 <span class="text title is-5">Misc. Expenses for clearance at Customs/Phyto</span>&nbsp&nbsp&nbsp
               </div>
               <hr>
-
-
+              <div class="one-company">
+                <input type="hidden">
+                <span class="text title is-5">Alt + F11</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Courier Charges</span>&nbsp&nbsp&nbsp
+              </div>
+              <hr>
+              <div class="one-company">
+                <input type="hidden">
+                <span class="text title is-5">Alt + F12</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">:</span>&nbsp&nbsp&nbsp
+                <span class="text title is-5">Weighment Charges</span>&nbsp&nbsp&nbsp
+              </div>
+              <hr>
             </div>
 
           </div>

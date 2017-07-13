@@ -47,11 +47,14 @@ export default {
     }
   },
   created () {
-    this.bill_id = this.$route.params.bid
+    this.cid = this.$route.params.cid
+    this.yid = this.$route.params.yid
+    this.mid = this.$route.params.mid
+    this.bid = this.$route.params.bid
   },
   methods: {
     bankChange () {
-      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bill_id, {
+      axios.patch(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/updatePrimary/` + this.bill_id, {
         bill_date: null,
         description: null,
         bank_id: this.bank_detail_id,

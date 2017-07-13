@@ -1,6 +1,6 @@
 <template>
 <div class="Details">
-  <div class="details box" id="mainpage" @keyup.112="alertNow()">
+  <div class="details box" id="mainpage">
 
     <!-- Header -->
     <div class="job-header job-section">
@@ -418,9 +418,6 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
-    },
-    alertNow () {
-      alert('hi')
     }
   }
 }

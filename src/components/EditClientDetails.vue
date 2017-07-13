@@ -53,14 +53,16 @@ export default {
       cgstin: '',
       cstate: '',
       cdescription: '',
-      cid: null,
       address_id: null,
       client: {
         cid: null,
         gstin: '',
         description: ''
       },
-      bid: null
+      bid: null,
+      yid: null,
+      mid: null,
+      cid: null
     }
   },
   components: {
@@ -81,10 +83,13 @@ export default {
       this.client.cid = response.clientId
       this.client.gstin = response.gstin
     })
+    this.mid = this.$route.params.mid
+    this.yid = this.$route.params.yid
+    this.cid = this.$route.params.cid
   },
   methods: {
     updateClient () {
-      axios.patch(`http://localhost:8000/api/updatePrimary/bill/` + this.bid, {
+      axios.patch(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/updatePrimary/` + this.bid, {
         bill_date: null,
         bank_id: null,
         description: this.client.description,

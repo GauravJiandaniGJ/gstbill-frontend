@@ -68,38 +68,44 @@ export default {
 </script>
 <style lang="scss">
 .PendingGstBills {
-	max-width: 100%;
 
-	.companywise {
-		padding: 1rem;
-		border-bottom: solid 1px #ddd;
-	}
+  	max-width: 100%;
+    padding-left: 0rem;
+    padding-right: 0rem;
 
-	.companywise-body {
-		padding: 0.2rem;
-	}
+  	.company-wise {
+  		padding: 1rem;
+  		border-bottom: solid 1px #ddd;
+  	}
 
-	.one-company {
-		width: 100%;
-		padding: 0.7rem;
-		border-bottom: solid 1px #ddd;
-		.text {
-			padding-left: 7px;
-		}
-	}
+  	.companywise-body {
+  		padding: 0.2rem;
+  	}
 
-	.login {
-		margin-left: 0.3rem;
-	}
+  	.one-company {
+  		width: 100%;
+  		padding: 0.7rem;
+      padding-bottom: 2.2rem;
+      padding-left: 0rem;
+      padding-right: 0rem;
+  		border-bottom: solid 1px #ddd;
+  		.text {
+  			padding-left: 7px;
+  		}
+  	}
 
-	.a-tag {
-		float: right;
-	}
+  	.login {
+  		margin-left: 0.3rem;
+  	}
 
-	.allow-btn {
-		padding-left: 1rem;
-		padding-right: 1rem;
-	}
+  	.a-tag {
+  		float: right;
+  	}
+
+  	.allow-btn {
+  		padding-left: 1rem;
+  		padding-right: 1rem;
+  	}
 
 }
 </style>

@@ -85,6 +85,8 @@ export default {
     addoredit: false,
     bid: null,
     cid: null,
+    mid: null,
+    yid: null,
     panel_details: {
       id: null,
       name_of_product: '',
@@ -107,6 +109,9 @@ export default {
   },
   created () {
     this.bid = this.$route.params.bid
+    this.cid = this.$route.params.cid
+    this.mid = this.$route.params.mid
+    this.yid = this.$route.params.yid
     this.getTotalQuantity(this.bid)
     this.getTotalAmount(this.bid)
     this.getEntireBillDetails()
@@ -123,7 +128,7 @@ export default {
   methods: {
     addNew () {
       this.hidden = true
-      axios.post(`http://localhost:8000/api/addBillDetails/` + this.bid, {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/addBillDetails/` + this.bid, {
         name_of_product: this.panel_details.name_of_product,
         service_code: this.panel_details.service_code,
         rate: this.panel_details.rate,
@@ -147,7 +152,7 @@ export default {
         })
     },
     getTotalQuantity (id) {
-      let url = `http://localhost:8000/api/bill/quantityTotal/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/quantityTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_qty = response.data
@@ -157,7 +162,7 @@ export default {
         })
     },
     getTotalAmount (id) {
-      let url = `http://localhost:8000/api/bill/amountTotal/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/amountTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_amt = response.data
@@ -168,7 +173,7 @@ export default {
         })
     },
     getEntireBillDetails () {
-      let url = `http://localhost:8000/api/getBillDetails/bill/` + this.bid
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/getBillDetails/` + this.bid
       axios.get(url)
         .then(response => {
           this.panels = response.data

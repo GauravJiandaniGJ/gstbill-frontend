@@ -1,5 +1,5 @@
 <template>
-<div class="box FullListFill">
+<div class="box FullListFill" id="fulllist">
 
 	<div class="companywise-body">
     <div class="one-company" v-if="!nodbtbill" v-for="gbill in gbills" id="onecompany">
@@ -69,45 +69,56 @@ export default {
 <style lang="scss">
 .FullListDebitBill {
 
-	max-width: 100%;
+  	max-width: 100%;
+    padding-left: 0rem;
+    padding-right: 0rem;
 
-	.company-wise {
-		padding: 1rem;
-		border-bottom: solid 1px #ddd;
-	}
+  	.company-wise {
+  		padding: 1rem;
+  		border-bottom: solid 1px #ddd;
+  	}
 
-	.companywise-body {
-		padding: 0.2rem;
-	}
+  	.companywise-body {
+  		padding: 0.2rem;
+  	}
 
-	.one-company {
-		width: 100%;
-		padding: 0.7rem;
-		border-bottom: solid 1px #ddd;
-		.text {
-			padding-left: 7px;
-		}
-	}
+  	.one-company {
+  		width: 100%;
+  		padding: 0.7rem;
+      padding-bottom: 2.2rem;
+      padding-left: 0rem;
+      padding-right: 0rem;
+  		border-bottom: solid 1px #ddd;
+  		.text {
+  			padding-left: 7px;
+  		}
+  	}
 
-	.login {
-		margin-left: 0.3rem;
-	}
+  	.login {
+  		margin-left: 0.3rem;
+  	}
 
-	.a-tag {
-		float: right;
-	}
+  	.a-tag {
+  		float: right;
+  	}
 
-	.allow-btn {
-		padding-left: 1rem;
-		padding-right: 1rem;
-	}
+  	.allow-btn {
+  		padding-left: 1rem;
+  		padding-right: 1rem;
+  	}
 
 }
 
 #onecompany {
     width: 100%;
     padding: 0.7rem;
+		padding-left: 0rem;
+		padding-right: 0rem;
     border-bottom: solid 1px #ddd
+}
+
+#fulllist {
+
 }
 
 </style>

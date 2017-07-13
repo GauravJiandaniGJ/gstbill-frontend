@@ -69,6 +69,8 @@ export default {
 .FullListDebitBill {
 
 	max-width: 100%;
+  padding-left: 0rem;
+  padding-right: 0rem;
 
 	.company-wise {
 		padding: 1rem;
@@ -82,6 +84,9 @@ export default {
 	.one-company {
 		width: 100%;
 		padding: 0.7rem;
+    padding-bottom: 2.2rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
 		border-bottom: solid 1px #ddd;
 		.text {
 			padding-left: 7px;

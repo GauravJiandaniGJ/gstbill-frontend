@@ -21,7 +21,7 @@
 
       <div class="column">
         <div class="field">
-          <label class="label">To Date</label>
+          <label class="label">Before Date</label>
           <p class="control is-fullwidth"></p>
           <Datepicker :config="{ wrap: true }" readonly name="statement_to_date" v-model="statement_to_date">
             <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
@@ -43,7 +43,7 @@
           </select>
         </span>
 
-    <a class="button is-info" @click="buildPDF()">Generate</a>
+    <a class="button is-info" @click="buildStatement()">Generate</a>
 
   </div>
 
@@ -69,7 +69,7 @@
 
       <div class="column">
         <div class="field">
-          <label class="label">To Date</label>
+          <label class="label">Before Date</label>
           <p class="control is-fullwidth"></p>
           <Datepicker :config="{ wrap: true }" readonly name="clientwise_to_date" v-model="clientwise_to_date">
             <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
@@ -131,17 +131,6 @@ export default {
     this.getClientList()
   },
   methods: {
-    // getClientList () {
-    //   let url =
-    //   axios.get(url)
-    //     .then(response => {
-    //       this.banks = response.data
-    //       console.log(this.banks)
-    //     })
-    //     .catch(e => {
-    //       this.errors.push(e)
-    //     })
-    // },
     getStatementList () {
       let url = `http://localhost:8000/api/statement/listOfStatement`
       axios.get(url)
@@ -162,8 +151,15 @@ export default {
           this.errors.push(e)
         })
     },
-    builPDF () {
-      // this.statement_id
+    buildStatement () {
+      let url = `http://127.0.0.1:8000/api/statement/generateStatement/` + this.statement_from_date + `/` + this.statement_to_date + `/` + this.cid + `/` + this.statement_id
+      axios.get(url)
+        .then(response => {
+          window.location.href = 'http://127.0.0.1:8000/api/statement/generateStatement/' + this.statement_from_date + '/' + this.statement_to_date + '/' + this.cid + '/' + this.statement_id
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
     },
     getClientList () {
       axios.get(`http://localhost:8000/api/client/clientList/` + this.cid)

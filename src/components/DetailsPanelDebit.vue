@@ -75,6 +75,8 @@ export default {
     addoredit: false,
     bid: null,
     cid: null,
+    mid: null,
+    yid: null,
     panel_details: {
       id: null,
       name_of_product: '',
@@ -92,6 +94,9 @@ export default {
   },
   created () {
     this.bid = this.$route.params.bid
+    this.cid = this.$route.params.cid
+    this.mid = this.$route.params.mid
+    this.yid = this.$route.params.yid
     this.getTotalQuantity(this.bid)
     this.getTotalAmount(this.bid)
     this.getEntireDebitDetails()
@@ -108,7 +113,7 @@ export default {
   methods: {
     addNew () {
       this.hidden = true
-      axios.post(`http://localhost:8000/api/addDebitDetails/` + this.bid, {
+      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/addDebitDetails/` + this.bid, {
         name_of_product: this.panel_details.name_of_product,
         rate: this.panel_details.rate,
         qty: this.panel_details.qty,
@@ -130,7 +135,7 @@ export default {
         })
     },
     getTotalQuantity (id) {
-      let url = `http://localhost:8000/api/quantityTotal/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/quantityTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_qty = response.data
@@ -140,7 +145,7 @@ export default {
         })
     },
     getTotalAmount (id) {
-      let url = `http://localhost:8000/api/amountTotal/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/amountTotal/` + id
       axios.get(url)
         .then(response => {
           this.total_amt = response.data
@@ -151,7 +156,7 @@ export default {
         })
     },
     getEntireDebitDetails () {
-      let url = `http://localhost:8000/api/getDebitDetails/` + this.bid
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/getDebitDetails/` + this.bid
       axios.get(url)
         .then(response => {
           this.panels = response.data

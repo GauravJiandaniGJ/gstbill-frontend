@@ -145,8 +145,6 @@ export default {
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
     this.bid = this.$route.params.bid
-    this.fetchOptionsFromDB()
-    this.fetchSelectedOptionFromDB()
   },
   data: () => ({
     addoredit: false,
@@ -172,17 +170,6 @@ export default {
     }
   },
   methods: {
-    fetchOptionsFromDB () {
-      axios.get(`http://localhost:8000/api/shortcut/index`)
-        .then(response => {
-          this.options = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-    },
-    fetchSelectedOptionFromDB () {
-    },
     f2 () {
       this.description = 'Container Handling Charges'
       this.scode = 996711
@@ -190,12 +177,12 @@ export default {
         this.rate = 1350
       }
       if (parseInt(this.cid) === 2) {
-        this.rate = 2250
+        this.rate = 2500
       }
       this.qty = 1
     },
     saveDetail (id) {
-      axios.patch(`http://localhost:8000/api/editBillDetails/bill/` + this.bid + `/` + id, {
+      axios.patch(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/editBillDetails/` + this.bid + `/` + id, {
         name_of_product: this.description,
         service_code: this.scode,
         rate: this.rate,
@@ -204,9 +191,9 @@ export default {
       })
         .then(response => {
           if (response.status === 200) {
+            this.$bus.$emit('refreshForBillDetails')
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshNow')
           }
         })
         .catch((e) => {
@@ -214,13 +201,13 @@ export default {
         })
     },
     deleteDetail (id) {
-      let url = `http://localhost:8000/api/deleteBillDetail/bill/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
       axios.delete(url)
         .then(response => {
           if (response.status === 204 || response.status === 200) {
+            this.$bus.$emit('refreshForBillDetails')
             this.$bus.$emit('refreshForQuantity')
             this.$bus.$emit('refreshForTotal')
-            this.$bus.$emit('refreshNow')
           }
         })
     }
