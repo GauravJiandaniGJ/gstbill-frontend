@@ -52,8 +52,7 @@ export default {
       })
     },
     deleteBill (id) {
-      console.log(id)
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillPrimary/` + id
       axios.delete(url)
         .then(response => {
           this.getFullList()

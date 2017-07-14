@@ -44,11 +44,11 @@ export default {
   },
   methods: {
     deleteDebit (id) {
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitDetail/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitPrimary/` + id
       axios.delete(url)
-      .then(response => {
-        this.getDebitList()
-      })
+        .then(response => {
+          this.getDebitList()
+        })
     },
     getDebitList () {
       axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/debitListPending`)

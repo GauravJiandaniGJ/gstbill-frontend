@@ -53,13 +53,10 @@ export default {
         })
     },
     deleteBill (id) {
-      console.log(id)
       let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillPrimary/` + id
       axios.delete(url)
         .then(response => {
-          if (response.status === 204 || response.status === 200) {
-            this.getFullList()
-          }
+          this.getFullList()
         })
     },
     diffPage (id) {
