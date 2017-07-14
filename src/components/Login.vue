@@ -1,62 +1,63 @@
 <template lang="html">
-<div class="body">
-Hello
-    <section class="hero is-fullheight is-dark">
-      <div class="hero-head">
-        <header class="nav">
-          <div class="container">
-            <div class="nav-left">
-              <a class="nav-item">
-                DA-IICT
-              </a>
-            </div>
+<div class="main_div">
+  <div class="body"></div>
+  		<div class="grad"></div>
+  		<div class="header">
+  			<div>GST<span>Billing</span></div>
+  		</div>
+  		<br>
+  		<div class="login">
+  				<input type="text" placeholder="Email" name="email" size="35" v-model="email" ><br>
 
+  				<input type="password" placeholder="Password" name="password" v-model="password" >
+					<br><br>
 
-            <div class="nav-right nav-menu">
-              <form @submit.prevent="login" class="nav-item">
-                <!-- input fields -->
-                <div class="field">
-                  <p class="control has-icons-left">
-                    <input name="email"  class="input is-small" type="text" placeholder="Email">
-                    <span class="icon is-small is-left">
-                      <i class="fa fa-envelope"></i>
-                    </span>
+  				<input type="button" value="Login" @click="authenticate()">
+  		</div>
 
-                  </p>
-                </div>
-
-                <div class="field">
-                  <p class="control has-icons-left">
-                    <input name="password" class="input is-small" type="password" placeholder="Password">
-                    <span class="icon is-small is-left">
-                      <i class="fa fa-lock"></i>
-                    </span>
-
-                  </p>
-                </div>
-                <div>
-                  <input class="button is-info is-outlined is-inverted" type="submit" value="Login" />
-                </div>
-                <!-- </router-link> -->
-
-              </form>
-            </div>
-          </div>
-        </header>
-      </div>
-
-    </section>
-
-  </div>
+</div>
 </template>
 
 
 <script>
+import axios from 'axios'
 export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      email: '',
+      password: '',
+      token: ''
+    }
+  },
+  methods: {
+    authenticate () {
+      axios.post(`http://localhost:8000/api/login/`, {
+        email: this.email,
+        password: this.password
+      })
+        .then(response => {
+          if (response.status === 200) {
+            var token = response.data.token
+            this.setToken(token)
+            this.$router.push('/Home')
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    setToken (token) {
+      window.localStorage.setItem('token', token)
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return token
+      } else {
+        return null
+      }
     }
   }
 }
@@ -65,42 +66,150 @@ export default {
 
 
 <style lang="scss">
-.body {
 
-  .hero.is-dark {
-    background-image: linear-gradient(rgba(25, 181, 254, 0.6),rgba(246, 36, 89, 0.3)),linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.1));
-  }
 
-  .column.is-6 {
-    -webkit-border-radius: 1em;
-    outline: grey;
-    outline-width: medium;
-    outline-offset: 0px, glow;
-    outline-color: grey;
-    outline-style: double;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    .home-image {
-      width: 30%;
-    }
-  }
+.main_div {
 
-  .field {
-    margin-bottom: 0;
-    padding-right: 10px;
-    .control {
-      opacity: 0.7;
-    }
-  }
-  .hero {
-    .notification.is-danger {
-      display: table;
-      //content accordingly
-      margin-bottom: 0;
-      margin-right: 0;
-      margin-left: auto;
-      background-color: #b31d1d;
-    }
-  }
+	body{
+		margin: 0;
+		padding: 0;
+		background: #fff;
+
+		color: #fff;
+		font-family: Arial;
+		font-size: 12px;
+	}
+
+.body{
+	position: fixed;
+	top: -20px;
+	left: -20px;
+	right: -40px;
+	bottom: -40px;
+	width: auto;
+	height: auto;
+	background-image: url(http://ginva.com/wp-content/uploads/2012/07/city-skyline-wallpapers-008.jpg);
+	background-size: 100%;
+	-webkit-filter: blur(5px);
+	z-index: 0;
+}
+
+
+.grad{
+	position: fixed;
+	top: -20px;
+	left: -20px;
+	right: -40px;
+	bottom: -40px;
+	width: auto;
+	height: auto;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+	z-index: 1;
+	opacity: 0.7;
+}
+
+
+.header{
+	position: fixed;
+	top: calc(50% - 35px);
+	left: calc(50% - 255px);
+	z-index: 2;
+}
+
+.header div{
+	float: left;
+	color: #fff;
+	font-family: 'Exo', sans-serif;
+	font-size: 35px;
+	font-weight: 300;
+}
+
+.header div span{
+	color: #5379fa !important;
+}
+
+
+.login{
+	position: fixed;
+	top: calc(50% - 75px);
+	left: calc(50% - 50px);
+	height: 150px;
+	width: 350px;
+	padding: 10px;
+	z-index: 2;
+}
+
+.login input[type=text]{
+	width: 300px;
+	height: 40px;
+	background: transparent;
+	border: 1px solid rgba(255,255,255,0.6);
+	border-radius: 2px;
+	color: #fff;
+	font-family: 'Exo', sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	padding: 4px;
+}
+
+.login input[type=password]{
+	width: 300px;
+	height: 40px;
+	background: transparent;
+	border: 1px solid rgba(255,255,255,0.6);
+	border-radius: 2px;
+	color: #fff;
+	font-family: 'Exo', sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	padding: 4px;
+	margin-top: 10px;
+}
+
+.login input[type=button]{
+	width: 200px;
+	height: 30px;
+	background: #fff;
+	border: 2px solid grey;
+	cursor: pointer;
+	border-radius: 2px;
+	color: #a18d6c;
+	font-family: 'Exo', sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	padding: 6px;
+	margin-top: 10px;
+}
+
+.login input[type=button]:hover{
+	opacity: 0.8;
+}
+
+.login input[type=button]:active{
+	opacity: 0.6;
+}
+
+.login input[type=text]:focus{
+	outline: none;
+	border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=password]:focus{
+	outline: none;
+	border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=button]:focus{
+	outline: none;
+}
+
+::-webkit-input-placeholder{
+   color: rgba(255,255,255,0.6);
+}
+
+::-moz-input-placeholder{
+   color: rgba(255,255,255,0.6);
+}
+
 }
 </style>

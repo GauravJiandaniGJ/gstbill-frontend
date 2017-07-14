@@ -73,6 +73,7 @@ export default {
     }
   },
   created () {
+    this.getToken()
     this.$bus.$on('ClientName', (clientName) => {
       this.debit.client_id = clientName
     })
@@ -112,6 +113,14 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

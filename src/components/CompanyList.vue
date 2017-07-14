@@ -39,6 +39,7 @@ export default {
     data: []
   }),
   created () {
+    this.getToken()
     axios.get(`http://localhost:8000/api/company/dashboard`)
       .then(response => {
         this.data = response.data
@@ -46,6 +47,16 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+  },
+  methods: {
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
+    }
   }
 }
 </script>

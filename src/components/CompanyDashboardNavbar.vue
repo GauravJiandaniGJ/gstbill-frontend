@@ -92,9 +92,18 @@ export default {
     takeHome () {
       window.localStorage.removeItem('cid')
       this.$router.push('/Home')
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   },
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
     this.getDetailsAboutCompany(this.cid)
     this.localStorage()

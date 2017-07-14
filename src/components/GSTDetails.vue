@@ -381,6 +381,7 @@ export default {
     BankAccountTab
   },
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
@@ -454,6 +455,14 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

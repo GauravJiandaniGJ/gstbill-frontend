@@ -56,6 +56,9 @@ export default {
       console.log(url)
       axios.delete(url)
         .then(response => {
+          if (response.status === 200) {
+            this.get()
+          }
         })
       this.get()
     }}

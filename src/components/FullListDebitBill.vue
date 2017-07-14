@@ -2,10 +2,10 @@
 <div class="box FullListDebitBill">
 
   <div class="companywise-body">
-    <div class="one-company" v-if="!nodbtbill" v-for="dbill in dbills">
+     <div class="one-company" v-if="!nodbtbill" v-for="dbill in dbills">
       <!-- v-for="company in companies" -->
       <input type="hidden">
-			<span class="text title is-6">{{dbill.debit_no}}</span>
+      <span class="text title is-6">{{dbill.debit_no}}</span>
 			<span class="text title is-6">{{dbill.debit_date}}</span>
 			<span class="text title is-6">{{dbill.client_address.client.name}}</span>
 			<span class="text title is-6">{{dbill.description}}</span>
@@ -30,9 +30,11 @@ export default {
     yid: null,
     mid: null,
     nodbtbill: false,
-    dbills: []
+    dbills: [],
+    search: ''
   }),
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
@@ -40,7 +42,7 @@ export default {
   },
   methods: {
     deleteDebit (id) {
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitDetail/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitPrimary/` + id
       axios.delete(url)
         .then(response => {
           this.getDebitList()
@@ -61,6 +63,14 @@ export default {
     diffPage (id) {
       let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/' + id
       this.$router.push(url)
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }
@@ -106,6 +116,10 @@ export default {
 		padding-right: 1rem;
 	}
 
+}
+
+#search {
+  padding: 1rem;
 }
 
 </style>

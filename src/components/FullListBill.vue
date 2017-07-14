@@ -33,6 +33,7 @@ export default {
     nodbtbill: false
   }),
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
@@ -53,15 +54,25 @@ export default {
     },
     deleteBill (id) {
       console.log(id)
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
+      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillPrimary/` + id
       axios.delete(url)
         .then(response => {
-          this.getFullList()
+          if (response.status === 204 || response.status === 200) {
+            this.getFullList()
+          }
         })
     },
     diffPage (id) {
       let url = '/financial-month/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/details/gst/' + id
       this.$router.push(url)
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

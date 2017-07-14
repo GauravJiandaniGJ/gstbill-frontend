@@ -66,16 +66,10 @@ export default {
     title: ''
   }),
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
     this.yid = this.$route.params.yid
-    axios.get(`http://localhost:8000/api/year/` + this.yid + `/dashboard`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.months = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    this.getFinancialMonths()
   },
   methods: {
     addFinancialMonth () {
@@ -84,9 +78,28 @@ export default {
       })
         .then(response => {
           this.title = ''
+          this.getFinancialMonths()
         })
         .catch((e) => {
           console.log(e)
+        })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
+    },
+    getFinancialMonths () {
+      axios.get(`http://localhost:8000/api/year/` + this.yid + `/dashboard`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.months = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
         })
     }
   }

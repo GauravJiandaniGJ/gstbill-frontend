@@ -49,6 +49,7 @@ export default {
     }
   },
   created () {
+    this.getToken()
     this.cid = window.localStorage.getItem('cid')
     this.getBankList(this.cid)
   },
@@ -72,6 +73,14 @@ export default {
             this.getBankList(this.cid)
           }
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

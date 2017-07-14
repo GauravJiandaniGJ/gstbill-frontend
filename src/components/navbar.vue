@@ -22,7 +22,7 @@
        </figure>
        Profile
      </a>
-     <a class="nav-item is-tab">Log out</a>
+     <a class="nav-item is-tab" @click="logout()">Log out</a>
    </div>
 </nav>
 <ProfileModal v-if="profilemodal" @close="profilemodal = false"></ProfileModal>
@@ -39,6 +39,13 @@ export default {
   data () {
     return {
       profilemodal: false
+    }
+  },
+  methods: {
+    logout () {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('cid')
+      this.$router.push('/')
     }
   }
 }

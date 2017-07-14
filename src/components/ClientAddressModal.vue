@@ -49,6 +49,7 @@ export default {
     address: Object
   }),
   created () {
+    this.getToken()
     this.$bus.$on('ClientNameNavbar', (ClientName) => {
       this.ClientAddress = ClientName.obj
     })
@@ -56,6 +57,16 @@ export default {
   props: {
     company: {
       required: true
+    }
+  },
+  methods: {
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

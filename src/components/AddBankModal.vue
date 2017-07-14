@@ -88,7 +88,18 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
+  },
+  created () {
+    this.getToken()
   }
 }
 </script>

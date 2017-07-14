@@ -21,7 +21,20 @@ export default {
   name: 'DebitBills',
   data: () => ({
 
-  })
+  }),
+  created () {
+    this.getToken()
+  },
+  methods: {
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
+    }
+  }
 }
 </script>
 <style lang="scss">

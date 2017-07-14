@@ -87,6 +87,7 @@ export default {
     }
   },
   created () {
+    this.getToken()
     this.$bus.$on('state', (response) => {
       this.companys.state = response.state
     })
@@ -99,9 +100,6 @@ export default {
         console.log('error')
       })
     },
-    validate () {
-      return
-    },
     createCompany () {
       axios.post(`http://localhost:8000/api/company/createCompany/`, {
         name: this.companys.cname,
@@ -113,17 +111,21 @@ export default {
         password: this.companys.password
       })
         .then(response => {
-          // this.companys.cname = ''
-          // this.companys.short_name = ''
-          // this.companys.address = ''
-          // this.companys.gstin = ''
-          // this.companys.username = ''
-          // this.companys.password = ''
-          // this.companys.state = ''
+          if (response.status === 200) {
+            this.$router.push('/home')
+          }
         })
         .catch((e) => {
           console.log(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

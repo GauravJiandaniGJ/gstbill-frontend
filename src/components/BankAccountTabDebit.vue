@@ -51,6 +51,7 @@ export default {
     this.yid = this.$route.params.yid
     this.mid = this.$route.params.mid
     this.bid = this.$route.params.bid
+    this.getToken()
   },
   methods: {
     bankChange () {
@@ -70,6 +71,14 @@ export default {
         .catch((e) => {
           console.log(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }

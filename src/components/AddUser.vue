@@ -85,16 +85,23 @@ export default {
         role: this.users.role
       })
         .then(response => {
-          // this.users.uname = ''
-          // this.users.email = ''
-          // this.users.password = ''
-          // this.users.role = ''
           this.$bus.$emit('user-added')
         })
         .catch((e) => {
           console.log(e)
         })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
     }
+  },
+  created () {
+    this.getToken()
   }
 }
 </script>

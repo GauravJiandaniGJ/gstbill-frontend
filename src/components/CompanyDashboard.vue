@@ -66,15 +66,9 @@ export default {
     cid: null
   }),
   created () {
+    this.getToken()
     this.cid = this.$route.params.cid
-    axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/dashboard`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.years = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    this.getFinancialYears()
   },
   methods: {
     createFinancialYear () {
@@ -83,8 +77,27 @@ export default {
       })
        .then(response => {
           // JSON responses are automatically parsed.
+         this.getFinancialYears()
          this.financialYear = ''
        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getToken () {
+      var token = window.localStorage.getItem('token')
+      if (token != null) {
+        return true
+      } else {
+        this.$router.push('/')
+      }
+    },
+    getFinancialYears () {
+      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/dashboard`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.years = response.data
+        })
         .catch(e => {
           this.errors.push(e)
         })
