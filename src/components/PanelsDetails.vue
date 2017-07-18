@@ -73,7 +73,7 @@
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="product_name" @keyup.alt.113="f2()" v-model="description" placeholder="Product Name" type="text" class="input">
+          <input v-validate="'required'" name="product_name" @keyup.alt.113="f2()" v-model="description" placeholder="Press Alt + F2" type="text" class="input">
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -137,7 +137,7 @@
 </template>
 <script>
 import ShortcutCombobox from '@/components/ShortcutCombobox'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'PanelDetails',
   created () {
@@ -174,15 +174,16 @@ export default {
       this.description = 'Container Handling Charges'
       this.scode = 996711
       if (parseInt(this.cid) === 1) {
-        this.rate = 1350
+        this.rate = 1500
       }
       if (parseInt(this.cid) === 2) {
         this.rate = 2500
       }
+      this.rate = 500
       this.qty = 1
     },
     saveDetail (id) {
-      axios.patch(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/editBillDetails/` + this.bid + `/` + id, {
+      HTTP.patch(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/editBillDetails/` + this.bid + `/` + id, {
         name_of_product: this.description,
         service_code: this.scode,
         rate: this.rate,
@@ -201,8 +202,8 @@ export default {
         })
     },
     deleteDetail (id) {
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
-      axios.delete(url)
+      let url = `company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/deleteBillDetail/` + id
+      HTTP.delete(url)
         .then(response => {
           if (response.status === 204 || response.status === 200) {
             this.$bus.$emit('refreshForBillDetails')

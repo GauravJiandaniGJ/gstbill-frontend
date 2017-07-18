@@ -9,7 +9,7 @@
         <div>
           <div class="field has-addons title">
             <p class="control is-fullwidth">
-              <input v-validate="'required'" name="financialYear" v-model="title" class="input input-box" type="text" placeholder="Create New Financial Month" @keyup.enter="createSeason">
+              <input v-validate="'required'" name="financialYear" v-model="title" class="input input-box" type="text" placeholder="New Financial Month" @keyup.enter="createSeason">
             </p>
             <p class="control">
               <a class="button is-success" @click="addFinancialMonth()"> Create </a>
@@ -53,7 +53,7 @@
 </template>
 <script>
 import CompanyDashboardNavbar from '@/components/CompanyDashboardNavbar'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'FinancialYearDashboard',
   components: {
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     addFinancialMonth () {
-      axios.post(`http://localhost:8000/api/year/` + this.yid + `/createFinancialMonth/`, {
+      HTTP.post(`year/` + this.yid + `/createFinancialMonth/`, {
         title: this.title
       })
         .then(response => {
@@ -93,9 +93,8 @@ export default {
       }
     },
     getFinancialMonths () {
-      axios.get(`http://localhost:8000/api/year/` + this.yid + `/dashboard`)
+      HTTP.get(`year/` + this.yid + `/dashboard`)
         .then(response => {
-          // JSON responses are automatically parsed.
           this.months = response.data
         })
         .catch(e => {
@@ -132,7 +131,7 @@ export default {
     }
 
     .input-box {
-        width: 890px;
+        width: 100%;
     }
 
     .column.is-one-third {

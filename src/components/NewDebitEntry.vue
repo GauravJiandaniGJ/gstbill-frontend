@@ -54,7 +54,7 @@
 <script>
 import Datepicker from 'vue-bulma-datepicker'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'NewDebitEntry',
   components: {
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getDebitNo () {
-      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/latestDebitNo`)
+      HTTP.get(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/latestDebitNo`)
         .then(response => {
           this.debit.billNo = response.data
         })
@@ -97,7 +97,7 @@ export default {
         })
     },
     createPrimary () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/createNew`, {
+      HTTP.post(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/createNew`, {
         debit_no: this.debit.billNo,
         debit_date: this.debit.billDate,
         description: this.debit.description,

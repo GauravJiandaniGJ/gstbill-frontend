@@ -6,7 +6,7 @@
     <div class="job-header job-section">
       <div class="heading-main">
         <p class="title is-3 job-title">{{company_name}}</p>
-        <p class="subtitle is-6 company-details">CARGO HANDLING & SHIPPING AGENT
+        <p class="subtitle is-6 company-details">
 
         </p>
       </div>
@@ -291,7 +291,7 @@ import EditInvoiceDetails from '@/components/EditInvoiceDetails'
 import ClientAddressCombobox from '@/components/ClientAddressCombobox'
 import EditClientDetailsDebit from '@/components/EditClientDetailsDebit'
 import BankAccountTabDebit from '@/components/BankAccountTabDebit'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'Details',
   data () {
@@ -363,7 +363,7 @@ export default {
   },
   methods: {
     getBillDetails (id) {
-      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/displayAllData/` + id)
+      HTTP.get(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/displayAllData/` + id)
         .then(response => {
           this.mainBill = response.data
           this.invoice.inv_no = response.data.debit_no
@@ -387,7 +387,7 @@ export default {
         })
     },
     calculate_confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {})
+      HTTP.post(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/calculateTotalAmount/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.print = true
@@ -399,7 +399,7 @@ export default {
         })
     },
     confirm () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {})
+      HTTP.post(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/confirmBill/` + this.bill_id, {})
         .then(response => {
           if (response.status === 200) {
             this.getBillDetails(this.bill_id)
@@ -410,10 +410,10 @@ export default {
         })
     },
     printDebit () {
-      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/printDebit/` + this.invoice.inv_no)
+      HTTP.get(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/printDebit/` + this.invoice.inv_no)
         .then(response => {
           if (response.status === 200) {
-            window.location.href = 'http://localhost:8000/api/company/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/printDebit/' + this.invoice.inv_no
+            window.location.href = 'http://api.gaurav-gst-billing.com/api/company/' + this.cid + '/year/' + this.yid + '/month/' + this.mid + '/printDebit/' + this.invoice.inv_no
           }
         })
         .catch(e => {

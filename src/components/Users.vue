@@ -21,7 +21,7 @@
 </template>
 <script>
 import AddUser from '@/components/AddUser'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'Users',
   components: {
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     get () {
-      axios.get(`http://localhost:8000/api/user/index`)
+      HTTP.get(`user/index`)
         .then(response => {
           this.data = response.data
         })
@@ -52,9 +52,8 @@ export default {
       this.usermodal = true
     },
     deleteUser (id) {
-      let url = `http://localhost:8000/api/user/destroy/` + id
-      console.log(url)
-      axios.delete(url)
+      let url = `user/destroy/` + id
+      HTTP.delete(url)
         .then(response => {
           if (response.status === 200) {
             this.get()

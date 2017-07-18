@@ -20,7 +20,7 @@
 
 
 <script>
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'hello',
   data () {
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     authenticate () {
-      axios.post(`http://localhost:8000/api/login/`, {
+      HTTP.post(`login/`, {
         email: this.email,
         password: this.password
       })
@@ -58,7 +58,14 @@ export default {
       } else {
         return null
       }
+    },
+    destroyEverything () {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('cid')
     }
+  },
+  created () {
+    this.destroyEverything()
   }
 }
 </script>

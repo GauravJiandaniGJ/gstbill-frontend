@@ -54,7 +54,7 @@
 <script>
 import Datepicker from 'vue-bulma-datepicker'
 import ClientNameComboBox from '@/components/ClientNameComboBox'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'NewGstEntry',
   components: {
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getgstNo () {
-      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/latestBillNo`)
+      HTTP.get(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/latestBillNo`)
         .then(response => {
           this.gst.billNo = response.data
         })
@@ -97,7 +97,7 @@ export default {
         })
     },
     createPrimary () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/createNew`, {
+      HTTP.post(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/bill/createNew`, {
         bill_no: this.gst.billNo,
         bill_date: this.gst.billDate,
         description: this.gst.description,

@@ -65,7 +65,7 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'AddUser',
   data: () => ({
@@ -78,7 +78,7 @@ export default {
   }),
   methods: {
     addUser () {
-      axios.post(`http://localhost:8000/api/user/createUser/`, {
+      HTTP.post(`user/createUser/`, {
         name: this.users.uname,
         email: this.users.email,
         password: this.users.password,

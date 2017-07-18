@@ -61,7 +61,7 @@
     <div class="column is-5 only">
       <div class="field">
         <p class="control">
-          <input v-validate="'required'" name="product_name" @keyup.alt.114="f3()" @keyup.alt.112="f1()" @keyup.alt.116="f5()" @keyup.alt.117="f6()" @keyup.alt.118="f7()" @keyup.alt.119="f8()" @keyup.alt.120="f9()" @keyup.alt.121="f10()" @keyup.alt.122="f11()" @keyup.alt.123="f12()" @keyup.esc="shortcuts" v-model="description" placeholder="Product Name" type="text" class="input">
+          <input v-validate="'required'" name="product_name" @keyup.alt.114="f3()" @keyup.alt.112="f1()" @keyup.alt.116="f5()" @keyup.alt.117="f6()" @keyup.alt.118="f7()" @keyup.alt.119="f8()" @keyup.alt.120="f9()" @keyup.alt.121="f10()" @keyup.alt.122="f11()" @keyup.alt.123="f12()" @keyup.esc="shortcuts" v-model="description" placeholder="Press Esc" type="text" class="input">
         </p>
         <div v-show="errors.has('product_name')" class="help is-danger">
           {{ errors.first('product_name') }}
@@ -117,7 +117,7 @@
 <script>
 import ShortcutCombobox from '@/components/ShortcutCombobox'
 import ShortcutShowModal from '@/components/ShortcutShowModal'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'PanelDetailsDebit',
   created () {
@@ -211,7 +211,7 @@ export default {
       this.shortcut = true
     },
     saveDetail (id) {
-      axios.patch(`http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/editDebitDetails/` + this.bid + `/` + id, {
+      HTTP.patch(`company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/editDebitDetails/` + this.bid + `/` + id, {
         name_of_product: this.description,
         rate: this.rate,
         qty: this.qty,
@@ -229,8 +229,8 @@ export default {
         })
     },
     deleteDetail (id) {
-      let url = `http://localhost:8000/api/company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitDetail/` + id
-      axios.delete(url)
+      let url = `company/` + this.cid + `/year/` + this.yid + `/month/` + this.mid + `/deleteDebitDetail/` + id
+      HTTP.delete(url)
         .then(response => {
           if (response.status === 204 || response.status === 200) {
             this.$bus.$emit('refreshForQuantity')

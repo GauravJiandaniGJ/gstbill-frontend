@@ -66,8 +66,8 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
 import StateCombobox from '@/components/StateCombobox'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'NewCompany',
   components: {
@@ -101,7 +101,7 @@ export default {
       })
     },
     createCompany () {
-      axios.post(`http://localhost:8000/api/company/createCompany/`, {
+      HTTP.post(`company/createCompany/`, {
         name: this.companys.cname,
         short_name: this.companys.short_name,
         address: this.companys.address,

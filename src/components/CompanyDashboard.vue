@@ -9,7 +9,7 @@
       <div class="main-textbox">
         <div class="field has-addons">
           <p class="control is-fullwidth">
-            <input v-validate="'required'" name="financialYear" v-model="financialYear" class="input input-box" type="text" placeholder="Create New Financial Year" @keyup.enter="createSeason">
+            <input v-validate="'required'" name="financialYear" v-model="financialYear" class="input input-box" type="text" placeholder="New Financial Year" @keyup.enter="createSeason">
           </p>
           <p class="control">
             <a class="button is-success" @click="createFinancialYear()"> Create </a>
@@ -54,7 +54,7 @@
 </template>
 <script>
 import CompanyDashboardNavbar from '@/components/CompanyDashboardNavbar'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'CompanyDashboard',
   components: {
@@ -72,11 +72,10 @@ export default {
   },
   methods: {
     createFinancialYear () {
-      axios.post(`http://localhost:8000/api/company/` + this.cid + `/year/createFinancialYear`, {
+      HTTP.post(`company/` + this.cid + `/year/createFinancialYear`, {
         title: this.financialYear
       })
        .then(response => {
-          // JSON responses are automatically parsed.
          this.getFinancialYears()
          this.financialYear = ''
        })
@@ -93,9 +92,8 @@ export default {
       }
     },
     getFinancialYears () {
-      axios.get(`http://localhost:8000/api/company/` + this.cid + `/year/dashboard`)
+      HTTP.get(`company/` + this.cid + `/year/dashboard`)
         .then(response => {
-          // JSON responses are automatically parsed.
           this.years = response.data
         })
         .catch(e => {
@@ -132,7 +130,7 @@ export default {
     }
 
     .input-box {
-        width: 890px;
+        width: 100%;
     }
 
     .column.is-one-third {

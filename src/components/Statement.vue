@@ -105,7 +105,7 @@
 </template>
 <script>
 import Datepicker from 'vue-bulma-datepicker'
-import axios from 'axios'
+import HTTP from '@/packages/HTTP'
 export default {
   name: 'Statement',
   data: () => ({
@@ -132,8 +132,8 @@ export default {
   },
   methods: {
     getStatementList () {
-      let url = `http://localhost:8000/api/statement/listOfStatement`
-      axios.get(url)
+      let url = `statement/listOfStatement`
+      HTTP.get(url)
         .then(response => {
           this.statements = response.data
         })
@@ -142,8 +142,8 @@ export default {
         })
     },
     getStatementListClientWise () {
-      let url = `http://localhost:8000/api/statement/listOfStatementClientWise`
-      axios.get(url)
+      let url = `statement/listOfStatementClientWise`
+      HTTP.get(url)
         .then(response => {
           this.statements_client_wise = response.data
         })
@@ -152,17 +152,17 @@ export default {
         })
     },
     buildStatement () {
-      let url = `http://127.0.0.1:8000/api/statement/generateStatement/` + this.statement_from_date + `/` + this.statement_to_date + `/` + this.cid + `/` + this.statement_id
-      axios.get(url)
+      let url = `statement/generateStatement/` + this.statement_from_date + `/` + this.statement_to_date + `/` + this.cid + `/` + this.statement_id
+      HTTP.get(url)
         .then(response => {
-          window.location.href = 'http://127.0.0.1:8000/api/statement/generateStatement/' + this.statement_from_date + '/' + this.statement_to_date + '/' + this.cid + '/' + this.statement_id
+          window.location.href = 'http://api.gaurav-gst-billing.com/api/statement/generateStatement/' + this.statement_from_date + '/' + this.statement_to_date + '/' + this.cid + '/' + this.statement_id
         })
         .catch(e => {
           this.errors.push(e)
         })
     },
     getClientList () {
-      axios.get(`http://localhost:8000/api/client/clientList/` + this.cid)
+      HTTP.get(`client/clientList/` + this.cid)
         .then(response => {
           this.client_names = response.data
           console.log('client_names' + this.client_names)
